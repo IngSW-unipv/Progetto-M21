@@ -14,6 +14,7 @@ public class Slot {
 
 	public Slot(SlotSize size) {
 		this.size = size;
+		isEmpty = true;
 		initSize();
 	}
 
@@ -27,6 +28,10 @@ public class Slot {
 		return isEmpty;
 	}
 	
+	public void setEmpty(boolean isEmpty) {
+		this.isEmpty = isEmpty;
+	}
+
 	public int getSlotId() {
 		return slotId;
 	}
