@@ -1,9 +1,15 @@
 package it.unipv.ingsw.pickuppoint.model.locker;
 
+import it.unipv.ingsw.pickuppoint.model.delivery.Product;
+
 public class Slot {
+	private int slotId;
 	private int height;
 	private int width;
 	private int length;
+	private boolean isEmpty;
+	private Product product;
+	
 	private SlotSize size;
 
 	public Slot(SlotSize size) {
@@ -17,8 +23,19 @@ public class Slot {
 		this.length = size.getLength();
 	}
 
-	@Override
-	public String toString() {
-		return "Slot [altezza=" + height + ", larghezza=" + width + ", lunghezza=" + length + ", size=" + size + "]";
+	public boolean isEmpty() {
+		return isEmpty;
+	}
+	
+	public int getSlotId() {
+		return slotId;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public SlotSize getSize() {
+		return size;
 	}
 }
