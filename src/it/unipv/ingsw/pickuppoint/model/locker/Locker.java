@@ -4,41 +4,43 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import it.unipv.ingsw.pickuppoint.model.delivery.Product;
+
 public class Locker {
 	private int lockerId;
 	private LockerAddress lockerAddress;
 	private Map<Integer, Slot> lockerNumberToSlot;
 
+	/**
+	 * 
+	 * @param lockerId
+	 * @param city
+	 * @param address
+	 * @param postalCode
+	 */
 	public Locker(int lockerId, String city, String address, int postalCode) {
 		this.lockerId = lockerId;
 		lockerAddress = new LockerAddress(city, address, postalCode);
 		lockerNumberToSlot = new HashMap<Integer, Slot>();
 	}
-	
-	public boolean isAvailable(SlotSize slotSize) {
-		for (Entry<Integer, Slot> me : lockerNumberToSlot.entrySet()) {
-			Slot slot = me.getValue();
+
+	/**
+	 * 
+	 * @param slotSize
+	 * @return slotId
+	 */
+	public int getSlotId(SlotSize slotSize) {
+		for (Slot slot : lockerNumberToSlot.values()) {
 			if (slot.isEmpty() && slot.getSize() == slotSize) {
-				return true;
+				return slot.getSlotId();
 			}
 		}
-		return false;
+		return -1;
 	}
-	
-//	/**
-//	 * @param required slot size
-//	 * @return slot key
-//	 */
-//	public Integer getSlotId(SlotSize slotSize) {
-//		for (Entry<Integer, Slot> me : lockerNumberToSlot.entrySet()) {
-//			Slot slot = me.getValue();
-//			
-//			if (slot.isEmpty() && slot.getSize() == slotSize) {
-//				return me.getKey();
-//			}
-//		}
-//		return -1;
-//	}
+
+	public Map<Integer, Slot> getLockerNumberToSlot() {
+		return lockerNumberToSlot;
+	}
 
 	public int getLockerNumber() {
 		return lockerId;
