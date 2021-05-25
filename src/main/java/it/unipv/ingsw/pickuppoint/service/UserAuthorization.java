@@ -3,7 +3,6 @@ package it.unipv.ingsw.pickuppoint.service;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +18,7 @@ public class UserAuthorization implements UserDetails {
 
 	@Autowired
 	UserRepo userRepo;
-	
+
 	public UserAuthorization(User user) {
 		this.user = user;
 	}
@@ -42,7 +41,7 @@ public class UserAuthorization implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		return user.getPassword();
+		return user.getEmail();
 	}
 
 	@Override
@@ -65,4 +64,7 @@ public class UserAuthorization implements UserDetails {
 		return user.isEnabled();
 	}
 
+	public User getUser() {
+		return user;
+	}
 }

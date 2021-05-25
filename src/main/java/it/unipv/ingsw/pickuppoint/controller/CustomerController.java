@@ -1,13 +1,11 @@
 package it.unipv.ingsw.pickuppoint.controller;
 
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -20,7 +18,6 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 
-	
 	@RequestMapping("/register")
 	public String register(Model model) {
 		Customer customer = new Customer();
@@ -28,7 +25,6 @@ public class CustomerController {
 		return "registration";
 	}
 
-	@ExceptionHandler(CustomerAlreadyExistException.class)
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String userRegistration(@Valid Customer customer, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
@@ -42,21 +38,6 @@ public class CustomerController {
 			model.addAttribute("customer", customer);
 			return "registration";
 		}
-
 		return "redirect:" + "/"; // Ritorna alla schermata di login
-
 	}
-
-	@RequestMapping("/")
-	public String viewHomePage() {
-//		Test
-//		encoder = new BCryptPasswordEncoder();
-//		User a = new Administrator();
-//		a.setRole(roleRepo.findByName("ADMINIST));
-//		a.setUsername("ad2");RATOR"
-//		a.setPassword(encoder.encode("ad2"));
-//		userRepo.save(a);
-		return "index";
-	}
-
 }

@@ -32,6 +32,9 @@ public class CustomerService {
 	@Autowired
 	RoleRepo roleRepo;
 
+	@Autowired
+	CustomerRepo customerRepo;
+
 	BCryptPasswordEncoder passwordEncoder;
 
 	public void register(Customer customer) throws CustomerAlreadyExistException {
@@ -43,6 +46,10 @@ public class CustomerService {
 		encodePassword(customer);
 		userRepo.save(customer);
 
+	}
+
+	public Customer getCustomer(Long id) {
+		return customerRepo.findByUserId(id);
 	}
 
 	private Role getUserRole() {

@@ -12,5 +12,4 @@ public class CourierController {
 	@Autowired
 	CourierService courierService;
 
-
 }
