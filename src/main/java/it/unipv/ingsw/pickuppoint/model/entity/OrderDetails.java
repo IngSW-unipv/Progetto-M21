@@ -1,10 +1,13 @@
 package it.unipv.ingsw.pickuppoint.model.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,8 +17,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-
-import lombok.Data;
 
 /**
  * Entity specifica che questa classe è un'entità che rappresenta una tabella
@@ -28,10 +29,81 @@ import lombok.Data;
  * tostring, equals, hashcode...
  */
 
-@Data
 @Entity
 @Table(name = "OrderDetails")
 public class OrderDetails {
+
+	public Long getOrderDetailsId() {
+		return orderDetailsId;
+	}
+
+	public void setOrderDetailsId(Long orderDetailsId) {
+		this.orderDetailsId = orderDetailsId;
+	}
+
+	public int getTrackingCode() {
+		return trackingCode;
+	}
+
+	public void setTrackingCode(int trackingCode) {
+		this.trackingCode = trackingCode;
+	}
+
+	public String getPickupCode() {
+		return pickupCode;
+	}
+
+	public void setPickupCode(String pickupCode) {
+		this.pickupCode = pickupCode;
+	}
+
+	public Locker getLocker() {
+		return locker;
+	}
+
+	public void setLocker(Locker locker) {
+		this.locker = locker;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
+	public DeliveryDetails getDeliveryDetails() {
+		return deliveryDetails;
+	}
+
+	public void setDeliveryDetails(DeliveryDetails deliveryDetails) {
+		this.deliveryDetails = deliveryDetails;
+	}
+
+	public Recipient getRecipient() {
+		return recipient;
+	}
+
+	public void setRecipient(Recipient recipient) {
+		this.recipient = recipient;
+	}
+
+	public Courier getCourier() {
+		return courier;
+	}
+
+	public void setCourier(Courier courier) {
+		this.courier = courier;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
 
 	/**
 	 * GeneratedValue indica che il valore della chiave primaria viene generato
@@ -70,7 +142,7 @@ public class OrderDetails {
 	 * E' attivo il cascade su tutte le operazioni di INSERT, DELETE, UPDATE
 	 */
 	@OneToMany(mappedBy = "orderDetails", cascade = CascadeType.ALL)
-	private Set<Product> products;
+	private List<Product> products = new ArrayList<Product>();
 
 	/**
 	 * Relazione 1:1 con l'entita DeliveryDetails

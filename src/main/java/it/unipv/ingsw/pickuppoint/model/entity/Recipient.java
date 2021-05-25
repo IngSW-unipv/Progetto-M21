@@ -10,9 +10,6 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.Data;
-
-@Data
 @Entity
 @Table(name = "Recipient")
 public class Recipient {
@@ -34,4 +31,23 @@ public class Recipient {
 	@JoinColumn(name = "order_id")
 	private OrderDetails orderDetails;
 
+	public Long getOrderDetailsId() {
+		return orderDetailsId;
+	}
+
+	public String getRecipientName() {
+		return recipientName;
+	}
+
+	public String getRecipientSurname() {
+		return recipientSurname;
+	}
+
+	public String getRecipientEmail() {
+		return recipientEmail;
+	}
+
+	public OrderDetails getOrderDetails() {
+		return orderDetails;
+	}
 }

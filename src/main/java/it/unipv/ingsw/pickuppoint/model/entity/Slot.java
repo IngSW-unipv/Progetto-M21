@@ -6,18 +6,14 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import it.unipv.ingsw.pickuppoint.model.SlotSize;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "Slot")
 public class Slot {
@@ -67,10 +63,75 @@ public class Slot {
 	@Enumerated(EnumType.STRING)
 	private SlotSize size;
 
+	public Long getSlotId() {
+		return slotId;
+	}
+
+	public void setSlotId(Long slotId) {
+		this.slotId = slotId;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public boolean isEmpty() {
+		return isEmpty;
+	}
+
+	public void setEmpty(boolean isEmpty) {
+		this.isEmpty = isEmpty;
+	}
+
+	public Locker getLocker() {
+		return locker;
+	}
+
+	public void setLocker(Locker locker) {
+		this.locker = locker;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public SlotSize getSize() {
+		return size;
+	}
+
+	public void setSize(SlotSize size) {
+		this.size = size;
+	}
+
 //	private void initSize() {
 //		this.height = size.getHeight();
 //		this.width = size.getWidth();
 //		this.length = size.getLength();
 //	}
+
 
 }

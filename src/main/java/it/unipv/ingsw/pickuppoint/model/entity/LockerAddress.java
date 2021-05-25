@@ -8,9 +8,6 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import lombok.Data;
-
-@Data
 @Entity
 @Table(name = "LockerAddress")
 public class LockerAddress {
@@ -21,7 +18,7 @@ public class LockerAddress {
 
 	private String city;
 	private String address;
-	
+
 	@Column(nullable = true)
 	private int postalCode;
 
@@ -33,4 +30,23 @@ public class LockerAddress {
 	@JoinColumn(name = "locker_id")
 	private Locker locker;
 
+	public Long getLockerId() {
+		return lockerId;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public int getPostalCode() {
+		return postalCode;
+	}
+
+	public Locker getLocker() {
+		return locker;
+	}
 }

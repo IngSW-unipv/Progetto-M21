@@ -11,9 +11,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import it.unipv.ingsw.pickuppoint.model.DeliveryStatus;
-import lombok.Data;
 
-@Data
 @Entity
 @Table(name = "DeliveryDetails")
 public class DeliveryDetails {
@@ -47,4 +45,53 @@ public class DeliveryDetails {
 	@Enumerated(EnumType.STRING)
 	private DeliveryStatus deliveryStatus = DeliveryStatus.HUB;
 
+	public Long getOrderDetailsId() {
+		return orderDetailsId;
+	}
+
+	public void setOrderDetailsId(Long orderDetailsId) {
+		this.orderDetailsId = orderDetailsId;
+	}
+
+	public String getArrivalDataHub() {
+		return arrivalDataHub;
+	}
+
+	public void setArrivalDataHub(String arrivalDataHub) {
+		this.arrivalDataHub = arrivalDataHub;
+	}
+
+	public String getDeliveryDate() {
+		return deliveryDate;
+	}
+
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+
+	public String getDataDeliverd() {
+		return dataDeliverd;
+	}
+
+	public void setDataDeliverd(String dataDeliverd) {
+		this.dataDeliverd = dataDeliverd;
+	}
+
+	public OrderDetails getOrderDetails() {
+		return orderDetails;
+	}
+
+	public void setOrderDetails(OrderDetails orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+
+	public DeliveryStatus getDeliveryStatus() {
+		return deliveryStatus;
+	}
+
+	public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
+		this.deliveryStatus = deliveryStatus;
+	}
+	
+	
 }

@@ -1,5 +1,6 @@
 package it.unipv.ingsw.pickuppoint.model.entity;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -8,15 +9,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import lombok.Data;
-
-@Data
 @Entity
 @Table(name = "Locker")
 public class Locker {
@@ -58,13 +55,47 @@ public class Locker {
 	 * 
 	 */
 	@OneToMany(mappedBy = "locker", cascade = CascadeType.ALL)
-	private Set<Slot> slot;
+	private List<Slot> slot;
 
 	/**
 	 * Relazione 1:N con l'entita orderDetails
 	 */
 	@OneToOne(mappedBy = "locker")
 	private OrderDetails orderDetails;
+
+	public Long getLockerId() {
+		return lockerId;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public LockerAddress getLockerAddress() {
+		return lockerAddress;
+	}
+
+	public void setLockerAddress(LockerAddress lockerAddress) {
+		this.lockerAddress = lockerAddress;
+	}
+
+	public List<Slot> getSlot() {
+		return slot;
+	}
+
+	public void setSlot(List<Slot> slot) {
+		this.slot = slot;
+	}
+
+	public OrderDetails getOrderDetails() {
+		return orderDetails;
+	}
+
+	public void setOrderDetails(OrderDetails orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+	
+	
 
 //	private static final int SLOTNUMBER = 15;
 

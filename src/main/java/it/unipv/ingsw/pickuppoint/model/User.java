@@ -15,17 +15,17 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import it.unipv.ingsw.pickuppoint.model.entity.Role;
-import lombok.Data;
 
+/**
+ * 
+ * Comportamento di default caricamento oggetti Entity relazionati
+ * OneToOne: EAGER 
+ * ManyToOne: EAGER 
+ * OneToMany: LAZY 
+ * ManyToMany: LAZY
+ *
+ */
 
-//@Data
-//@Entity
-//@Table(name = "User")
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-//@DiscriminatorColumn(name="Role",discriminatorType=DiscriminatorType.STRING)
-//@DiscriminatorValue(value="User")  
-
-@Data
 @Entity
 @Table(name = "User")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -38,16 +38,47 @@ public class User {
 
 	@Column(columnDefinition = "tinyint(1)")
 	private boolean Enabled;
-	
-	@NotEmpty(message="Email cannot be empty")
+
+	@NotEmpty(message = "Email cannot be empty")
 	@Email(message = "Email should be valid")
 	private String email;
-	
-	@NotEmpty(message="Password cannot be empty")
+
+	@NotEmpty(message = "Password cannot be empty")
 	private String password;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "role_id", nullable=false)
+	@JoinColumn(name = "role_id", nullable = false)
 	private Role role;
 
+	public Long getUserId() {
+		return userId;
+	}
+
+	public boolean isEnabled() {
+		return Enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		Enabled = enabled;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 }
