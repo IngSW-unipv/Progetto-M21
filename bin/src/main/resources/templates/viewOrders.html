@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	VIEW ORDERS
+	<div align="center">
+		<div sec:authorize="hasAnyAuthority('CUSTOMER')">
+			<table border="1" cellpadding="10">
+				<thead>
+					<tr>
+						<th>Order ID</th>
+						<th>Tracking Code</th>
+						<th>Pickup Code</th>
+						<th>Locker Name</th>
+						<th>deliveryStatus</th>
+						<th>withdraw</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="order : ${listOrders}">
+						<td th:text="${order.orderDetailsId}">Order ID</td>
+						<td th:text="${order.trackingCode}">Tracking Code</td>
+						<td th:text="${order.pickupCode} ?: '(no content)'">Pickup Code</td>
+						<td th:text="${order.locker.name}">Locker Name</td>
+						<td th:text="${order.deliveryDetails.deliveryStatus}">deliveryStatus</td>
+
+						<td th:if="${order.deliveryDetails.deliveryStatus} == ${order.deliveryDetails.deliveryStatus.DELIVERED}">
+							<a th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
+						</td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

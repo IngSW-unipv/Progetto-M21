@@ -23,7 +23,7 @@ public class Customer extends User {
 	@NotEmpty(message = "First name cannot be empty")
 	private String firstName;
 	@NotEmpty(message = "Surname cannot be empty")
-	private String surname;
+	private String lastName;
 
 	public List<OrderDetails> getOrderDetails() {
 		return orderDetails;
@@ -45,12 +45,12 @@ public class Customer extends User {
 		this.firstName = firstName;
 	}
 
-	public String getSurname() {
-		return surname;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setLastName(String surname) {
+		this.lastName = surname;
 	}
 
 }
