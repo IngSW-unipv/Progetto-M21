@@ -18,11 +18,8 @@ import it.unipv.ingsw.pickuppoint.model.entity.Role;
 
 /**
  * 
- * Comportamento di default caricamento oggetti Entity relazionati
- * OneToOne: EAGER 
- * ManyToOne: EAGER 
- * OneToMany: LAZY 
- * ManyToMany: LAZY
+ * Comportamento di default caricamento oggetti Entity relazionati OneToOne:
+ * EAGER ManyToOne: EAGER OneToMany: LAZY ManyToMany: LAZY
  *
  */
 
@@ -64,6 +61,10 @@ public class User {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPassword() {

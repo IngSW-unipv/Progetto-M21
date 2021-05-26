@@ -29,6 +29,7 @@ public class CustomerService {
 
 	@Autowired
 	UserRepo userRepo;
+
 	@Autowired
 	RoleRepo roleRepo;
 
@@ -44,7 +45,7 @@ public class CustomerService {
 		customer.setEnabled(true);
 		customer.setRole(getUserRole());
 		encodePassword(customer);
-		userRepo.save(customer);
+		customerRepo.save(customer);
 
 	}
 
