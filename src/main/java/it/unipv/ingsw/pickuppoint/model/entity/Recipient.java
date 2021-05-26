@@ -19,8 +19,8 @@ public class Recipient {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long orderDetailsId;
 
-	private String recipientName;
-	private String recipientSurname;
+	private String recipientFirstName;
+	private String recipientLastName;
 	private String recipientEmail;
 
 	/**
@@ -35,12 +35,12 @@ public class Recipient {
 		return orderDetailsId;
 	}
 
-	public String getRecipientName() {
-		return recipientName;
+	public String getRecipientFirstName() {
+		return recipientFirstName;
 	}
 
-	public String getRecipientSurname() {
-		return recipientSurname;
+	public String getRecipientLastName() {
+		return recipientLastName;
 	}
 
 	public String getRecipientEmail() {
