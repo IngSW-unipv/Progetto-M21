@@ -1,6 +1,7 @@
 package it.unipv.ingsw.pickuppoint.data;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +16,8 @@ public interface OrderDetailsRepo extends JpaRepository<OrderDetails, Long> {
 
 	@Query("select od from OrderDetails od where courier_Id= :courierId")
 	List<OrderDetails> getCourierOrders(Long courierId);
+	
+	OrderDetails findByTrackingCode(int trackingCode);
+	
+	Optional<OrderDetails> findById(Long id);
 }

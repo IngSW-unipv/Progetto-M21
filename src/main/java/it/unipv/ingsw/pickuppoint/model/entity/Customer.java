@@ -3,6 +3,7 @@ package it.unipv.ingsw.pickuppoint.model.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
@@ -16,7 +17,7 @@ public class Customer extends User {
 	 * Relazione 1:N con l'entità OrderDetails
 	 */
 
-	@OneToMany(mappedBy = "customer")
+	@OneToMany(mappedBy = "customer", cascade= {CascadeType.PERSIST, CascadeType.MERGE})
 	private List<OrderDetails> orderDetails = new ArrayList<OrderDetails>();
 
 	@NotEmpty(message = "First name cannot be empty")
@@ -28,6 +29,10 @@ public class Customer extends User {
 		return orderDetails;
 	}
 
+	public void addOrderDetails(OrderDetails orderDetails) {
+		this.orderDetails.add(orderDetails);
+	}
+	
 	public void setOrderDetails(List<OrderDetails> orderDetails) {
 		this.orderDetails = orderDetails;
 	}
