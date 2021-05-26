@@ -22,22 +22,25 @@ public class CustomerService {
 	 * Vi sono vari modi di utilizzare questa annotazione, costruttori, campi,
 	 * metodi, parametri...
 	 * 
-	 * Nel nostro caso (fields) i campi vengono "iniettati" (=aggiunta istanza) dopo
+	 * Nel nostro caso (fields) i campi vengono "innestati" (=aggiunta istanza) dopo
 	 * la creazione del un bean. Non devono essere pubblici
 	 * 
 	 */
 
 	@Autowired
 	UserRepo userRepo;
-
 	@Autowired
 	RoleRepo roleRepo;
-
 	@Autowired
 	CustomerRepo customerRepo;
-
 	BCryptPasswordEncoder passwordEncoder;
 
+	/**
+	 * Questo metodo effettua la registrazione del Customer
+	 * 
+	 * @param customer da registrare
+	 * @throws CustomerAlreadyExistException
+	 */
 	public void register(Customer customer) throws CustomerAlreadyExistException {
 		if (checkIfUserExist(customer.getEmail())) {
 			throw new CustomerAlreadyExistException("Customer already exists for this email");
@@ -46,23 +49,44 @@ public class CustomerService {
 		customer.setRole(getUserRole());
 		encodePassword(customer);
 		customerRepo.save(customer);
-
 	}
 
+	/**
+	 * Restituisce il Costumer con chiave primaria id
+	 * 
+	 * @param id
+	 * @return Customer
+	 */
 	public Customer getCustomer(Long id) {
 		return customerRepo.findByUserId(id);
 	}
 
+	/**
+	 * @return Ruolo Customer
+	 */
 	private Role getUserRole() {
 		Role role = roleRepo.findByName("CUSTOMER");
 		return role;
 	}
 
+	/**
+	 * Questo metodo cripta la password del Customer e la inserisce nella propria
+	 * istanza
+	 * 
+	 * @param customer
+	 */
 	private void encodePassword(Customer customer) {
 		passwordEncoder = new BCryptPasswordEncoder();
 		customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 	}
 
+	/**
+	 * Verifica se all'interno dell'entita User è presente un record contente
+	 * l'email passata
+	 * 
+	 * @param email
+	 * @return true se esiste, altrimenti false
+	 */
 	private boolean checkIfUserExist(String email) {
 		if (userRepo.findByEmail(email) != null) {
 			return true;

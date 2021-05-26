@@ -14,6 +14,9 @@ public class CourierService {
 	@Autowired
 	CourierRepo courierRepo;
 
+	/**
+	 * @return lista di tutti i corrieri
+	 */
 	public List<Courier> getAllCouriers() {
 		return courierRepo.findAll();
 	}

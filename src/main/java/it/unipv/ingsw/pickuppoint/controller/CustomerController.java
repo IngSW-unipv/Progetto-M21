@@ -19,6 +19,16 @@ public class CustomerController {
 	@Autowired
 	private CustomerService customerService;
 
+	/**
+	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
+	 * /register.
+	 * Viene istanziato un nuovo customer, viene aggiunto al modello che
+	 * a sua volta viene inoltrato al client per essere manipolato.
+	 * 
+	 * @param model è un contenitore di attributi che viene inoltrato al client per
+	 *              essere visualizzato o manipolato
+	 * @return la pagina html di registrazione
+	 */
 	@RequestMapping("/register")
 	public String register(Model model) {
 		Customer customer = new Customer();
@@ -26,6 +36,19 @@ public class CustomerController {
 		return "registration";
 	}
 
+	/**
+	 * Questo metodo viene invocato quando il client effettua una richiesta POST a
+	 * /register. Il client inoltra al server:
+	 * 
+	 * @param customer      popolato dai sui attributi attraverso input html
+	 * @param bindingResult per la verifica di errori di registrazione
+	 * @param model         si riferisce all'istanza del Customer, utile nel caso in
+	 *                      cui ci fossero degli errori nella registrazione per
+	 *                      inoltrare la stessa istanza (ed evitare di crearne
+	 *                      un'altra) alla pagina di registrazione
+	 * @return In caso di errori ritorna la pagina di registrazione, altrimenti
+	 *         ritorna un reindirizzamento alla pagina root 
+	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String userRegistration(@Valid Customer customer, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
@@ -41,6 +64,4 @@ public class CustomerController {
 		}
 		return "redirect:" + "/"; // Ritorna alla schermata di login
 	}
-
-
 }
