@@ -21,13 +21,13 @@
 	<div align="center">
 
 		<div sec:authorize="hasAnyAuthority('CUSTOMER')">
-			<h2>Add orders to profile</h2>
+			<h2>Add order to profile</h2>
 			
 			<form th:action="@{/add}" method="get">
 				<input type="text" th:name="tracking" th:placeholder="Tracking"/>
 				<button type="submit">Add</button>
 			</form>
-			
+			<a th:href="@{/viewCustomerOrders}">Your orders</a>
 		</div>
 	</div>
 
