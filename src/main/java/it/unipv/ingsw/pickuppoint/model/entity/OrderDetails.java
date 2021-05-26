@@ -60,7 +60,7 @@ public class OrderDetails {
 	@Column(nullable = true)
 	private String pickupCode;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "locker_id")
 	private Locker locker;
 

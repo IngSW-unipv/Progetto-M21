@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -60,8 +61,8 @@ public class Locker {
 	/**
 	 * Relazione 1:N con l'entita orderDetails
 	 */
-	@OneToOne(mappedBy = "locker")
-	private OrderDetails orderDetails;
+	@OneToMany(mappedBy = "locker", cascade = CascadeType.ALL)
+	private List<OrderDetails> orderDetails;
 
 	public Long getLockerId() {
 		return lockerId;
@@ -87,15 +88,9 @@ public class Locker {
 		this.slot = slot;
 	}
 
-	public OrderDetails getOrderDetails() {
+	public List<OrderDetails> getOrderDetails() {
 		return orderDetails;
 	}
-
-	public void setOrderDetails(OrderDetails orderDetails) {
-		this.orderDetails = orderDetails;
-	}
-	
-	
 
 //	private static final int SLOTNUMBER = 15;
 
