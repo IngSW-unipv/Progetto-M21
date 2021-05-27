@@ -53,4 +53,8 @@ public class OrderDetailsService {
 	public List<OrderDetails> getCustomerOrders(Long userId) {
 		return orderDetailsRepo.getCustomerOrders(userId);
 	}
+	
+	public List<OrderDetails> getAllOrderDetails(){
+		return orderDetailsRepo.findAll();
+	}
 }
