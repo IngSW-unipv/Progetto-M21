@@ -14,17 +14,10 @@ import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
 @Service
 public class OrderDetailsService {
 
-	@Autowired
-	OrderDetailsRepo orderDetailsRepo;
-
-	@Autowired
-	ProductRepo productRepo;
-
-	@Autowired
-	RecipientRepo recipientRepo;
-
-	@Autowired
-	DeliveryDetailsRepo deliveryDetailsRepo;
+	@Autowired OrderDetailsRepo orderDetailsRepo;
+	@Autowired ProductRepo productRepo;
+	@Autowired RecipientRepo recipientRepo;
+	@Autowired DeliveryDetailsRepo deliveryDetailsRepo;
 
 	/**
 	 * Ritorna OrderDetails con chiave id se presente, altrimenti
@@ -43,17 +36,16 @@ public class OrderDetailsService {
 
 	public void save(OrderDetails orderDetails) {
 		orderDetailsRepo.save(orderDetails);
-
 	}
 
-	public List<OrderDetails> getCourierOrders(Long userId) {
-		return orderDetailsRepo.getCourierOrders(userId);
-	}
-
-	public List<OrderDetails> getCustomerOrders(Long userId) {
-		return orderDetailsRepo.getCustomerOrders(userId);
+	public List<OrderDetails> getCustomerOrders(Long customerId){
+		return orderDetailsRepo.findByCustomer_userId(customerId);
 	}
 	
+	public List<OrderDetails> getCourierOrders(Long userId) {
+		return orderDetailsRepo.findByCourier_userId(userId);
+	}
+
 	public List<OrderDetails> getAllOrderDetails(){
 		return orderDetailsRepo.findAll();
 	}

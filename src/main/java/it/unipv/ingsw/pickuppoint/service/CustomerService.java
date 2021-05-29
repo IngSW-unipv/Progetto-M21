@@ -4,10 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import it.unipv.ingsw.pickuppoint.data.CustomerRepo;
 import it.unipv.ingsw.pickuppoint.data.RoleRepo;
 import it.unipv.ingsw.pickuppoint.data.UserRepo;
-import it.unipv.ingsw.pickuppoint.model.entity.Customer;
+import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.model.entity.Role;
 import it.unipv.ingsw.pickuppoint.service.exception.CustomerAlreadyExistException;
 
@@ -32,7 +31,7 @@ public class CustomerService {
 	@Autowired
 	RoleRepo roleRepo;
 	@Autowired
-	CustomerRepo customerRepo;
+	// CustomerRepo customerRepo;
 	BCryptPasswordEncoder passwordEncoder;
 
 	/**
@@ -41,30 +40,33 @@ public class CustomerService {
 	 * @param customer da registrare
 	 * @throws CustomerAlreadyExistException
 	 */
-	public void register(Customer customer) throws CustomerAlreadyExistException {
+	public void register(User customer) throws CustomerAlreadyExistException {
 		if (checkIfUserExist(customer.getEmail())) {
 			throw new CustomerAlreadyExistException("Customer already exists for this email");
 		}
 		customer.setEnabled(true);
-		customer.setRole(getUserRole());
+		customer.setRole(getCustomerRole());
 		encodePassword(customer);
-		customerRepo.save(customer);
+		userRepo.save(customer);
 	}
 
 	/**
-	 * Restituisce il Costumer con chiave primaria id
+	 * Restituisce il Customer con chiave primaria id
 	 * 
 	 * @param id
 	 * @return Customer
 	 */
-	public Customer getCustomer(Long id) {
-		return customerRepo.findByUserId(id);
+	public User getCustomer(Long id) {
+		return userRepo.findByUserId(id);
 	}
 
 	/**
+	 * Questo metodo restitusce il ruole associato al Customer, utile quando il
+	 * customer viene registrato per settare il ruolo
+	 * 
 	 * @return Ruolo Customer
 	 */
-	private Role getUserRole() {
+	private Role getCustomerRole() {
 		Role role = roleRepo.findByName("CUSTOMER");
 		return role;
 	}
@@ -75,7 +77,7 @@ public class CustomerService {
 	 * 
 	 * @param customer
 	 */
-	private void encodePassword(Customer customer) {
+	private void encodePassword(User customer) {
 		passwordEncoder = new BCryptPasswordEncoder();
 		customer.setPassword(passwordEncoder.encode(customer.getPassword()));
 	}

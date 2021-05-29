@@ -19,7 +19,7 @@ import it.unipv.ingsw.pickuppoint.model.SlotSize;
 public class Slot {
 
 	/**
-	 * Notare che non è presente "@GeneratedValue...
+	 * Notare che non è presente "@GeneratedValue (@JoinColumn)
 	 */
 	@Id
 	@Column(name = "slot_id")
@@ -132,6 +132,4 @@ public class Slot {
 //		this.width = size.getWidth();
 //		this.length = size.getLength();
 //	}
-
-
 }

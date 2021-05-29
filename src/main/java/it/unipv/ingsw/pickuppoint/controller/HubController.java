@@ -13,10 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import it.unipv.ingsw.pickuppoint.data.OrderDetailsRepo;
 import it.unipv.ingsw.pickuppoint.model.DeliveryStatus;
 import it.unipv.ingsw.pickuppoint.model.User;
-import it.unipv.ingsw.pickuppoint.model.entity.Customer;
 import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
 import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
 import it.unipv.ingsw.pickuppoint.service.UserAuthorization;
@@ -26,7 +24,6 @@ public class HubController {
 
 	@Autowired
 	EntityManager entityManager;
-
 	@Autowired
 	OrderDetailsService orderDetailsService;
 
@@ -70,15 +67,14 @@ public class HubController {
 	public String viewCourierOrder(Model model) {
 		User user = ((UserAuthorization) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
 				.getUser();
-
-		List<OrderDetails> ordersDetails = orderDetailsService.getCourierOrders(user.getUserId());
-
-		for (OrderDetails orderDetails : ordersDetails) {
-			System.out.println(orderDetails.getProducts());
-		}
-//		model.addAttribute("orders",ordersDetails);
-//		....	
-//		....
+		/**
+		 * 
+		 * 
+		 * model.addAttribute("orders",ordersDetails);
+		 * 
+		 * 
+		 * 
+		 */
 		return "viewOrders";
 	}
 
@@ -115,7 +111,7 @@ public class HubController {
 			 * primaria: utile quando si ha la neccessità di aggiunger/modificare una chiave
 			 * esterna
 			 */
-			Customer customer = entityManager.getReference(Customer.class, user.getUserId());
+			User customer = entityManager.getReference(User.class, user.getUserId());
 
 			order.setCustomer(customer);
 			entityManager.persist(order);

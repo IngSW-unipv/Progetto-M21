@@ -18,6 +18,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Where;
+
+import it.unipv.ingsw.pickuppoint.model.User;
+
 /**
  * Entity specifica che questa classe è un'entità che rappresenta una tabella
  * archiviata in un db
@@ -99,18 +103,20 @@ public class OrderDetails {
 	private Recipient recipient;
 
 	/**
-	 * Relazione N:1 con l'entità Courier...
+	 * Relazione N:1 con l'entità User (Courier)...
 	 */
 	@ManyToOne
 	@JoinColumn(name = "courier_id")
-	private Courier courier;
+	@Where(clause = "role_id = 2")
+	private User courier;
 
 	/**
 	 * Relazione N:1 con l'entita Customer
 	 */
-	@ManyToOne(targetEntity = Customer.class)
+	@ManyToOne
 	@JoinColumn(name = "customer_id")
-	private Customer customer;
+	@Where(clause = "role_id = 3")
+	private User customer;
 
 	/**
 	 * insertable = false, updatable = false indica che la responsabilità di creare
@@ -175,19 +181,19 @@ public class OrderDetails {
 		this.recipient = recipient;
 	}
 
-	public Courier getCourier() {
+	public User getCourier() {
 		return courier;
 	}
 
-	public void setCourier(Courier courier) {
+	public void setCourier(User courier) {
 		this.courier = courier;
 	}
 
-	public Customer getCustomer() {
+	public User getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(Customer customer) {
+	public void setCustomer(User customer) {
 		this.customer = customer;
 	}
 

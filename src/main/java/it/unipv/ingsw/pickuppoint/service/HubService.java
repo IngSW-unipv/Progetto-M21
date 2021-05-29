@@ -10,7 +10,7 @@ public class HubService {
 
 
 	@Autowired
-	UserRepo userRepo; // Serve?
+	UserRepo userRepo;
 
 	@Autowired
 	LockerService LockerService;

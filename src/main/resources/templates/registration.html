@@ -20,7 +20,7 @@
 
 
 <body class="text-center">
-	<form action="#" class="form-signin" th:action="@{/register}" th:object="${customer}" method="post">
+	<form action="#" class="form-signin" th:action="@{/register}" th:object="${user}" method="post">
 		<div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
 			<p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
 		</div>

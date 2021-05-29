@@ -1,19 +1,22 @@
 package it.unipv.ingsw.pickuppoint.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
 import it.unipv.ingsw.pickuppoint.model.entity.Role;
 
 /**
@@ -25,7 +28,6 @@ import it.unipv.ingsw.pickuppoint.model.entity.Role;
 
 @Entity
 @Table(name = "User")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
 	@Id
@@ -43,9 +45,28 @@ public class User {
 	@NotEmpty(message = "Password cannot be empty")
 	private String password;
 
+	@NotEmpty(message = "First name cannot be empty")
+	private String firstName;
+	@NotEmpty(message = "Surname cannot be empty")
+	private String lastName;
+
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "role_id", nullable = false)
 	private Role role;
+
+	/**
+	 * Relazione 1:N con l'entità OrderDetails
+	 */
+
+	@OneToMany(mappedBy = "courier")
+	private List<OrderDetails> orderDetailsCourier;
+
+	/**
+	 * Relazione 1:N con l'entità OrderDetails
+	 */
+
+	@OneToMany(mappedBy = "customer", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	private List<OrderDetails> orderDetailsCustomer = new ArrayList<OrderDetails>();
 
 	public Long getUserId() {
 		return userId;
@@ -81,5 +102,37 @@ public class User {
 
 	public void setRole(Role role) {
 		this.role = role;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public List<OrderDetails> getOrderDetailsCourier() {
+		return orderDetailsCourier;
+	}
+
+	public void setOrderDetailsCourier(List<OrderDetails> orderDetailsCourier) {
+		this.orderDetailsCourier = orderDetailsCourier;
+	}
+
+	public List<OrderDetails> getOrderDetailsCustomer() {
+		return orderDetailsCustomer;
+	}
+
+	public void setOrderDetailsCustomer(List<OrderDetails> orderDetailsCustomer) {
+		this.orderDetailsCustomer = orderDetailsCustomer;
 	}
 }

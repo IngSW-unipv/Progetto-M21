@@ -11,13 +11,9 @@ import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
 
 @Repository
 public interface OrderDetailsRepo extends JpaRepository<OrderDetails, Long> {
-	@Query("select od from OrderDetails od where customer_Id= :customerId")
-	List<OrderDetails> getCustomerOrders(Long customerId);
 
-	@Query("select od from OrderDetails od where courier_Id= :courierId")
-	List<OrderDetails> getCourierOrders(Long courierId);
-	
+	List<OrderDetails> findByCustomer_userId(Long customerId);
+	List<OrderDetails> findByCourier_userId(Long customerId);
 	OrderDetails findByTrackingCode(int trackingCode);
-	
 	Optional<OrderDetails> findById(Long id);
 }
