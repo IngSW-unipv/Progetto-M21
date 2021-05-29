@@ -15,7 +15,6 @@ import it.unipv.ingsw.pickuppoint.service.MyUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
-
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -48,10 +47,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/").hasAnyAuthority("ADMINISTRATOR","CUSTOMER","COURIER")
-		.antMatchers("/register/**").permitAll()
-		.and().formLogin().loginPage("/login").permitAll().failureUrl("/login?error=true")
-		.and().exceptionHandling().accessDeniedPage("/403");
+//				.antMatchers("/").hasAnyAuthority("ADMINISTRATOR", "CUSTOMER", "COURIER")
+				.antMatchers("/register/**").permitAll()
+				.antMatchers("/").permitAll().anyRequest().authenticated()
+				.and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/profile")
+				.and().exceptionHandling()
+				.accessDeniedPage("/403");
 	}
 
 }

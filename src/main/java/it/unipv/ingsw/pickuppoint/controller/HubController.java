@@ -27,9 +27,37 @@ public class HubController {
 	@Autowired
 	OrderDetailsService orderDetailsService;
 
+	/**
+	 * Questo metodo viene invocato quando il client effettua una richiesta GET alla
+	 * root del sito
+	 * 
+	 * @return home page
+	 */
 	@RequestMapping("/")
+	public String homePage() {
+		return "welcome";
+	}
+
+	/**
+	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
+	 * /login
+	 * 
+	 * @return pagina di login
+	 */
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
+	}
+
+	/**
+	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
+	 * /profile, subito dopo il login
+	 * 
+	 * @return pagina html profilo
+	 */
+	@RequestMapping("/profile")
 	public String viewHomePage() {
-		return "index";
+		return "profile";
 	}
 
 	/**
