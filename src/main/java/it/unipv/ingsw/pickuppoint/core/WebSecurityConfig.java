@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 		.antMatchers("/").hasAnyAuthority("ADMINISTRATOR","CUSTOMER","COURIER")
 		.antMatchers("/register/**").permitAll()
-		.and().formLogin().permitAll().failureUrl("/login?error=true")
+		.and().formLogin().loginPage("/login").permitAll().failureUrl("/login?error=true")
 		.and().exceptionHandling().accessDeniedPage("/403");
 	}
 
