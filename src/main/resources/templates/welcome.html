@@ -5,9 +5,18 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-	HOME PAGE
-	<a th:href="@{/login}">Login</a>
+	<div>
+		<div th:insert="fragments/components :: header"></div>
+	</div>
+	<div>
+		<div th:insert="fragments/components :: menu"></div>
+	</div>
+	<div>
+		<a th:href="@{/login}">Login</a>
+	</div>
+	<div>
+		<div th:insert="fragments/components :: footer"></div>
+	</div>
 
 </body>
 </html>
