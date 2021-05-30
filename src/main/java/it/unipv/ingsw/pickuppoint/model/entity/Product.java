@@ -39,6 +39,11 @@ public class Product {
 	@OneToOne(mappedBy = "product")
 	private Slot slot;
 
+
+	public Long getOrderId() {
+		return orderDetails.getOrderDetailsId();
+	}
+	
 	public Long getProductId() {
 		return productId;
 	}

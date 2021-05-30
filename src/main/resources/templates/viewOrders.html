@@ -1,42 +1,86 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<title>view Orders</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+<link rel="stylesheet" href="./style.css">
+
 </head>
 <body>
-	VIEW ORDERS
-	<div align="center">
-		<div sec:authorize="hasAnyAuthority('CUSTOMER')">
-			<table border="1" cellpadding="10">
-				<thead>
-					<tr>
-						<th>Order ID</th>
-						<th>Tracking Code</th>
-						<th>Pickup Code</th>
-						<th>Locker Name</th>
-						<th>deliveryStatus</th>
-						<th>withdraw</th>
+	<div class="container">
+		<div class="col-md-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">Orders</div>
+				<div class="panel-body">
+					<table class="table table-condensed table-striped">
+						<thead>
+							<tr>
+								<th></th>
+								<th>Order ID</th>
+								<th>Tracking Code</th>
+								<th>Pickup Code</th>
+								<th>Locker Name</th>
+								<th>Locker address</th>
+								<th>Status</th>
+								<th>Withdraw</th>
+							</tr>
+						</thead>
 
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="order : ${listOrders}">
-						<td th:text="${order.orderDetailsId}">Order ID</td>
-						<td th:text="${order.trackingCode}">Tracking Code</td>
-						<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
-						<td th:text="${order.locker.name}">Locker Name</td>
+						<tbody>
+							<tr th:each="order : ${listOrders}" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+								<td>
+									<button class="btn btn-default btn-xs" th:attr="orderId=${order.orderDetailsId}">
+										<span class="glyphicon glyphicon-eye-open" ></span>
+									</button>
+								</td>
 
-						<td th:text="${order.deliveryDetails.deliveryStatus}">deliveryStatus</td>
+								<td th:text="${order.orderDetailsId}">Order ID</td>
+								<td th:text="${order.trackingCode}">Tracking Code</td>
+								<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
+								<td th:text="${order.locker.name}">Locker Name</td>
+								<td th:text="${order.locker.lockerAddress.city}">Locker address</td>
+								<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
+								<td th:if="${order.deliveryDetails.deliveryStatus} == ${order.deliveryDetails.deliveryStatus.DELIVERED}">
+									<a th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
+								</td>
+							<tr>
+								<td colspan="12" class="hiddenRow">
+									<div class="accordian-body collapse" id="demo1">
+										<table class="table table-striped">
+											<thead>
+												<tr class="info">
+													<th>Product ID</th>
+													<th>Product ID</th>
+													<th>Weight</th>
+												</tr>
+											</thead>
+											<tbody>
+												<th:block th:each="order : ${listOrders}" data-toggle="collapse" data-target="#demo1"
+													class="accordion-toggle">
+													<tr th:each="product :${order.products}">
+														<td th:if="${product.getOrderId()} eq ${orderId}">
+															<td th:text="${orderId}">ID</td>
+															<td th:text="${product.productId}">Product ID</td>
+															<td th:text="${product.weight}">Weight</td>
+														</td>
 
-						<td th:if="${order.deliveryDetails.deliveryStatus} == ${order.deliveryDetails.deliveryStatus.DELIVERED}">
-							<a th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
-						</td>
+													</tr>
+												</th:block>
+											</tbody>
+										</table>
+									</div>
+								</td>
+							</tr>
 
-					</tr>
-				</tbody>
-			</table>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
 	</div>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
 </body>
 </html>

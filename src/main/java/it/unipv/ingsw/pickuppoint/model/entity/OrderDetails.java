@@ -75,7 +75,7 @@ public class OrderDetails {
 	 * E' attivo il cascade su tutte le operazioni di INSERT, DELETE, UPDATE
 	 */
 	@OneToMany(mappedBy = "orderDetails", cascade = CascadeType.ALL)
-	private List<Product> products = new ArrayList<Product>();
+	private List<Product> products;
 
 	/**
 	 * Relazione 1:1 con l'entita DeliveryDetails
@@ -123,7 +123,6 @@ public class OrderDetails {
 	 * o aggiornare la colonna in questione non è dell'entità corrente, ma di altre
 	 * entità
 	 */
-
 
 	public Long getOrderDetailsId() {
 		return orderDetailsId;
