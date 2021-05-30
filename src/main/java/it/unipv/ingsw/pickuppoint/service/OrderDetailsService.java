@@ -37,6 +37,10 @@ public class OrderDetailsService {
 	public void save(OrderDetails orderDetails) {
 		orderDetailsRepo.save(orderDetails);
 	}
+	
+	public void setSlotEmpty(OrderDetails orderDetails) {
+		orderDetailsRepo.save(orderDetails);
+	}
 
 	public List<OrderDetails> getCustomerOrders(Long customerId){
 		return orderDetailsRepo.findByCustomer_userId(customerId);

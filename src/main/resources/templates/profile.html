@@ -29,6 +29,13 @@
 			</form>
 			<a th:href="@{/viewCustomerOrders}">Your orders</a>
 		</div>
+		
+		<div sec:authorize="hasAnyAuthority('COURIER')">
+			<h2>Check your orders</h2>
+			
+			<a th:href="@{/viewCourierOrders}">Your orders</a>
+		</div>
+		
 	</div>
 
 

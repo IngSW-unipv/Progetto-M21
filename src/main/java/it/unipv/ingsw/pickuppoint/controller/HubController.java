@@ -72,7 +72,7 @@ public class HubController {
 	public String viewCustomerOrders(Model model) {
 
 		/**
-		 * Grazie a spring security è possibile recuperare l'autentificazione
+		 * Grazie a spring security è possibile recuperare l'autenticazione
 		 * dell'utente loggato e di conseguenza tutte le sue informazioni
 		 */
 		User user = ((UserAuthorization) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
@@ -80,6 +80,7 @@ public class HubController {
 
 		List<OrderDetails> ordersDetails = orderDetailsService.getCustomerOrders(user.getUserId());
 		model.addAttribute("listOrders", ordersDetails);
+		model.addAttribute("userRole", user.getRole().getId());
 		return "viewOrders";
 	}
 
@@ -95,14 +96,11 @@ public class HubController {
 	public String viewCourierOrder(Model model) {
 		User user = ((UserAuthorization) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
 				.getUser();
-		/**
-		 * 
-		 * 
-		 * model.addAttribute("orders",ordersDetails);
-		 * 
-		 * 
-		 * 
-		 */
+		
+		List<OrderDetails> ordersDetails = orderDetailsService.getCourierOrders(user.getUserId());
+		model.addAttribute("listOrders", ordersDetails);
+		model.addAttribute("userRole", user.getRole().getId());
+
 		return "viewOrders";
 	}
 
@@ -165,5 +163,14 @@ public class HubController {
 		orderDetailsService.save(orderDetails);
 
 		return "redirect:" + "/viewCustomerOrders";
+	}
+	
+	@RequestMapping("/deliver/{id}")
+	public String showEditProductFormCourier(@PathVariable(name = "id") Long id) {
+		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
+		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERED);
+		orderDetailsService.save(orderDetails);
+
+		return "redirect:" + "/viewCourierOrders";
 	}
 }
