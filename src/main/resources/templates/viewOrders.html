@@ -29,10 +29,11 @@
 						</thead>
 
 						<tbody>
-							<tr th:each="order : ${listOrders}" th:with="role=${userRole}" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+							<tr th:each="order : ${listOrders}" th:with="role=${userRole}" data-toggle="collapse" data-target="#demo1"
+								class="accordion-toggle">
 								<td>
 									<button class="btn btn-default btn-xs" th:attr="orderId=${order.orderDetailsId}">
-										<span class="glyphicon glyphicon-eye-open" ></span>
+										<span class="glyphicon glyphicon-eye-open"></span>
 									</button>
 								</td>
 
@@ -44,13 +45,13 @@
 								<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
 								<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
 								<td th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}">
-								    <span th:case="'DELIVERED'">
-								    	<a th:if="${role} eq '3'" th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
-								    </span>
-								    <span th:case="'DELIVERING'">
-								    	<a th:if="${role} eq '2'" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
-								    </span>
-								    <div th:case="*"></div> 
+									<span th:case="'DELIVERED'">
+										<a th:if="${role} eq '3'" th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
+									</span>
+									<span th:case="'DELIVERING'">
+										<a th:if="${role} eq '2'" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
+									</span>
+									<div th:case="*"></div>
 								</td>
 							<tr>
 								<td colspan="12" class="hiddenRow">
@@ -72,10 +73,23 @@
 															<td th:text="${product.productId}">Product ID</td>
 															<td th:text="${product.weight}">Weight</td>
 														</td>
-
 													</tr>
 												</th:block>
 											</tbody>
+											<thead>
+												<tr class="info">
+													<th>Status</th>
+													<th>Delivery Date</th>
+													<th>Data Deliverd</th>
+													<th>Withdrawal Date</th>
+												</tr>
+											</thead>
+											<tbody>
+												<th:block>
+
+												</th:block>
+											</tbody>
+
 										</table>
 									</div>
 								</td>

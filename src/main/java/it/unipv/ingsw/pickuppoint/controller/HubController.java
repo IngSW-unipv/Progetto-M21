@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.unipv.ingsw.pickuppoint.model.DeliveryStatus;
 import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
+import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
 import it.unipv.ingsw.pickuppoint.service.UserAuthorization;
 
@@ -26,6 +27,7 @@ public class HubController {
 	EntityManager entityManager;
 	@Autowired
 	OrderDetailsService orderDetailsService;
+	@Autowired HubService hubService;
 
 	/**
 	 * Questo metodo viene invocato quando il client effettua una richiesta GET alla
@@ -149,7 +151,7 @@ public class HubController {
 	/**
 	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
 	 * /withdraw/{id}; Permette al Customer di ritirare l'ordine; Viene settato
-	 * DeliveryStatus = WITHDRAW
+	 * DeliveryStatus = WITHDRAW e WithdrawalDate
 	 * 
 	 * @param id ordine da ritirare
 	 * @return reindirizzamento alla pagina per il recupero e la visualizzazione
@@ -160,6 +162,7 @@ public class HubController {
 	public String showEditProductForm(@PathVariable(name = "id") Long id) {
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.WITHDRAWN);
+		orderDetails.getDeliveryDetails().setWithdrawalDate(hubService.getCurrentDataTime());
 		orderDetailsService.save(orderDetails);
 
 		return "redirect:" + "/viewCustomerOrders";
