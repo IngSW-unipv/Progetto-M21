@@ -37,7 +37,7 @@ public class HubController {
 	 */
 	@RequestMapping("/")
 	public String homePage() {
-		return "welcome";
+		return "index";
 	}
 
 	/**
