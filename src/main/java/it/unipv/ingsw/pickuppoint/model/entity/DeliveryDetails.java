@@ -23,8 +23,6 @@ public class DeliveryDetails {
 	@Id
 	@Column(name = "order_id")
 	private Long orderDetailsId;
-
-	private String arrivalDataHub;
 	private String deliveryDate;
 	private String dataDeliverd;
 	private String withdrawalDate;
