@@ -60,14 +60,6 @@ public class DeliveryDetails {
 		this.orderDetailsId = orderDetailsId;
 	}
 
-	public String getArrivalDataHub() {
-		return arrivalDataHub;
-	}
-
-	public void setArrivalDataHub(String arrivalDataHub) {
-		this.arrivalDataHub = arrivalDataHub;
-	}
-
 	public String getDeliveryDate() {
 		return deliveryDate;
 	}
