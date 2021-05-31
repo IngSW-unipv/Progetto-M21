@@ -27,6 +27,7 @@ public class DeliveryDetails {
 	private String arrivalDataHub;
 	private String deliveryDate;
 	private String dataDeliverd;
+	private String withdrawalDate;
 
 	/**
 	 * Relazione 1:1 con l'entità OrderDetails con chiave primaria condivisa
@@ -44,6 +45,14 @@ public class DeliveryDetails {
 	@Column(length = 32, columnDefinition = "varchar(32) default 'HUB'")
 	@Enumerated(EnumType.STRING)
 	private DeliveryStatus deliveryStatus = DeliveryStatus.HUB;
+
+	public String getWithdrawalDate() {
+		return withdrawalDate;
+	}
+
+	public void setWithdrawalDate(String withdrawalDate) {
+		this.withdrawalDate = withdrawalDate;
+	}
 
 	public Long getOrderDetailsId() {
 		return orderDetailsId;
@@ -92,6 +101,5 @@ public class DeliveryDetails {
 	public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
 		this.deliveryStatus = deliveryStatus;
 	}
-	
-	
+
 }
