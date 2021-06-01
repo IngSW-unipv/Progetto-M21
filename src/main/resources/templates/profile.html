@@ -2,42 +2,55 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Online Delivery Services @Progetto-M21</title>
+<div th:replace="fragments/css" :: css></div>
 </head>
 <body>
+	<div th:replace="fragments/components :: navbar"></div>
 	<form th:action="@{/logout}" method="post">
 		<input type="submit" value="Logout" />
 	</form>
 
-
-	WELCOME
-	<b>
-		<span sec:authentication="name">Username</span>
-	</b>
-	&nbsp;
-	<i>
-		<span sec:authentication="principal.authorities">Roles</span>
-	</i>
-	<div align="center">
-
-		<div sec:authorize="hasAnyAuthority('CUSTOMER')">
-			<h2>Add order to profile</h2>
-			
-			<form th:action="@{/add}" method="get">
-				<input type="text" th:name="tracking" th:placeholder="Tracking"/>
-				<button type="submit">Add</button>
-			</form>
-			<a th:href="@{/viewCustomerOrders}">Your orders</a>
-		</div>
+	<section id="fh5co-home" data-section="home"
+		style="background-image: url(../../images/profile-background.jpg);"
+		data-stellar-background-ratio="0.5">
+		<div class="gradient"></div>
+		<div class="container">
+			<div class="text-wrap">
+				<div class="text-inner">
+					<div class="row">
+						<div class="col-md-8 col-md-offset-2 text-center">
+							<h1 class="animate-box">
+								<span class="big">Welcome</span>
+								<br>
+								<span class="medium" sec:authentication="name">Username</span>
+								<br>
+								<i><span class="medium" sec:authentication="principal.authorities">Roles</span></i>
+								<br>
+									<div sec:authorize="hasAnyAuthority('CUSTOMER')">
+										<h2>Add order to profile</h2>
+										<form th:action="@{/add}" method="get">
+											<input type="text" th:name="tracking" th:placeholder="Tracking"/>
+											<button type="submit">Add</button>
+										</form>
+										<a th:href="@{/viewCustomerOrders}">Your orders</a>
+									</div>
 		
-		<div sec:authorize="hasAnyAuthority('COURIER')">
-			<h2>Check your orders</h2>
-			
-			<a th:href="@{/viewCourierOrders}">Your orders</a>
+									<div sec:authorize="hasAnyAuthority('COURIER')">
+										<h2>Check your orders</h2>
+										<a th:href="@{/viewCourierOrders}">Your orders</a>
+									</div>
+							</h1>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		
-	</div>
+	</section>
 
+	
+	<div th:insert="fragments/components :: footer"></div>
+	<div th:replace="fragments/jQuery :: jQuery"></div>
 
 </body>
 </html>
