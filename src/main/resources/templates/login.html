@@ -1,22 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head></head>
+<head>
+<meta charset="UTF-8">
+<title>CodePen - Bootstrap Snippet: Login Form</title>
+<link rel='stylesheet' href='/CSS/bootstrap.min.css'>
+<link rel="stylesheet" href="/CSS/loginStyle.css">
+
+<link rel="stylesheet" href="/CSS/animate.css">
+
+<link rel="stylesheet" href="/CSS/icomoon.css">
+
+<link rel="stylesheet" href="/CSS/simple-line-icons.css">
+
+<link rel="stylesheet" href="/CSS/bootstrap.css">
+
+<link rel="stylesheet" href="/CSS/style.css">
+
+
+</head>
 <body>
-   <h1>Login</h1>
-   <form name='f' th:action="@{/login}" method='POST'>
-      <table>
-         <tr>
-            <td>User:</td>
-            <td><input type='text' name='username' value=''></td>
-         </tr>
-         <tr>
-            <td>Password:</td>
-            <td><input type='password' name='password' /></td>
-         </tr>
-         <tr>
-            <td><input name="submit" type="submit" value="submit" /></td>
-         </tr>
-      </table>
-  </form>
+
+	<div th:replace="fragments/components :: navbar"></div>
+
+	<section id="fh5co-home" data-section="home" style="background-image: url(../../images/index-background.jpg);"
+		data-stellar-background-ratio="0.5">
+		<div class="gradient"></div>
+		<div class="container">
+			<div class="text-wrap">
+				<div class="text-inner">
+					<div class="row">
+						<div class="wrapper">
+							<form class="form-signin" th:action="@{/login}" method='POST'>
+								<h1 class="medium">Login</h1>
+								<input type="text" class="form-control" name="username" placeholder="Email Address" required="" autofocus="" />
+								<input type="password" class="form-control" name="password" placeholder="Password" required="" />
+								<label class="checkbox">
+									<input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe">
+									Remember me
+								</label>
+								<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<div th:insert="fragments/components :: footer"></div>
+	<div th:replace="fragments/jQuery :: jQuery"></div>
 </body>
 </html>
