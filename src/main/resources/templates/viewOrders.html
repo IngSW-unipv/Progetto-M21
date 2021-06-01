@@ -15,6 +15,7 @@
 				<div class="panel-heading">Orders</div>
 				<div class="panel-body">
 					<table class="table table-condensed table-striped">
+					
 						<thead>
 							<tr>
 								<th></th>
@@ -24,34 +25,50 @@
 								<th>Locker Name</th>
 								<th>Locker address</th>
 								<th>Status</th>
-								<th>Withdraw</th>
+								<th sec:authorize="hasAnyAuthority('CUSTOMER')">Withdraw</th>
+								<th sec:authorize="hasAnyAuthority('COURIER')">Deliver</th>
 							</tr>
 						</thead>
 
 						<tbody>
-							<tr th:each="order : ${listOrders}" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
-								<td>
-									<button class="btn btn-default btn-xs" th:attr="orderId=${order.orderDetailsId}">
-										<span class="glyphicon glyphicon-eye-open"></span>
-									</button>
-								</td>
+							<th:block th:each="order : ${listOrders}">
+								<tr>
+									<td>
+										<button class="btn btn-default btn-xs" data-toggle="collapse" th:data-target="|#demo${order.orderDetailsId}|">
+											<span class="glyphicon glyphicon-eye-open"></span>
+										</button>
+									</td>
 
-								<td th:text="${order.orderDetailsId}">Order ID</td>
-								<td th:text="${order.trackingCode}">Tracking Code</td>
-								<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
-								<td th:text="${order.locker.name}">Locker Name</td>
-								<td th:text="${order.locker.lockerAddress.city}">Locker address</td>
-								<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
-								<td th:if="${order.deliveryDetails.deliveryStatus} == ${order.deliveryDetails.deliveryStatus.DELIVERED}">
-									<a th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
-								</td>
-							</tr>
-							
-							<tr>
-								<div th:replace="fragments/product ;; products"></div>
-							</tr>
-							
+									<td th:text="${order.orderDetailsId}">Order ID</td>
+									<td th:text="${order.trackingCode}">Tracking Code</td>
+									<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
+									<td th:text="${order.locker.name}">Locker Name</td>
+									<td th:text="${order.locker.lockerAddress.city}">Locker address</td>
+									<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
+
+									<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
+									<td th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}">
+
+										<span th:case="'DELIVERED'">
+											<a sec:authorize="hasAnyAuthority('CUSTOMER')" th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
+										</span>
+
+										<span th:case="'DELIVERING'">
+											<a sec:authorize="hasAnyAuthority('COURIER')" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
+										</span>
+
+										<div th:case="*"></div>
+									</td>
+
+								</tr>
+
+								<tr>
+									<td colspan="7" style="padding: 0 !important;">
+										<div th:replace="fragments/product :: products"></div>
+									</td>
+							</th:block>
 						</tbody>
+
 					</table>
 				</div>
 			</div>

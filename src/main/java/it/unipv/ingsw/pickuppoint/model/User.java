@@ -57,16 +57,14 @@ public class User {
 	/**
 	 * Relazione 1:N con l'entità OrderDetails
 	 */
-
-	@OneToMany(mappedBy = "courier")
+	@OneToMany(mappedBy = "courier", cascade = CascadeType.ALL)
 	private List<OrderDetails> orderDetailsCourier;
 
 	/**
 	 * Relazione 1:N con l'entità OrderDetails
 	 */
-
-	@OneToMany(mappedBy = "customer", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	private List<OrderDetails> orderDetailsCustomer = new ArrayList<OrderDetails>();
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	private List<OrderDetails> orderDetailsCustomer;
 
 	public Long getUserId() {
 		return userId;

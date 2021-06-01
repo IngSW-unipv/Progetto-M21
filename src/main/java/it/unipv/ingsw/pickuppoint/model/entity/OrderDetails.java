@@ -105,7 +105,7 @@ public class OrderDetails {
 	/**
 	 * Relazione N:1 con l'entità User (Courier)...
 	 */
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "courier_id")
 	@Where(clause = "role_id = 2")
 	private User courier;
@@ -113,7 +113,7 @@ public class OrderDetails {
 	/**
 	 * Relazione N:1 con l'entita Customer
 	 */
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "customer_id")
 	@Where(clause = "role_id = 3")
 	private User customer;
