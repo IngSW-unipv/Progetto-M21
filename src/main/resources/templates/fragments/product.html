@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<title>view Orders</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+	<div th:fragment="products">
+
+		<td colspan="12" class="hiddenRow">
+			<div class="accordian-body collapse" id="demo1">
+				<table class="table table-striped">
+					<thead>
+						<tr class="info">
+							<th>Status</th>
+							<th>Data Deliverd</th>
+							<th>Withdrawal Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<th:block>
+							<tr th:each="order : ${listOrders}" data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+
+								<td th:text="${h} ?: 'null'">Status</td>
+								<td th:text="${order.deliveryDetails.dataDeliverd} ?: 'null'">Data Deliverd</td>
+								<td th:text="${order.deliveryDetails.withdrawalDate} ?: 'null'">Withdrawal Date</td>
+						</th:block>
+					</tbody>
+
+				</table>
+			</div>
+		</td>
+	</div>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+
+</body>
+</html>
