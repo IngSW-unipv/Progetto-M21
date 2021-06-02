@@ -51,22 +51,22 @@
 										<td th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}">
 
 											<span th:case="'DELIVERED'">
-												<a sec:authorize="hasAnyAuthority('CUSTOMER')" th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
+												<a style="color: green !important;" sec:authorize="hasAnyAuthority('CUSTOMER')" th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
 											</span>
 
 											<span th:case="'DELIVERING'">
-												<a sec:authorize="hasAnyAuthority('COURIER')" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
+												<a style="color: green !important;" sec:authorize="hasAnyAuthority('COURIER')" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
 											</span>
 
 											<div th:case="*"></div>
 										</td>
 
 									</tr>
-
 									<tr>
-										<td colspan="7" style="padding: 0 !important;">
+										<td colspan="8" style="padding: 0 !important;">
 											<div th:replace="fragments/product :: products"></div>
 										</td>
+									</tr>
 								</th:block>
 							</tbody>
 
