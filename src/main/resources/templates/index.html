@@ -3,24 +3,17 @@
 <head>
 <meta charset="utf-8">
 
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
 <title>Online Delivery Services @Progetto-M21</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Free HTML5 Template by FreeHTML5.co" />
-<meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
-<meta name="author" content="FreeHTML5.co" />
-
-<div th:replace="fragments/css" :: css></div>
+<link rel="stylesheet" href="/CSS/bootstrap.css">
+<link rel="stylesheet" href="/CSS/style.css">
 
 </head>
 <body>
 
-  <div th:replace="fragments/components :: navbar"></div>
+	<div th:replace="fragments/components :: navbar"></div>
 
-	<section id="fh5co-home" data-section="home"
-		style="background-image: url(../../images/index-background.jpg);"
+	<section id="fh5co-home" data-section="home" style="background-image: url(../../images/index-background.jpg);"
 		data-stellar-background-ratio="0.5">
 		<div class="gradient"></div>
 		<div class="container">
@@ -39,10 +32,10 @@
 								<br>
 								<span class="medium">Enjoy.</span>
 							</h1>
-<!-- 							<h2 class="animate-box"> -->
-<!-- 								Crafted with love by -->
-<!-- 								<a href="http://freehtml5.co/" target="_blank" title="Free HTML5 Bootstrap Templates" class="fh5co-link">FREEHTML5.co</a> -->
-<!-- 							</h2> -->
+							<!-- 							<h2 class="animate-box"> -->
+							<!-- 								Crafted with love by -->
+							<!-- 								<a href="http://freehtml5.co/" target="_blank" title="Free HTML5 Bootstrap Templates" class="fh5co-link">FREEHTML5.co</a> -->
+							<!-- 							</h2> -->
 							<div class="call-to-action">
 								<a href="#" class="demo animate-box">
 									<i class="icon-search"></i>
@@ -61,18 +54,20 @@
 	</section>
 
 
-<!-- 	<div> -->
-<!-- 		<div th:insert="fragments/components :: header"></div> -->
-<!-- 	</div> -->
-<!-- 	<div> -->
-<!-- 		<div th:insert="fragments/components :: menu"></div> -->
-<!-- 	</div> -->
-<!-- 	<div> -->
-<!-- 		<a th:href="@{/login}">Login</a> -->
-<!-- 	</div> -->
+	<!-- 	<div> -->
+	<!-- 		<div th:insert="fragments/components :: header"></div> -->
+	<!-- 	</div> -->
+	<!-- 	<div> -->
+	<!-- 		<div th:insert="fragments/components :: menu"></div> -->
+	<!-- 	</div> -->
+	<!-- 	<div> -->
+	<!-- 		<a th:href="@{/login}">Login</a> -->
+	<!-- 	</div> -->
 
-<div th:insert="fragments/components :: footer"></div>
-<div th:replace="fragments/jQuery :: jQuery"></div>
+	<div th:insert="fragments/components :: footer"></div>
+	
+	<script src="/JS/bootstrap.min.js"></script>
+	
 
 </body>
 </html>

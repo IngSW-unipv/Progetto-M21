@@ -3,78 +3,81 @@
 <head>
 <meta charset="UTF-8">
 <title>view Orders</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
-<link rel="stylesheet" href="./style.css">
 
+<link rel="stylesheet" href="/CSS/bootstrap.css">
+<link rel="stylesheet" href="/CSS/style.css">
 </head>
 <body>
-	<div class="container">
-		<div class="col-md-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">Orders</div>
-				<div class="panel-body">
-					<table class="table table-condensed table-striped">
-					
-						<thead>
-							<tr>
-								<th></th>
-								<th>Order ID</th>
-								<th>Tracking Code</th>
-								<th>Pickup Code</th>
-								<th>Locker Name</th>
-								<th>Locker address</th>
-								<th>Status</th>
-								<th sec:authorize="hasAnyAuthority('CUSTOMER')">Withdraw</th>
-								<th sec:authorize="hasAnyAuthority('COURIER')">Deliver</th>
-							</tr>
-						</thead>
+	<div th:replace="fragments/components :: navbar"></div>
+	<section id="fh5co-home" data-section="home">
+		<div class="container">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Orders</div>
+					<div class="panel-body">
+						<table class="table table-condensed table-striped">
 
-						<tbody>
-							<th:block th:each="order : ${listOrders}">
+							<thead>
 								<tr>
-									<td>
-										<button class="btn btn-default btn-xs" data-toggle="collapse" th:data-target="|#demo${order.orderDetailsId}|">
-											<span class="glyphicon glyphicon-eye-open"></span>
-										</button>
-									</td>
-
-									<td th:text="${order.orderDetailsId}">Order ID</td>
-									<td th:text="${order.trackingCode}">Tracking Code</td>
-									<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
-									<td th:text="${order.locker.name}">Locker Name</td>
-									<td th:text="${order.locker.lockerAddress.city}">Locker address</td>
-									<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
-
-									<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
-									<td th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}">
-
-										<span th:case="'DELIVERED'">
-											<a sec:authorize="hasAnyAuthority('CUSTOMER')" th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
-										</span>
-
-										<span th:case="'DELIVERING'">
-											<a sec:authorize="hasAnyAuthority('COURIER')" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
-										</span>
-
-										<div th:case="*"></div>
-									</td>
-
+									<th></th>
+									<th>Order ID</th>
+									<th>Tracking Code</th>
+									<th>Pickup Code</th>
+									<th>Locker Name</th>
+									<th>Locker address</th>
+									<th>Status</th>
+									<th sec:authorize="hasAnyAuthority('CUSTOMER')">Withdraw</th>
+									<th sec:authorize="hasAnyAuthority('COURIER')">Deliver</th>
 								</tr>
+							</thead>
 
-								<tr>
-									<td colspan="7" style="padding: 0 !important;">
-										<div th:replace="fragments/product :: products"></div>
-									</td>
-							</th:block>
-						</tbody>
+							<tbody>
+								<th:block th:each="order : ${listOrders}">
+									<tr>
+										<td>
+											<button class="btn btn-default btn-xs" data-toggle="collapse" th:data-target="|#demo${order.orderDetailsId}|">
+												<span class="glyphicon glyphicon-eye-open"></span>
+											</button>
+										</td>
 
-					</table>
+										<td th:text="${order.orderDetailsId}">Order ID</td>
+										<td th:text="${order.trackingCode}">Tracking Code</td>
+										<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
+										<td th:text="${order.locker.name}">Locker Name</td>
+										<td th:text="${order.locker.lockerAddress.city}">Locker address</td>
+										<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
+
+										<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
+										<td th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}">
+
+											<span th:case="'DELIVERED'">
+												<a sec:authorize="hasAnyAuthority('CUSTOMER')" th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
+											</span>
+
+											<span th:case="'DELIVERING'">
+												<a sec:authorize="hasAnyAuthority('COURIER')" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
+											</span>
+
+											<div th:case="*"></div>
+										</td>
+
+									</tr>
+
+									<tr>
+										<td colspan="7" style="padding: 0 !important;">
+											<div th:replace="fragments/product :: products"></div>
+										</td>
+								</th:block>
+							</tbody>
+
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
-	<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+	</section>
+	<div th:insert="fragments/components :: footer"></div>
+	<script src="/JS/jquery.min.js"></script>
+	<script src="/JS/bootstrap.min.js"></script>
 </body>
 </html>

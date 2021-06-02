@@ -3,13 +3,13 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Online Delivery Services @Progetto-M21</title>
-<div th:replace="fragments/css" :: css></div>
+<link rel="stylesheet" href="/CSS/bootstrap.css">
+<link rel="stylesheet" href="/CSS/style.css">
 </head>
 <body>
 	<div th:replace="fragments/components :: navbar"></div>
 
-	<section id="fh5co-home" data-section="home"
-		style="background-image: url(../../images/profile-background.jpg);"
+	<section id="fh5co-home" data-section="home" style="background-image: url(../../images/profile-background.jpg);"
 		data-stellar-background-ratio="0.5">
 		<div class="gradient"></div>
 		<div class="container">
@@ -22,21 +22,23 @@
 								<br>
 								<span class="medium" sec:authentication="name">Username</span>
 								<br>
-								<i><span class="medium" sec:authentication="principal.authorities">Roles</span></i>
+								<i>
+									<span class="medium" sec:authentication="principal.authorities">Roles</span>
+								</i>
 								<br>
-									<div sec:authorize="hasAnyAuthority('CUSTOMER')">
-										<h2>Add order to profile</h2>
-										<form th:action="@{/add}" method="get">
-											<input type="text" th:name="tracking" th:placeholder="Tracking" style="color: black;"/>
-											<button type="submit">Add</button>
-										</form>
-										<a th:href="@{/viewCustomerOrders}">Your orders</a>
-									</div>
-		
-									<div sec:authorize="hasAnyAuthority('COURIER')">
-										<h2>Check your orders</h2>
-										<a th:href="@{/viewCourierOrders}">Your orders</a>
-									</div>
+								<div sec:authorize="hasAnyAuthority('CUSTOMER')">
+									<h2>Add order to profile</h2>
+									<form th:action="@{/add}" method="get">
+										<input type="text" th:name="tracking" th:placeholder="Tracking" style="color: black;" />
+										<button type="submit">Add</button>
+									</form>
+									<a th:href="@{/viewCustomerOrders}">Your orders</a>
+								</div>
+
+								<div sec:authorize="hasAnyAuthority('COURIER')">
+									<h2>Check your orders</h2>
+									<a th:href="@{/viewCourierOrders}">Your orders</a>
+								</div>
 							</h1>
 						</div>
 					</div>
@@ -45,9 +47,9 @@
 		</div>
 	</section>
 
-	
+
 	<div th:insert="fragments/components :: footer"></div>
-	<div th:replace="fragments/jQuery :: jQuery"></div>
+	<script src="/JS/bootstrap.min.js"></script>
 
 </body>
 </html>
