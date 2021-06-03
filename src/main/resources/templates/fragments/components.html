@@ -9,11 +9,11 @@
 			<div class="container">
 				<div class="row">
 					<nav class="navbar navbar-default navbar-fixed-top">
+					
 						<div class="navbar-header">
 							<!-- Mobile Toggle Menu Button -->
 							<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle" data-toggle="collapse" data-target="#navbar"
 								aria-expanded="false" aria-controls="navbar">
-								<i></i>
 							</a>
 							<a class="navbar-brand" href="/">ONLINE LOCKER SERVICE</a>
 						</div>
@@ -24,31 +24,18 @@
 									<span>Home</span>
 								</a>
 							</li>
-
 							<li sec:authorize="isAuthenticated()">
-
 								<a th:href="@{/logout}">
 									<span>Logout </span>
 								</a>
-
-							</li>
-
-
+							</li>	
 						</ul>
-
+						
 					</nav>
 				</div>
 			</div>
 		</header>
 	</div>
-
-	<!--     <nav th:fragment="menu"> -->
-	<!--         <a th:href="@{/}">Home</a> -->
-	<!--         <a th:href="@{/about}">2</a> -->
-	<!--         <a th:href="@{/blog}">3</a> -->
-	<!--         <a th:href="@{/contact}">4</a> -->
-	<!--     </nav> -->
-
 	<footer th:fragment="footer">
 		<br>
 		<p>&copy; Progetto-M21 @Ingegneria del Software, Università degli Studi di Pavia</p>

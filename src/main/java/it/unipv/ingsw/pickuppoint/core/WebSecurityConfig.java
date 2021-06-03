@@ -9,7 +9,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import it.unipv.ingsw.pickuppoint.service.MyUserDetailsService;
 
@@ -49,13 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests()
 //				.antMatchers("/").hasAnyAuthority("ADMINISTRATOR", "CUSTOMER", "COURIER")
 				.antMatchers("/", "/register/**", "/CSS/**", "/JS/**", "/images/**", "/fonts/**").permitAll()
-				.antMatchers("/").permitAll().anyRequest().authenticated().and()
-				
-				.formLogin()
-					.loginPage("/login")
-					.permitAll().defaultSuccessUrl("/profile")
-
-				.and().logout().permitAll().and().csrf().disable()
-				.exceptionHandling().accessDeniedPage("/403");
+				.anyRequest().authenticated().and()
+				.formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/profile")
+				.and().logout().permitAll().and().csrf().disable().exceptionHandling().accessDeniedPage("/403");
 	}
 }
