@@ -50,7 +50,6 @@ public class UserController {
 	public String viewHomePage() {
 		return "profile";
 	}
-	
 
 	/**
 	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
@@ -97,6 +96,4 @@ public class UserController {
 		}
 		return "redirect:" + "/"; // Ritorna alla schermata di login
 	}
-	
-
 }

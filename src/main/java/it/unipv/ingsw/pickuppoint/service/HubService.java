@@ -6,7 +6,6 @@ import java.time.format.DateTimeFormatter;
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import it.unipv.ingsw.pickuppoint.model.DeliveryStatus;
@@ -20,6 +19,8 @@ public class HubService {
 	OrderDetailsService orderDetailsService;
 	@Autowired
 	EntityManager entityManager;
+	@Autowired
+	UserService userService;
 	
 	public String getCurrentDataTime() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -43,15 +44,13 @@ public class HubService {
 	}
 
 	public void addOrder(int tracking) {
-		OrderDetails order = orderDetailsService.findByTrackingCode(tracking);
+		OrderDetails orderDetails = orderDetailsService.findByTrackingCode(tracking);
 
-		User user = ((UserAuthorization) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-				.getUser();
-
+		User customer = userService.getAuthenticatedUser();
 		Long orderCustomerId = null;
 
 		try {
-			orderCustomerId = order.getCustomer().getUserId();
+			orderCustomerId = orderDetails.getCustomer().getUserId();
 		} catch (NullPointerException e) {
 
 		}
@@ -59,15 +58,8 @@ public class HubService {
 			System.out.println("ORDINE GIà AGGIUNTO");
 
 		} else {
-			/**
-			 * Attraverso getReference recuperiamo l'entità di interesse tramite chiave
-			 * primaria: utile quando si ha la neccessità di aggiunger/modificare una chiave
-			 * esterna
-			 */
-			User customer = entityManager.getReference(User.class, user.getUserId());
-
-			order.setCustomer(customer);
-			entityManager.persist(order);
+			orderDetails.setCustomer(customer);
+			orderDetailsService.assignOrder(orderDetails);
 		}
 	}
 }

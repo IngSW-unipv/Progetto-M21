@@ -1,7 +1,5 @@
 package it.unipv.ingsw.pickuppoint.controller;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,8 +33,6 @@ public class CustomerController {
 	@RequestMapping("/viewCustomerOrders")
 	public String viewCustomerOrders(Model model) {
 		User user = userService.getAuthenticatedUser();
-
-		// dovrebbe essere user.getOrder
 		model.addAttribute("listOrders", orderDetailsService.getCustomerOrders(user.getUserId()));
 		return "viewOrders";
 	}
@@ -51,7 +47,6 @@ public class CustomerController {
 	 * @param tracking code dell'ordine
 	 * @return reindirizzamento alla pagina html della vista degli ordini
 	 */
-	@Transactional
 	@RequestMapping(value = "/add")
 	public String addOrder(@RequestParam(name = "tracking") int tracking) {
 		hubService.addOrder(tracking);

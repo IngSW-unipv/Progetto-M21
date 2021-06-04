@@ -24,8 +24,8 @@ public class UserService {
 	BCryptPasswordEncoder passwordEncoder;
 	
 	
-	public List<User> getUserByRole(String name) {
-		return userRepo.findByRole_name(name);
+	public List<User> getAllCouriers() {
+		return userRepo.findByRole_name("COURIER");
 	}
 
 	/**

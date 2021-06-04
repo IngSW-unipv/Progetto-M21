@@ -6,6 +6,7 @@
 
 <link rel="stylesheet" href="/CSS/bootstrap.css">
 <link rel="stylesheet" href="/CSS/style.css">
+<script src="/JS/notification.js" type="text/javascript"></script>
 
 </head>
 <body>
@@ -16,124 +17,131 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">Orders</div>
 					<div class="panel-body">
+						<div class="wrapper">
 
-						<!-- TABELLA PRINCIPALE -->
-						<table class="table table-condensed table-striped">
+							<!-- TABELLA PRINCIPALE -->
+							<table class="table table-condensed table-striped">
 
-							<!--  INTESTAZIONE TABELLA PRINCIPALE: 8 colonne -->
-							<thead>
-								<tr>
-									<th></th>
-									<th>Order ID</th>
-									<th>Tracking Code</th>
-									<th>Pickup Code</th>
-									<th>Locker Name</th>
-									<th>Locker address</th>
-									<th>Status</th>
-									<th sec:authorize="hasAnyAuthority('CUSTOMER')">Withdraw</th>
-									<th sec:authorize="hasAnyAuthority('COURIER')">Deliver</th>
-								</tr>
-							</thead>
-							<!--  INTESTAZIONE TABELLA PRINCIPALE: 8 colonne -->
-
-
-							<!--  CORPO TABELLA PRINCIPALE -->
-							<tbody>
-
-								<!-- PER OGNI ORDINE -->
-								<th:block th:each="order : ${listOrders}">
-
-									<!--#1 7 COLONNE + BOTTONE -->
+								<!--  INTESTAZIONE TABELLA PRINCIPALE: 8 colonne -->
+								<thead>
 									<tr>
-										<td>
-											<button class="btn btn-default btn-xs" data-toggle="collapse" th:data-target="|#demo${order.orderDetailsId}|">
-												<span class="glyphicon glyphicon-eye-open"></span>
-											</button>
-										</td>
-
-										<td th:text="${order.orderDetailsId}">Order ID</td>
-										<td th:text="${order.trackingCode}">Tracking Code</td>
-										<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
-										<td th:text="${order.locker.name}">Locker Name</td>
-										<td th:text="${order.locker.lockerAddress.city}">Locker address</td>
-										<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
-
-										<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
-										<td th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}">
-											<span th:case="'DELIVERED'">
-												<a style="color: green !important;" sec:authorize="hasAnyAuthority('CUSTOMER')"
-													th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
-											</span>
-
-											<span th:case="'DELIVERING'">
-												<a style="color: green !important;" sec:authorize="hasAnyAuthority('COURIER')"
-													th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
-											</span>
-
-											<div th:case="*"></div>
-										</td>
+										<th></th>
+										<th>Order ID</th>
+										<th>Tracking Code</th>
+										<th>Pickup Code</th>
+										<th>Locker Name</th>
+										<th>Locker address</th>
+										<th>Status</th>
+										<th sec:authorize="hasAnyAuthority('CUSTOMER')">Withdraw</th>
+										<th sec:authorize="hasAnyAuthority('COURIER')">Deliver</th>
 									</tr>
+								</thead>
+								<!--  INTESTAZIONE TABELLA PRINCIPALE: 8 colonne -->
 
-									<!--#2 TABELLA SECONDARIA: 3 colonne -->
-									<tr>
-										<td colspan="8" style="padding: 0 !important;">
 
-											<div th:id="|demo${order.orderDetailsId}|" class="accordian-body accordion-toggle collapse">
-												<table class="table table-striped">
-													<thead>
-														<tr class="info">
-															<th>Delivery Date</th>
-															<th>Data Deliverd</th>
-															<th>Withdrawal Date</th>
-														</tr>
-													</thead>
+								<!--  CORPO TABELLA PRINCIPALE -->
+								<tbody>
 
-													<tbody>
+									<!-- PER OGNI ORDINE -->
+									<th:block th:each="order : ${listOrders}">
 
-														<tr>
-															<td th:text="${order.deliveryDetails.deliveryDate} ?: 'null'"></td>
-															<td th:text="${order.deliveryDetails.dataDeliverd} ?: 'null'"></td>
-															<td th:text="${order.deliveryDetails.withdrawalDate} ?: 'null'"></td>
-														</tr>
+										<!--#1 7 COLONNE + BOTTONE -->
+										<tr>
+											<td>
+												<button class="btn btn-default btn-xs" data-toggle="collapse"
+													th:data-target="|#demo${order.orderDetailsId}|">
+													<span class="glyphicon glyphicon-eye-open"></span>
+												</button>
+											</td>
 
-														<!--  SOTTO-TABELLA SECONDARIA -->
-													<thead>
-														<tr class="info">
-															<td>Height</td>
-															<td>Length</td>
-															<td>Weight</td>
-															<td>Width</td>
-														</tr>
-													</thead>
+											<td th:text="${order.orderDetailsId}">Order ID</td>
+											<td th:text="${order.trackingCode}">Tracking Code</td>
+											<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
+											<td th:text="${order.locker.name} ?: ''">Locker Name</td>
+											<td th:text="${order.locker.lockerAddress.city} ?: ''">Locker address</td>
+											<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
 
-													<tbody>
-														<tr th:each="product : ${order.products}">
-															<td th:text="${product.height} ?: 'null'"></td>
-															<td th:text="${product.length} ?: 'null'"></td>
-															<td th:text="${product.weight} ?: 'null'"></td>
-															<td th:text="${product.width} ?: 'null'"></td>
-														</tr>
+											<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
+											<td th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}">
+											
+												<span th:case="'DELIVERED'">
+													<a style="color: green !important;" sec:authorize="hasAnyAuthority('CUSTOMER')"
+														th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
+												</span>
 
-													</tbody>
-												</table>
-											</div>
-										</td>
-									</tr>
-								</th:block>
+												<span th:case="'DELIVERING'">
+													<a style="color: green !important;" sec:authorize="hasAnyAuthority('COURIER')"
+														th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
+												</span>
 
-							</tbody>
-							<!--  CORPO TABELLA PRINCIPALE -->
+												<div th:case="*"></div>
+											</td>
+										</tr>
 
-						</table>
-						<!-- TABELLA PRINCIPALE -->
+										<!--#2 TABELLA SECONDARIA: 3 colonne -->
+										<tr>
+											<td colspan="8" style="padding: 0 !important;">
 
+												<div th:id="|demo${order.orderDetailsId}|" class="accordian-body accordion-toggle collapse">
+													<table class="table table-striped">
+														<thead>
+															<tr class="info">
+																<th>Delivery Date</th>
+																<th>Data Deliverd</th>
+																<th>Withdrawal Date</th>
+															</tr>
+														</thead>
+
+														<tbody>
+
+															<tr>
+																<td th:text="${order.deliveryDetails.deliveryDate} ?: 'null'"></td>
+																<td th:text="${order.deliveryDetails.dataDeliverd} ?: 'null'"></td>
+																<td th:text="${order.deliveryDetails.withdrawalDate} ?: 'null'"></td>
+															</tr>
+
+															<!--  SOTTO-TABELLA SECONDARIA -->
+														<thead sec:authorize="hasAnyAuthority('CUSTOMER')">
+															<tr class="info">
+																<td>Height</td>
+																<td>Length</td>
+																<td>Weight</td>
+																<td>Width</td>
+															</tr>
+														</thead>
+
+														<tbody sec:authorize="hasAnyAuthority('CUSTOMER')">
+															<tr th:each="product : ${order.products}">
+																<td th:text="${product.height} ?: 'null'"></td>
+																<td th:text="${product.length} ?: 'null'"></td>
+																<td th:text="${product.weight} ?: 'null'"></td>
+																<td th:text="${product.width} ?: 'null'"></td>
+															</tr>
+														</tbody>
+
+													</table>
+												</div>
+											</td>
+										</tr>
+									</th:block>
+
+								</tbody>
+								<!--  CORPO TABELLA PRINCIPALE -->
+
+							</table>
+							<!-- TABELLA PRINCIPALE -->
+
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 	<div th:insert="fragments/components :: footer"></div>
+
 	<script src="/JS/jquery.min.js"></script>
 	<script src="/JS/bootstrap.min.js"></script>
+
+
 </body>
 </html>
