@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<meta charset="UTF-8">
+<!--  Refresh pagina ogni 20 secondi  -->
+<meta charset="UTF-8" http-equiv="refresh" content="20">
 <title>view Orders</title>
 
 <link rel="stylesheet" href="/CSS/bootstrap.css">
@@ -63,15 +64,31 @@
 
 											<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
 											<td th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}">
-											
-												<span th:case="'DELIVERED'">
-													<a style="color: green !important;" sec:authorize="hasAnyAuthority('CUSTOMER')"
-														th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
+
+												<span th:case="'DELIVERED'" sec:authorize="hasAnyAuthority('CUSTOMER')">
+													<a style="color: green !important;" th:href="@{'/withdraw/' + ${order.orderDetailsId}}">Withdraw</a>
+
+													<!--  NOTIFICA CUSTOMER  -->
+													<script th:inline="javascript">
+														var orderId = /*[[${order.orderDetailsId}]]*/'';
+														var role = /*[[${#authentication.getPrincipal().getUser().getRole().getName()}]]*/'';
+														notify(orderId, role);
+													</script>
+
 												</span>
 
-												<span th:case="'DELIVERING'">
-													<a style="color: green !important;" sec:authorize="hasAnyAuthority('COURIER')"
-														th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
+												<span th:case="'DELIVERING'" sec:authorize="hasAnyAuthority('COURIER')">
+													<a style="color: green !important;" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
+												</span>
+
+												<span th:case="'WITHDRAWN'" sec:authorize="hasAnyAuthority('COURIER')">
+												
+													<!--  NOTIFICA COURIER  -->
+													<script th:inline="javascript">
+														var orderId = /*[[${order.orderDetailsId}]]*/'';
+														var role = /*[[${#authentication.getPrincipal().getUser().getRole().getName()}]]*/'';
+														notify(orderId, role);
+													</script>
 												</span>
 
 												<div th:case="*"></div>
