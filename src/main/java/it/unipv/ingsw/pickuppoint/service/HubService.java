@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import it.unipv.ingsw.pickuppoint.model.DeliveryStatus;
 import it.unipv.ingsw.pickuppoint.model.User;
+import it.unipv.ingsw.pickuppoint.model.entity.Locker;
 import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
 
 @Service
@@ -21,6 +22,8 @@ public class HubService {
 	EntityManager entityManager;
 	@Autowired
 	UserService userService;
+	@Autowired
+	LockerService lockerService;
 	
 	public String getCurrentDataTime() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -32,6 +35,7 @@ public class HubService {
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERED);
 		orderDetails.getDeliveryDetails().setDataDeliverd(getCurrentDataTime());
+		lockerService.setSlotDeliver(orderDetails);
 		orderDetailsService.save(orderDetails);
 
 	}
@@ -55,7 +59,7 @@ public class HubService {
 
 		}
 		if (orderCustomerId != null) {
-			System.out.println("ORDINE GIà AGGIUNTO");
+			System.out.println("ORDINE GIA' AGGIUNTO");
 
 		} else {
 			orderDetails.setCustomer(customer);
