@@ -32,7 +32,6 @@ public class CourierController {
 	@RequestMapping("/viewCourierOrders")
 	public String viewCourierOrder(Model model) {
 		User user = userService.getAuthenticatedUser();
-		// dovrebbe essere user.getOrder
 		model.addAttribute("listOrders", orderDetailsService.getCourierOrders(user.getUserId()));
 		return "viewOrders";
 	}
@@ -42,5 +41,4 @@ public class CourierController {
 		hubService.deliver(id);
 		return "redirect:" + "/viewCourierOrders";
 	}
-
 }
