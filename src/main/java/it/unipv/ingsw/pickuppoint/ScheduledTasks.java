@@ -24,6 +24,7 @@ public class ScheduledTasks {
 
 	// Coda di ordini da assegnare
 	Deque<OrderDetails> ordersDetailsToAsign = new ArrayDeque<>();
+
 	@Autowired
 	UserService userService;
 	@Autowired
@@ -36,7 +37,7 @@ public class ScheduledTasks {
 	 * vengono inseriti dentro una Deque
 	 */
 
-	@Scheduled(cron = "0 */3 * ? * *")
+	@Scheduled(cron = "0 */1 * ? * *")
 	private void checkPendingOrders() {
 		System.out.println("INIZIO ASSEGNAMENTO");
 
@@ -44,8 +45,10 @@ public class ScheduledTasks {
 		List<OrderDetails> ordersDetails = orderDetailsService.getAllHubOrders();
 
 		// Per ogni ordine push ordine in ordersDetailsToAsign
+		// BUG: gli ordini vengono inseriti in coda anche se già presenti
 		for (OrderDetails orderDetails : ordersDetails) {
-			ordersDetailsToAsign.push(orderDetails);
+			ordersDetailsToAsign.add(orderDetails);
+			System.out.println("### Ordine " + orderDetails.getOrderDetailsId() + " inserito in coda ###");
 		}
 		checkFreeCourier();
 	}
@@ -75,8 +78,17 @@ public class ScheduledTasks {
 			/**
 			 * Se la lista è satura o non ci sono ordini da assegnare
 			 */
-			else if (delivering == MAX || ordersDetailsToAsign.size() == 0) {
-				System.out.println("NIENTE DA ASSEGNARE");
+//			else if (delivering == MAX || ordersDetailsToAsign.size() == 0) {
+//				System.out.println(
+//						"NIENTE DA ASSEGNARE: nessun ordine in coda || raggiunto numero massimo ordini per corriere "
+//								+"( " +MAX + " )");
+//			}
+
+			else if (delivering == MAX) {
+				System.out.println("### NIENTE DA ASSEGNARE: raggiunto MAX ordini per corriere " + "[" + MAX + "] ###");
+			} else if (ordersDetailsToAsign.size() == 0) {
+				System.out.println("### NIENTE DA ASSEGNARE: nessun ordine in coda ###");
+
 			}
 		}
 	}
@@ -92,10 +104,13 @@ public class ScheduledTasks {
 		User courier = entityManager.getReference(User.class, courierId);
 
 		for (int i = 0; i < toAssign; i++) {
-			OrderDetails orderDetails = ordersDetailsToAsign.pop();
+			OrderDetails orderDetails = ordersDetailsToAsign.poll();
 			orderDetails.setCourier(courier);
 			orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERING);
 			orderDetailsService.assignOrder(orderDetails);
+
+			System.out.println("--- Ordine " + orderDetails.getOrderDetailsId() + " assegnato al corrier "
+					+ courier.getEmail() + " ---");
 		}
 	}
 }
