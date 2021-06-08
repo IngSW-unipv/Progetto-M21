@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import it.unipv.ingsw.pickuppoint.model.DeliveryStatus;
 import it.unipv.ingsw.pickuppoint.model.User;
-import it.unipv.ingsw.pickuppoint.model.entity.Locker;
 import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
+import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 
 @Service
 public class HubService {
@@ -22,9 +22,12 @@ public class HubService {
 	EntityManager entityManager;
 	@Autowired
 	UserService userService;
+
 	@Autowired
 	LockerService lockerService;
 	
+
+
 	public String getCurrentDataTime() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
 		LocalDateTime now = LocalDateTime.now();
@@ -40,10 +43,17 @@ public class HubService {
 
 	}
 
-	public void withdraw(Long id) {
-		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
+	public void withdraw(String pickupCode) throws ErrorPickupCode {
+		OrderDetails orderDetails = null;
+
+		orderDetails = orderDetailsService.getOrderByPickupCode(pickupCode);
+		if (orderDetails == null) {
+			throw new ErrorPickupCode("Wrong pickup code, please try again");
+		}
+
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.WITHDRAWN);
 		orderDetails.getDeliveryDetails().setWithdrawalDate(getCurrentDataTime());
+		// rimuovere dallo slot
 		orderDetailsService.save(orderDetails);
 	}
 

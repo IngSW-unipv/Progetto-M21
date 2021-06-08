@@ -3,14 +3,15 @@ package it.unipv.ingsw.pickuppoint.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
+import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 
 @Controller
 public class CustomerController {
@@ -20,7 +21,6 @@ public class CustomerController {
 	OrderDetailsService orderDetailsService;
 	@Autowired
 	HubService hubService;
-
 
 	/**
 	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
@@ -36,7 +36,6 @@ public class CustomerController {
 		model.addAttribute("listOrders", orderDetailsService.getCustomerOrders(user.getUserId()));
 		return "viewOrders";
 	}
-	
 
 	/**
 	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
@@ -52,10 +51,9 @@ public class CustomerController {
 		hubService.addOrder(tracking);
 		return "redirect:" + "/viewCustomerOrders";
 	}
-	
 
 	/**
-	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
+	 * Questo metodo viene invocato quando il client effettua una richiesta POST a
 	 * /withdraw/{id}; Permette al Customer di ritirare l'ordine; Viene settato
 	 * DeliveryStatus = WITHDRAW e WithdrawalDate
 	 * 
@@ -63,10 +61,18 @@ public class CustomerController {
 	 * @return reindirizzamento alla pagina per il recupero e la visualizzazione
 	 *         degli ordini del Customer attraverso una richesta GET da parte del
 	 *         client
+	 * 
 	 */
-	@RequestMapping("/withdraw/{id}")
-	public String showEditProductForm(@PathVariable(name = "id") Long id) {
-		hubService.withdraw(id);
+	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
+	public String showEditProductForm(@RequestParam(name = "pickupCode") String pickupCode, Model model) throws ErrorPickupCode {
+		try {
+			hubService.withdraw(pickupCode);
+		} catch (ErrorPickupCode e) {
+			User user = userService.getAuthenticatedUser();
+			model.addAttribute("error", e.getMessage());
+			model.addAttribute("listOrders",orderDetailsService.getCustomerOrders(user.getUserId()));
+			return "/viewOrders";
+		}
 		return "redirect:" + "/viewCustomerOrders";
 	}
 }
