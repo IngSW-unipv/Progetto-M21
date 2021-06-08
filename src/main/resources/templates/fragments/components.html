@@ -2,43 +2,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+
+<head></head>
 <body>
 
-	<div th:fragment="navbar">
-		<header role="banner" id="fh5co-header">
-			<div class="container">
-				<div class="row">
-					<nav class="navbar navbar-default navbar-fixed-top">
-					
-						<div class="navbar-header">
-							<!-- Mobile Toggle Menu Button -->
-							<a href="#" class="js-fh5co-nav-toggle fh5co-nav-toggle" data-toggle="collapse" data-target="#navbar"
-								aria-expanded="false" aria-controls="navbar">
-							</a>
-							<a class="navbar-brand" href="/">ONLINE LOCKER SERVICE</a>
-						</div>
+	<!-- ############ NAVBAR ############ -->
+	<header class="masthead mb-auto" th:fragment="navbar">
+		<div class="inner">
+			<h3 class="masthead-brand">Online locker services</h3>
+			<nav class="nav nav-masthead justify-content-center">
+				<a class="nav-link active" href="/">Home</a>
+				<a class="nav-link" href="#">About</a>
+				<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/profile}">Profile</a>
+				<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
 
-						<ul class="nav navbar-nav navbar-right">
-							<li class="active">
-								<a href="/">
-									<span>Home</span>
-								</a>
-							</li>
-							<li sec:authorize="isAuthenticated()">
-								<a th:href="@{/logout}">
-									<span>Logout </span>
-								</a>
-							</li>	
-						</ul>
-						
-					</nav>
-				</div>
-			</div>
-		</header>
-	</div>
-	<footer th:fragment="footer">
-		<br>
-		<p>&copy; Progetto-M21 @Ingegneria del Software, Università degli Studi di Pavia</p>
+			</nav>
+		</div>
+	</header>
+
+	<!-- ############  FOOTER ############ -->
+	<footer class="mastfoot mt-auto" th:fragment="footer">
+		<div class="inner">
+			<p>&copy; Progetto-M21 @Ingegneria del Software, Università degli Studi di Pavia</p>
+		</div>
 	</footer>
+
 </body>
 </html>
