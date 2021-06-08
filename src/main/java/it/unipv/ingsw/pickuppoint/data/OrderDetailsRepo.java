@@ -17,4 +17,5 @@ public interface OrderDetailsRepo extends JpaRepository<OrderDetails, Long> {
 	OrderDetails findByTrackingCode(int trackingCode);
 	Optional<OrderDetails> findById(Long id);	
 	List <OrderDetails> findByDeliveryDetails_deliveryStatus(DeliveryStatus deliveryStatus);
+	OrderDetails findByPickupCode(String pickupCode);
 }

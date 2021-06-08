@@ -72,4 +72,8 @@ public class OrderDetailsService {
 	public void assignOrder(OrderDetails orderDetails) {
 		orderDetailsRepo.save(orderDetails);
 	}
+	
+	public OrderDetails getOrderByPickupCode(String pickupCode) {
+		return orderDetailsRepo.findByPickupCode(pickupCode);
+	}
 }
