@@ -54,9 +54,9 @@ public class LockerService {
 			@Override
 			public int compare(Slot o1, Slot o2) {
 				if(o1.getHeight() > o2.getHeight()) {
-					return -1;
-				} else if (o1.getHeight() < o2.getHeight()) {
 					return 1;
+				} else if (o1.getHeight() < o2.getHeight()) {
+					return -1;
 				} else {
 					return 0;
 				}
@@ -67,16 +67,21 @@ public class LockerService {
 		
 		for(Product product : products) {
 			
+			boolean check = false;
+			
 			for(int i = 0; i < slotList.size(); i++) {
 			
-				if((slotList.get(i).isEmpty())&&(slotList.get(i).getHeight() > product.getHeight())) {
+				if((slotList.get(i).isEmpty())&&(slotList.get(i).getHeight() >= product.getHeight())) {
 					slotList.get(i).setEmpty(false);
-					slotList.get(i).setProduct(orderDetails.getProducts().get(0));
+					slotList.get(i).setProduct(product);
 					i = slotList.size();
 					
+					check = true;	
 				}
 			
 			}
+			
+			if (check == false) System.out.println("IMPOSSIBILE CONSEGNARE");
 			
 		}
 		

@@ -3,9 +3,9 @@ package it.unipv.ingsw.pickuppoint.model;
 public enum SlotSize {
 	BIG(50, 50, 50, "BIG"), MEDIUM(20, 20, 20, "MEDIUM"), SMALL(10, 10, 10, "SMALL");
 
-	private int length;
-	private int width;
-	private int height;
+	private double length;
+	private double width;
+	private double height;
 
 	SlotSize(int length, int width, int height, String size) {
 		this.length = length;
@@ -13,15 +13,15 @@ public enum SlotSize {
 		this.height = height;
 	}
 
-	public int getLength() {
+	public double getLength() {
 		return length;
 	}
 
-	public int getWidth() {
+	public double getWidth() {
 		return width;
 	}
 
-	public int getHeight() {
+	public double getHeight() {
 		return height;
 	}
 

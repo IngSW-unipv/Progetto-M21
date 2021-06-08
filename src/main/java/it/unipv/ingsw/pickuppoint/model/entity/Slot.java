@@ -26,9 +26,9 @@ public class Slot {
 	@GeneratedValue
 	private Long slotId;
 
-	private int height;
-	private int width;
-	private int length;
+	private double height;
+	private double width;
+	private double length;
 
 	/**
 	 * I valore booleani sono definiti come tipo tinyint, JPA li identifica come
@@ -71,27 +71,27 @@ public class Slot {
 		this.slotId = slotId;
 	}
 
-	public int getHeight() {
+	public double getHeight() {
 		return height;
 	}
 
-	public void setHeight(int height) {
+	public void setHeight(double height) {
 		this.height = height;
 	}
 
-	public int getWidth() {
+	public double getWidth() {
 		return width;
 	}
 
-	public void setWidth(int width) {
+	public void setWidth(double width) {
 		this.width = width;
 	}
 
-	public int getLength() {
+	public double getLength() {
 		return length;
 	}
 
-	public void setLength(int length) {
+	public void setLength(double length) {
 		this.length = length;
 	}
 
