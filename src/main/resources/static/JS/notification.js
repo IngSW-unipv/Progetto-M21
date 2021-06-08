@@ -1,3 +1,7 @@
+var arrayCourier = [];
+var arrayCustomer = [];
+
+
 function notify(orderId, role) {
 	if (Notification.permiss == 'granted') {
 		roleNotification();
@@ -6,7 +10,6 @@ function notify(orderId, role) {
 			if (permission == "granted") {
 				roleNotification(orderId, role);
 			}
-
 		});
 	}
 }
@@ -21,18 +24,67 @@ function roleNotification(orderId, role) {
 }
 
 function customerNotification(orderId) {
-	new Notification("Notifica consegna", {
-		body: "ordine " + orderId + " CONSEGNATO",
-		icon: "https://cdn.iconscout.com/icon/premium/png-256-thumb/delivered-1681114-1427946.png"
-	});
+	var orders = getCookie('customer');
 
+	if (orders.isEmpty) {
+		createCookie('customer', arrayCustomer);
+	}
+
+	if (!orders.includes(orderId)) {
+		new Notification("Notifica consegna avvenuta", {
+			body: "ordine " + orderId + " CONSEGNATO",
+			icon: "https://cdn.iconscout.com/icon/premium/png-256-thumb/delivered-1681114-1427946.png"
+		});
+		arrayCustomer.push(orderId);
+		createCookie('customer', arrayCustomer);
+	}
 }
 
 function courierNotification(orderId) {
-	new Notification("Notifica ritiro", {
-		body: "ordine " + orderId + " RITIRATO",
-		icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Light_green_check.svg/480px-Light_green_check.svg.png"
-	});
+	var orders = getCookie('courier');
+
+	if (orders.isEmpty) {
+		createCookie('courier', arrayCourier);
+	}
+
+	if (!orders.includes(orderId)) {
+		new Notification("Notifica ritiro avvenuto", {
+			body: "ordine " + orderId + " RITIRATO",
+			icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Light_green_check.svg/480px-Light_green_check.svg.png"
+		});
+		arrayCourier.push(orderId);
+		createCookie('courier', arrayCourier);
+	}
 }
 
+function createCookie(name, value) {
+
+	var cookie = [
+		name,
+		'=',
+		JSON.stringify(value)
+
+	].join('');
+	document.cookie = cookie;
+
+}
+
+function getCookie(name) {
+	var a = [];
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ')
+			c = c.substring(1, c.length);
+			
+		if (c.indexOf(nameEQ) === 0) {
+			return JSON.parse(
+				c.substring(nameEQ.length, c.length)
+			);
+		}
+	}
+	return a;
+}
 
