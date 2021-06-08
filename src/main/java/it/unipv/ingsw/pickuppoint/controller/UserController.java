@@ -8,15 +8,24 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import it.unipv.ingsw.pickuppoint.model.User;
+import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
+import it.unipv.ingsw.pickuppoint.service.HubService;
+import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
 import it.unipv.ingsw.pickuppoint.service.exception.CustomerAlreadyExistException;
+import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 
 @Controller
 public class UserController {
 	@Autowired
 	UserService userService;
+	@Autowired
+	OrderDetailsService orderDetailsService;
+	@Autowired
+	HubService hubService;
 
 	/**
 	 * Questo metodo viene invocato quando il client effettua una richiesta GET alla
@@ -47,14 +56,21 @@ public class UserController {
 	 * @return pagina html profilo
 	 */
 	@RequestMapping("/profile")
-	public String viewHomePage() {
+	public String viewHomePage(Model model) {
+		User user = userService.getAuthenticatedUser();
+
+		if (user.getRole().getName().equals("COURIER")) {
+			model.addAttribute("listOrders", orderDetailsService.getCourierOrders(user.getUserId()));
+		} else if (user.getRole().getName().equals("CUSTOMER")) {
+			model.addAttribute("listOrders", orderDetailsService.getCustomerOrders(user.getUserId()));
+		}
+
 		return "profile";
 	}
 
 	/**
 	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
-	 * /register.
-	 * Viene istanziato un nuovo customer, viene aggiunto al modello che
+	 * /register. Viene istanziato un nuovo customer, viene aggiunto al modello che
 	 * a sua volta viene inoltrato al client per essere manipolato.
 	 * 
 	 * @param model è un contenitore di attributi che viene inoltrato al client per
@@ -79,7 +95,7 @@ public class UserController {
 	 *                      inoltrare la stessa istanza (ed evitare di crearne
 	 *                      un'altra) alla pagina di registrazione
 	 * @return In caso di errori ritorna la pagina di registrazione, altrimenti
-	 *         ritorna un reindirizzamento alla pagina root 
+	 *         ritorna un reindirizzamento alla pagina root
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String userRegistration(@Valid User customer, BindingResult bindingResult, Model model) {
@@ -95,5 +111,18 @@ public class UserController {
 			return "registration";
 		}
 		return "redirect:" + "/"; // Ritorna alla schermata di login
+	}
+	
+	@RequestMapping(value = "/pickup", method = RequestMethod.POST)
+	public String showEditProductForm(@RequestParam(name = "pickupCode") String pickupCode, Model model) throws ErrorPickupCode {
+		try {
+			hubService.withdraw(pickupCode);
+		} catch (ErrorPickupCode e) {
+			model.addAttribute("error", e.getMessage());
+			return "/index";
+		}
+		
+		model.addAttribute("ok", "Ritirato con successo");
+		return "/";
 	}
 }
