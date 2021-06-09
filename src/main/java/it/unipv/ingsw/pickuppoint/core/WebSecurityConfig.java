@@ -50,13 +50,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //				.antMatchers("/").hasAnyAuthority("ADMINISTRATOR", "CUSTOMER", "COURIER")
 				.antMatchers("/", "/register/**", "/CSS/**", "/JS/**", "/images/**", "/fonts/**").permitAll()
 				.anyRequest().authenticated()
-				
-				.and()
-				.formLogin()
-				.loginPage("/login")
-				.permitAll()
-				.defaultSuccessUrl("/profile")
-				.failureUrl("/login?error=true")
-				.and().logout().permitAll().and().csrf().disable().exceptionHandling().accessDeniedPage("/403");
+
+				.and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/profile")
+				.failureUrl("/login?error=true").and().logout().permitAll().logoutSuccessUrl("/").and()
+				.csrf().disable().exceptionHandling().accessDeniedPage("/403");
 	}
 }

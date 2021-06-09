@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.unipv.ingsw.pickuppoint.model.User;
-import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
 import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
@@ -40,32 +39,28 @@ public class UserController {
 
 	/**
 	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
-	 * /login
-	 * 
-	 * @return pagina di login
-	 */
-	@RequestMapping("/login")
-	public String login() {
-		return "login";
-	}
-
-	/**
-	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
 	 * /profile, subito dopo il login
 	 * 
 	 * @return pagina html profilo
 	 */
 	@RequestMapping("/profile")
 	public String viewHomePage(Model model) {
-		User user = userService.getAuthenticatedUser();
-
-		if (user.getRole().getName().equals("COURIER")) {
-			model.addAttribute("listOrders", orderDetailsService.getCourierOrders(user.getUserId()));
-		} else if (user.getRole().getName().equals("CUSTOMER")) {
-			model.addAttribute("listOrders", orderDetailsService.getCustomerOrders(user.getUserId()));
-		}
-
+		userService.addListOrders(model);
 		return "profile";
+	}
+	
+	/**
+	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
+	 * /viewCustomerOrders. Recupera e visualizza gli ordini del Customer.
+	 * 
+	 * @param model è un contenitore di attributi che viene inoltrato al client per
+	 *              essere visualizzato o manipolato
+	 * @return la pagina html della vista degli ordini
+	 */
+	@RequestMapping("/Orders")
+	public String viewCustomerOrders(Model model) {
+		userService.addListOrders(model);
+		return "viewOrders";
 	}
 
 	/**
@@ -121,7 +116,6 @@ public class UserController {
 			model.addAttribute("error", e.getMessage());
 			return "/index";
 		}
-		
 		model.addAttribute("ok", "Ritirato con successo");
 		return "/";
 	}

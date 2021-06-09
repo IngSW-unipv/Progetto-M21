@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import it.unipv.ingsw.pickuppoint.data.RoleRepo;
 import it.unipv.ingsw.pickuppoint.data.UserRepo;
@@ -20,10 +21,10 @@ public class UserService {
 	@Autowired
 	RoleRepo roleRepo;
 	@Autowired
+	OrderDetailsService orderDetailsService;
 
 	BCryptPasswordEncoder passwordEncoder;
-	
-	
+
 	public List<User> getAllCouriers() {
 		return userRepo.findByRole_name("COURIER");
 	}
@@ -34,7 +35,7 @@ public class UserService {
 	public User getAuthenticatedUser() {
 		return ((UserAuthorization) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
 	}
-	
+
 	/**
 	 * Questo metodo effettua la registrazione del Customer
 	 * 
@@ -96,6 +97,14 @@ public class UserService {
 		}
 		return false;
 	}
+
+	public void addListOrders(Model model) {
+		User user = getAuthenticatedUser();
+		if (user.getRole().getName().equals("COURIER")) {
+			model.addAttribute("listOrders", orderDetailsService.getCourierOrders(user.getUserId()));
+		} else if (user.getRole().getName().equals("CUSTOMER")) {
+			model.addAttribute("listOrders", orderDetailsService.getCustomerOrders(user.getUserId()));
+		}
+
+	}
 }
-	
-	

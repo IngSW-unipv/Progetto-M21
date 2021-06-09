@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
+import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
 
 @Controller
 public class CustomerController {
@@ -24,21 +24,6 @@ public class CustomerController {
 
 	/**
 	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
-	 * /viewCustomerOrders. Recupera e visualizza gli ordini del Customer.
-	 * 
-	 * @param model è un contenitore di attributi che viene inoltrato al client per
-	 *              essere visualizzato o manipolato
-	 * @return la pagina html della vista degli ordini
-	 */
-	@RequestMapping("/viewCustomerOrders")
-	public String viewCustomerOrders(Model model) {
-		User user = userService.getAuthenticatedUser();
-		model.addAttribute("listOrders", orderDetailsService.getCustomerOrders(user.getUserId()));
-		return "viewOrders";
-	}
-
-	/**
-	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
 	 * /add. Aggiunge un prodotto nella lista dei prodotti del Customer tramite
 	 * inserimento del tracking code; Viene aggiunto il riferimento di chiave
 	 * esterna (CustomerID) all'interno dell'entità genitore OrderDetails
@@ -47,9 +32,15 @@ public class CustomerController {
 	 * @return reindirizzamento alla pagina html della vista degli ordini
 	 */
 	@RequestMapping(value = "/add")
-	public String addOrder(@RequestParam(name = "tracking") int tracking) {
-		hubService.addOrder(tracking);
-		return "redirect:" + "/viewCustomerOrders";
+	public String addOrder(@RequestParam(name = "tracking") int tracking, Model model) {
+		try {
+			hubService.addOrder(tracking);
+		} catch (ErrorTrackingCode e) {
+			userService.addListOrders(model);
+			model.addAttribute("error", e.getMessage());
+			return "/profile";
+		}
+		return "redirect:" + "/Orders";
 	}
 
 	/**
@@ -64,15 +55,15 @@ public class CustomerController {
 	 * 
 	 */
 	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
-	public String showEditProductForm(@RequestParam(name = "pickupCode") String pickupCode, Model model) throws ErrorPickupCode {
+	public String showEditProductForm(@RequestParam(name = "pickupCode") String pickupCode, Model model)
+			throws ErrorPickupCode {
 		try {
 			hubService.withdraw(pickupCode);
 		} catch (ErrorPickupCode e) {
-			User user = userService.getAuthenticatedUser();
+			userService.addListOrders(model);
 			model.addAttribute("error", e.getMessage());
-			model.addAttribute("listOrders",orderDetailsService.getCustomerOrders(user.getUserId()));
 			return "/viewOrders";
 		}
-		return "redirect:" + "/viewCustomerOrders";
+		return "redirect:" + "/Orders";
 	}
 }

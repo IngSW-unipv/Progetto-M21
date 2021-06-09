@@ -45,7 +45,7 @@ public class LockerService {
 			
 		});
 		
-		System.out.println(products.toString());
+		System.out.println("#"+products.toString());
 		
 		List<Slot> slotList = slotRepo.findByLockerId(locker.getLockerId());
 		

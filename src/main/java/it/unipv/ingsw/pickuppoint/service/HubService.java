@@ -12,6 +12,7 @@ import it.unipv.ingsw.pickuppoint.model.DeliveryStatus;
 import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
+import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
 
 @Service
 public class HubService {
@@ -25,8 +26,6 @@ public class HubService {
 
 	@Autowired
 	LockerService lockerService;
-	
-
 
 	public String getCurrentDataTime() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
@@ -40,16 +39,14 @@ public class HubService {
 		orderDetails.getDeliveryDetails().setDataDeliverd(getCurrentDataTime());
 		lockerService.setSlotDeliver(orderDetails);
 		orderDetailsService.save(orderDetails);
-
 	}
 
 	public void withdraw(String pickupCode) throws ErrorPickupCode {
 		OrderDetails orderDetails = null;
-
 		orderDetails = orderDetailsService.getOrderByPickupCode(pickupCode);
-		if (orderDetails == null) {
+		
+		if (orderDetails == null) 
 			throw new ErrorPickupCode("Wrong pickup code, please try again");
-		}
 
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.WITHDRAWN);
 		orderDetails.getDeliveryDetails().setWithdrawalDate(getCurrentDataTime());
@@ -57,23 +54,15 @@ public class HubService {
 		orderDetailsService.save(orderDetails);
 	}
 
-	public void addOrder(int tracking) {
-		OrderDetails orderDetails = orderDetailsService.findByTrackingCode(tracking);
-
+	public void addOrder(int tracking) throws ErrorTrackingCode {
+		OrderDetails orderDetails = null;
+		orderDetails = orderDetailsService.findByTrackingCode(tracking);
+		
+		if (orderDetails == null) 
+			throw new ErrorTrackingCode("Wrong tracking code, please try again");
+		
 		User customer = userService.getAuthenticatedUser();
-		Long orderCustomerId = null;
-
-		try {
-			orderCustomerId = orderDetails.getCustomer().getUserId();
-		} catch (NullPointerException e) {
-
-		}
-		if (orderCustomerId != null) {
-			System.out.println("ORDINE GIA' AGGIUNTO");
-
-		} else {
-			orderDetails.setCustomer(customer);
-			orderDetailsService.assignOrder(orderDetails);
-		}
+		orderDetails.setCustomer(customer);
+		orderDetailsService.assignOrder(orderDetails);
 	}
 }
