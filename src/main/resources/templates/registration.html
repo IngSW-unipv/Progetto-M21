@@ -30,38 +30,35 @@
 		<!-- PRINCIPALE -->
 		<main role="main" class="inner cover">
 
-
-
+			<h2>Register</h2>
+			<br>
 			<form action="#" class="form-signin" th:action="@{/register}" th:object="${user}" method="post">
+			
 				<div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
 					<p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
 				</div>
 
 				<div class="form-group">
-					<label for="exampleInputPassword1">Email</label>
 					<input type="text" class="form-control" th:field="*{email}" placeholder="Email" th:errorclass="is-invalid"
-						required="required" autofocus="autofocus" />
+						required="required" autofocus="autofocus" aria-describedby="emailHelp"/>
 				</div>
 
 				<div class="form-group">
-					<label for="exampleInputPassword1">First name</label>
 					<input type="text" class="form-control" th:field="*{firstName}" placeholder="First name" th:errorclass="is-invalid"
 						required="required" autofocus="autofocus">
 				</div>
 
 				<div class="form-group">
-					<label for="exampleInputPassword1">Last name</label>
 					<input type="text" class="form-control" th:field="*{lastName}" placeholder="Last name" th:errorclass="is-invalid"
 						required="required" autofocus="autofocus">
 				</div>
 
 				<div class="form-group">
-					<label for="exampleInputPassword1">Password</label>
 					<input type="password" class="form-control" th:field="*{password}" placeholder="Password"
 						th:errorclass="is-invalid" required="required" autofocus="autofocus">
 				</div>
 
-				<button type="submit">Save</button>
+				<button type="submit" class="btn btn-primary btn-lg btn-block">Sign up</button>
 			</form>
 
 

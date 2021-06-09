@@ -1,5 +1,6 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -30,15 +31,48 @@
 		<!-- ############  MAIN ############ -->
 		<main role="main" class="inner cover">
 
-			<h1 class="cover-heading">Welcome</h1>
-			<a th:href="@{/login}" class="btn btn-lg btn-secondary">Login</a>
-			<a th:href="@{/register}" class="btn btn-lg btn-secondary">Register</a>
-			<form action="#" method="POST">
-			<h1>Pick Up a Package</h1>
-				<input type="text">
-				<button>Pick up</button>
+			<!--  
+			Gestione pickup code errato
+			<div th:if="${error}" class="alert alert-danger">
+				<p th:text="${error}"></p>
+			</div>
+			 -->
+
+
+			<h2>Login</h2>
+			<br>
+			<form action="#" th:action="@{/login}" method='POST'>
+				<div class="form-group">
+					<input type="email" class="form-control" aria-describedby="emailHelp" name="username" placeholder="Email Address"
+						required="required" autofocus="autofocus">
+				</div>
+
+				<div class="form-group">
+					<input type="password" class="form-control" placeholder="Password" name="password" required="required"
+						autofocus="autofocus">
+				</div>
+
+				<button type="submit" class="btn btn-primary btn-lg btn-block">Log In</button>
 			</form>
 
+			<a role="button" class="btn btn-success btn-lg" th:href="@{/register}" style="margin-top: 20px;"> Create New
+				Account </a>
+
+			<!-- 
+			<h2 style="padding-top: 2em;">Pickup a Package</h2>
+
+			<br>
+			<form action="#" method="POST">
+				<div class="row">
+					<div class="col">
+						<input type="text" class="form-control" placeholder="Pickup code">
+					</div>
+					<div class="col">
+						<button class="btn btn-light" style="margin-left: 20px !important;">Pickup</button>
+					</div>
+				</div>
+			</form>
+-->
 
 		</main>
 

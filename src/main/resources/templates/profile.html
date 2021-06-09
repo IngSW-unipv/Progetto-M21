@@ -3,8 +3,8 @@
 <head>
 
 <!--  Refresh pagina ogni 30 secondi  -->
-<meta charset="UTF-8" http-equiv="refresh" content="30">
-
+<!--   <meta charset="UTF-8" http-equiv="refresh" content="30"> -->
+<meta charset="UTF-8">
 <title>Online Delivery Services @Progetto-M21</title>
 
 <link rel="icon" href="/images/favicons/favicon.ico">
@@ -27,6 +27,14 @@
 
 		<!--  PRINCIPALE -->
 		<main role="main" class="inner cover">
+
+
+			<!--  Gestione Tracking code errato -->
+			<div th:if="${error}" class="alert alert-danger">
+				<p th:text="${error}"></p>
+			</div>
+
+
 
 			<th:block th:each="order : ${listOrders}">
 				<td th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}">
@@ -57,30 +65,58 @@
 				</td>
 			</th:block>
 
+			<div class="text-left">
+				<ul class="list-inline">
+					<li class="list-inline-item" style="font-weight: bold;">First Name:</li>
+					<li class="list-inline-item" th:text="${#authentication.getPrincipal().getUser().getFirstName()}">First Name</li>
+				</ul>
+
+				<ul class="list-inline">
+					<li class="list-inline-item" style="font-weight: bold;">Last Name:</li>
+					<li class="list-inline-item" th:text="${#authentication.getPrincipal().getUser().getLastName()}">Last Name</li>
+				</ul>
+
+				<ul class="list-inline">
+					<li class="list-inline-item" style="font-weight: bold;">Email:</li>
+					<li class="list-inline-item" sec:authentication="name">Username</li>
+				</ul>
+
+				<ul class="list-inline">
+					<li class="list-inline-item" style="font-weight: bold;">Registration date:</li>
+					<li class="list-inline-item">-------</li>
+					<!--  					<li class="list-inline-item" th:text="${#authentication.getPrincipal().getUser().getRegistrationDate()}">Date</li>
+					 -->
+				</ul>
+
+				<ul class="list-inline">
+					<li class="list-inline-item" style="font-weight: bold;">User type:</li>
+					<li class="list-inline-item" sec:authentication="principal.authorities">Roles</li>
+				</ul>
+
+				<a th:href="@{/Orders}" class="btn btn-success" role="button" aria-pressed="true">Your orders</a>
 
 
-			<span>Welcome</span>
-			<br>
-			<span sec:authentication="name">Username</span>
-			<br>
-			<i>
-				<span sec:authentication="principal.authorities">Roles</span>
-			</i>
-			<br>
-			<div sec:authorize="hasAnyAuthority('CUSTOMER')">
-				<h2>Add order to profile</h2>
-				<form th:action="@{/add}" method="get">
-					<input type="text" th:name="tracking" th:placeholder="Tracking" style="color: black;" />
-					<button type="submit">Add</button>
-				</form>
+				<div sec:authorize="hasAnyAuthority('CUSTOMER')" style="margin-top: 5em;">
 
-				<a th:href="@{/viewCustomerOrders}">Your orders</a>
+					<h2>Add order to profile</h2>
+
+					<form th:action="@{/add}" method="get">
+						<div class="form-group">
+							<input type="text" th:name="tracking" th:placeholder="Tracking" class="form-control" required="required"
+								autofocus="autofocus" />
+						</div>
+						<button type="submit" class="btn btn-primary btn-lg btn-block" aria-pressed="true">Add</button>
+					</form>
+
+				</div>
+
+
 			</div>
 
-			<div sec:authorize="hasAnyAuthority('COURIER')">
-				<h2>Check your orders</h2>
-				<a th:href="@{/viewCourierOrders}">Your orders</a>
-			</div>
+
+
+
+
 		</main>
 
 		<!--  FOOTER -->
