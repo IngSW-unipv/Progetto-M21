@@ -54,9 +54,8 @@ public class CustomerController {
 	 *         client
 	 * 
 	 */
-	@RequestMapping(value = "/withdraw", method = RequestMethod.POST)
-	public String showEditProductForm(@RequestParam(name = "pickupCode") String pickupCode, Model model)
-			throws ErrorPickupCode {
+	@RequestMapping(value = "/withdraw")
+	public String showEditProductForm(@RequestParam(name = "pickupCode") String pickupCode, Model model) {
 		try {
 			hubService.withdraw(pickupCode);
 		} catch (ErrorPickupCode e) {
