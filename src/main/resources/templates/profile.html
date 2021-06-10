@@ -3,8 +3,8 @@
 <head>
 
 <!--  Refresh pagina ogni 30 secondi  -->
-<!--   <meta charset="UTF-8" http-equiv="refresh" content="30"> -->
-<meta charset="UTF-8">
+<meta charset="UTF-8" http-equiv="refresh" content="30">
+
 <title>Online Delivery Services @Progetto-M21</title>
 
 <link rel="icon" href="/images/favicons/favicon.ico">
@@ -47,9 +47,7 @@
 
 						<script th:inline="javascript">
 							var orderId = /*[[${order.orderDetailsId}]]*/'';
-							var role = /*[[${#authentication.getPrincipal().getUser().getRole().getName()}]]*/'';
-
-							//notify(orderId, role);
+							customerNotification(orderId);
 						</script>
 
 					</span>
@@ -59,8 +57,7 @@
 					<span th:case="'WITHDRAWN'" sec:authorize="hasAnyAuthority('COURIER')">
 						<script th:inline="javascript">
 							var orderId = /*[[${order.orderDetailsId}]]*/'';
-							var role = /*[[${#authentication.getPrincipal().getUser().getRole().getName()}]]*/'';
-							//notify(orderId, role);
+							courierNotification(orderId);
 						</script>
 					</span>
 
@@ -114,9 +111,6 @@
 
 
 			</div>
-
-
-
 
 
 		</main>

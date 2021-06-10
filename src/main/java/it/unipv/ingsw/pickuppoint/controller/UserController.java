@@ -108,15 +108,18 @@ public class UserController {
 		return "redirect:" + "/"; // Ritorna alla schermata di login
 	}
 	
+	
+	// Opzionale, ritiro senza account
 	@RequestMapping(value = "/pickup", method = RequestMethod.POST)
 	public String showEditProductForm(@RequestParam(name = "pickupCode") String pickupCode, Model model) throws ErrorPickupCode {
 		try {
 			hubService.withdraw(pickupCode);
 		} catch (ErrorPickupCode e) {
+			System.out.println(e.getMessage());
 			model.addAttribute("error", e.getMessage());
 			return "/index";
 		}
-		model.addAttribute("ok", "Ritirato con successo");
+		model.addAttribute("error", "Ritirato con successo");
 		return "/";
 	}
 }

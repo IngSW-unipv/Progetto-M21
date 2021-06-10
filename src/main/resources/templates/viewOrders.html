@@ -4,8 +4,7 @@
 
 <head>
 <!--  Refresh pagina ogni 30 secondi  -->
-<!-- <meta charset="UTF-8" http-equiv="refresh" content="30"> -->
-<meta charset="UTF-8">
+<meta charset="UTF-8" http-equiv="refresh" content="30">
 
 <title>View Orders</title>
 
@@ -98,7 +97,7 @@
 												<input type="text" th:name="pickupCode" name="pickupCode" placeholder="Pickup code" class="form-control">
 											</div>
 											<div class="col">
-												<button type="button" class="btn btn-outline-light">Pickup</button>
+												<button type="submit" class="btn btn-outline-light">Pickup</button>
 											</div>
 										</div>
 									</form>
@@ -107,9 +106,7 @@
 									<!--  NOTIFICA CUSTOMER  -->
 									<script th:inline="javascript">
 										var orderId = /*[[${order.orderDetailsId}]]*/'';
-										var role = /*[[${#authentication.getPrincipal().getUser().getRole().getName()}]]*/'';
-
-										notify(orderId, role);
+										customerNotification(orderId);
 									</script>
 
 								</th:logic>
@@ -123,9 +120,7 @@
 									<!--  NOTIFICA COURIER  -->
 									<script th:inline="javascript">
 										var orderId = /*[[${order.orderDetailsId}]]*/'';
-										var role = /*[[${#authentication.getPrincipal().getUser().getRole().getName()}]]*/'';
-
-										notify(orderId, role);
+										courierNotification(orderId);
 									</script>
 								</span>
 
