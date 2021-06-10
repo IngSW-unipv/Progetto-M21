@@ -13,6 +13,7 @@
 
 <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/cover/cover.css">
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
 <script src="/JS/notification.js" type="text/javascript"></script>
 
@@ -22,7 +23,7 @@
 
 
 
-	<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+	<div class="cover-container d-flex h-100 p-3 mx-auto flex-column" style="max-width: 74em;">
 
 		<!-- ############ NAVBAR ############ -->
 		<header th:replace="fragments/components:: navbar"></header>
@@ -37,7 +38,7 @@
 			</div>
 
 			<!-- TABELLA PRINCIPALE -->
-			<table class="table table-dark">
+			<table class="table table-dark" style="margin-top: 3em;">
 
 				<!--  INTESTAZIONE TABELLA PRINCIPALE: 8 colonne -->
 				<thead style="background: #3d414a;">
@@ -47,7 +48,7 @@
 						<th>Tracking Code</th>
 						<th>Pickup Code</th>
 						<th>Locker Name</th>
-						<th>Locker address</th>
+						<th>Locker Address</th>
 						<th>Status</th>
 						<th sec:authorize="hasAnyAuthority('CUSTOMER')">Withdraw</th>
 						<th sec:authorize="hasAnyAuthority('COURIER')">Deliver</th>
@@ -66,7 +67,7 @@
 						<tr>
 							<td>
 
-								<button type="button" data-toggle="collapse" data-target="#demo1" class="btn btn-outline-light collapsed"
+								<button type="button" data-toggle="collapse" class="btn btn-outline-light"
 									th:data-target="|#demo${order.orderDetailsId}|">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye"
 										viewBox="0 0 16 16">
@@ -92,13 +93,14 @@
 
 
 									<form action="#" th:action="@{/withdraw}" method="POST">
-
-										<input type="text" th:name="pickupCode" name="pickupCode" placeholder="Pickup code" class="form-control">
-
-
-										<!--  <button type="button" class="btn btn-outline-light">Pickup</button> -->
-
-										
+										<div class="form-row">
+											<div class="col">
+												<input type="text" th:name="pickupCode" name="pickupCode" placeholder="Pickup code" class="form-control">
+											</div>
+											<div class="col">
+												<button type="button" class="btn btn-outline-light">Pickup</button>
+											</div>
+										</div>
 									</form>
 
 
@@ -106,6 +108,7 @@
 									<script th:inline="javascript">
 										var orderId = /*[[${order.orderDetailsId}]]*/'';
 										var role = /*[[${#authentication.getPrincipal().getUser().getRole().getName()}]]*/'';
+
 										notify(orderId, role);
 									</script>
 
@@ -121,6 +124,7 @@
 									<script th:inline="javascript">
 										var orderId = /*[[${order.orderDetailsId}]]*/'';
 										var role = /*[[${#authentication.getPrincipal().getUser().getRole().getName()}]]*/'';
+
 										notify(orderId, role);
 									</script>
 								</span>
@@ -131,12 +135,13 @@
 
 						<!--#2 TABELLA SECONDARIA: 3 colonne -->
 						<tr th:id="|demo${order.orderDetailsId}|" class="collapse">
-							<td colspan="7">
+							<td colspan="8">
 
 
 								<table class="table-dark" style="margin-left: 11%;">
 									<thead style="background: #3d414a;">
 										<tr class="info">
+											<th>View Products</th>
 											<th>Delivery Date</th>
 											<th>Data Deliverd</th>
 											<th>Withdrawal Date</th>
@@ -146,14 +151,61 @@
 									<tbody>
 
 										<tr>
+											<td>
+												<button type="button" data-toggle="collapse" class="btn btn-outline-danger collapsed"
+													th:data-target="|#demo2${order}|">
+													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-view-list"
+														viewBox="0 0 16 16">
+  <path
+															d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H3zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2zm0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14z" />
+</svg>
+
+												</button>
+											</td>
 											<td th:text="${order.deliveryDetails.deliveryDate} ?: 'null'"></td>
 											<td th:text="${order.deliveryDetails.dataDeliverd} ?: 'null'"></td>
 											<td th:text="${order.deliveryDetails.withdrawalDate} ?: 'null'"></td>
+										</tr>
+
+
+										<!--  Era qui  -->
+
+
+
+
+									</tbody>
+								</table>
+							</td>
+						</tr>
+
+
+						<!--  Da inserire qui  -->
+						<tr th:id="|demo2${order}|" class="collapse">
+							<td colspan="8">
+								<table class="table-dark" style="margin-left: 11%;">
+									<thead style="background: #3d414a;">
+										<tr class="info">
+											<th>ProductId</th>
+											<th>Size</th>
+											<th>Slot</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr th:each="product : ${order.products}">
+											<td th:text="${product.productId} ?: 'null'"></td>
+											<td>------</td>
+											<td>xyz</td>
+											<!--  <td th:text="${product.size} ?: 'null'"></td> -->
+											<!--  <td th:text="${product.slot} ?: 'null'"></td> -->
 										</tr>
 									</tbody>
 								</table>
 							</td>
 						</tr>
+
+
+
 					</th:block>
 				</tbody>
 			</table>
