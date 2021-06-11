@@ -1,14 +1,13 @@
 package it.unipv.ingsw.pickuppoint.controller;
 
+import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.unipv.ingsw.pickuppoint.service.HubService;
-import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
@@ -17,8 +16,6 @@ import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
 public class CustomerController {
 	@Autowired
 	UserService userService;
-	@Autowired
-	OrderDetailsService orderDetailsService;
 	@Autowired
 	HubService hubService;
 
@@ -32,7 +29,8 @@ public class CustomerController {
 	 * @return reindirizzamento alla pagina html della vista degli ordini
 	 */
 	@RequestMapping(value = "/add")
-	public String addOrder(@RequestParam(name = "tracking") int tracking, Model model) {
+	public String addOrder(@RequestParam(name = "tracking") @NotBlank int tracking, Model model) {
+
 		try {
 			hubService.addOrder(tracking);
 		} catch (ErrorTrackingCode e) {
@@ -55,7 +53,8 @@ public class CustomerController {
 	 * 
 	 */
 	@RequestMapping(value = "/withdraw")
-	public String showEditProductForm(@RequestParam(name = "pickupCode") String pickupCode, Model model) {
+	public String showEditProductForm(@RequestParam(name = "pickupCode") @NotBlank String pickupCode, Model model) {
+
 		try {
 			hubService.withdraw(pickupCode);
 		} catch (ErrorPickupCode e) {
