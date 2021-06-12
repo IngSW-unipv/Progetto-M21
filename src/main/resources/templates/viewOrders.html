@@ -52,6 +52,7 @@
 						<th sec:authorize="hasAnyAuthority('CUSTOMER')">Withdraw</th>
 						<th sec:authorize="hasAnyAuthority('COURIER')">Deliver</th>
 						<th sec:authorize="hasAnyAuthority('ADMINISTRATOR')">Courier ID</th>
+						<th sec:authorize="hasAnyAuthority('ADMINISTRATOR')">Customer ID</th>
 					</tr>
 				</thead>
 				<!--  INTESTAZIONE TABELLA PRINCIPALE: 8 colonne -->
@@ -127,8 +128,10 @@
 								</th:logic>
 						
 							<!-- COLONNA COURIER ASSIGNED PER ADMINISTRATOR -->
-
 								<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')" th:text="${order.courier.userId} ?: 'null'"></td>
+								
+							<!-- COLONNA CUSTOMER ASSIGNED PER ADMINISTRATOR -->
+								<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')" th:text="${order.customer != null} ? ${order.customer.userId}">Null</td>
 									
 							</td>
 							
