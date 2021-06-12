@@ -51,7 +51,7 @@
 						<th>Status</th>
 						<th sec:authorize="hasAnyAuthority('CUSTOMER')">Withdraw</th>
 						<th sec:authorize="hasAnyAuthority('COURIER')">Deliver</th>
-						<th sec:authorize="hasAnyAuthority('ADMINISTRATOR')">Status</th>
+						<th sec:authorize="hasAnyAuthority('ADMINISTRATOR')">Courier ID</th>
 					</tr>
 				</thead>
 				<!--  INTESTAZIONE TABELLA PRINCIPALE: 8 colonne -->
@@ -87,7 +87,7 @@
 							<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
 
 							<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
-							<td th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}" style="width: 256px;">
+							<td sec:authorize="hasAnyAuthority('COURIER', 'CUSTOMER')" th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}" style="width: 256px;">
 
 							<!--  CASO CUSTOMER -->
 								<th:logic th:case="'DELIVERED'" sec:authorize="hasAnyAuthority('CUSTOMER')">
@@ -125,9 +125,13 @@
 										courierNotification(orderId);
 									</script>
 								</th:logic>
+						
+							<!-- COLONNA COURIER ASSIGNED PER ADMINISTRATOR -->
 
-								<div th:case="*"></div>
+								<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')" th:text="${order.courier.userId} ?: 'null'"></td>
+									
 							</td>
+							
 						</tr>
 
 						<!--#2 TABELLA SECONDARIA: 3 colonne -->
