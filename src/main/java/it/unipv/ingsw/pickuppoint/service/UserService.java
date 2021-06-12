@@ -104,6 +104,8 @@ public class UserService {
 			model.addAttribute("listOrders", orderDetailsService.getCourierOrders(user.getUserId()));
 		} else if (user.getRole().getName().equals("CUSTOMER")) {
 			model.addAttribute("listOrders", orderDetailsService.getCustomerOrders(user.getUserId()));
+		} else if (user.getRole().getName().equals("ADMINISTRATOR")) {
+			model.addAttribute("listOrders", orderDetailsService.getAllOrderDetails());
 		}
 
 	}

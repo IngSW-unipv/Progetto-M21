@@ -35,9 +35,9 @@ public class LockerService {
 			@Override
 			public int compare(Product o1, Product o2) {
 				if(o1.getHeight() > o2.getHeight()) {
-					return -1;
-				} else if (o1.getHeight() < o2.getHeight()) {
 					return 1;
+				} else if (o1.getHeight() < o2.getHeight()) {
+					return -1;
 				} else {
 					return 0;
 				}
@@ -63,6 +63,13 @@ public class LockerService {
 			}
 			
 		});
+		
+		for(Slot slot : slotList) {
+			
+			System.out.print("#"+slot.getHeight()+"-");
+		}
+		
+
 		
 		
 		for(Product product : products) {

@@ -51,6 +51,7 @@
 						<th>Status</th>
 						<th sec:authorize="hasAnyAuthority('CUSTOMER')">Withdraw</th>
 						<th sec:authorize="hasAnyAuthority('COURIER')">Deliver</th>
+						<th sec:authorize="hasAnyAuthority('ADMINISTRATOR')">Status</th>
 					</tr>
 				</thead>
 				<!--  INTESTAZIONE TABELLA PRINCIPALE: 8 colonne -->
@@ -88,8 +89,8 @@
 							<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
 							<td th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}" style="width: 256px;">
 
+							<!--  CASO CUSTOMER -->
 								<th:logic th:case="'DELIVERED'" sec:authorize="hasAnyAuthority('CUSTOMER')">
-
 
 									<form action="#" th:action="@{/withdraw}" method="get">
 										<div class="form-row">
@@ -110,7 +111,8 @@
 									</script>
 
 								</th:logic>
-
+							
+							<!--  CASO COURIER -->
 								<th:logic th:case="'DELIVERING'" sec:authorize="hasAnyAuthority('COURIER')">
 									<a style="color: green !important;" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
 								</th:logic>

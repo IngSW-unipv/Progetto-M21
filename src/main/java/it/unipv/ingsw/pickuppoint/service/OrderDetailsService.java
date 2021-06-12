@@ -59,6 +59,7 @@ public class OrderDetailsService {
 	public List<OrderDetails> getCourierOrders(Long courierId) {
 		return orderDetailsRepo.findByCourier_userId(courierId);
 	}
+	
 
 	public List<OrderDetails> getAllOrderDetails() {
 		return orderDetailsRepo.findAll();
