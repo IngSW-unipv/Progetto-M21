@@ -58,7 +58,7 @@ public class UserService {
 	 * @param id
 	 * @return Customer
 	 */
-	public User getCustomer(Long id) {
+	public User getUser(Long id) {
 		return userRepo.findByUserId(id);
 	}
 
@@ -113,6 +113,12 @@ public class UserService {
 	public void findAllCouriers(Model model) {
 		
 		model.addAttribute("listCouriers", userRepo.findByRole_name("COURIER"));
+		
+	}
+	
+	public void editUser(Model model, Long id) {
+		
+		model.addAttribute("user", userRepo.findById(id));
 		
 	}
 }
