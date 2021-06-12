@@ -92,7 +92,10 @@
 					<li class="list-inline-item" sec:authentication="principal.authorities">Roles</li>
 				</ul>
 
-				<a th:href="@{/Orders}" class="btn btn-success" role="button" aria-pressed="true">Your orders</a>
+				<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('CUSTOMER', 'COURIER')" class="btn btn-success" role="button" aria-pressed="true">Your orders</a>
+				<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-success" role="button" aria-pressed="true">All orders</a>
+				
+				<a th:href="@{/CourierList}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-success" role="button" aria-pressed="true">Courier List</a>
 
 
 				<div sec:authorize="hasAnyAuthority('CUSTOMER')" style="margin-top: 5em;">

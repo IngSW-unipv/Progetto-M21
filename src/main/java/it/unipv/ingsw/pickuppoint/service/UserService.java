@@ -109,4 +109,10 @@ public class UserService {
 		}
 
 	}
+	
+	public void findAllCouriers(Model model) {
+		
+		model.addAttribute("listCouriers", userRepo.findByRole_name("COURIER"));
+		
+	}
 }
