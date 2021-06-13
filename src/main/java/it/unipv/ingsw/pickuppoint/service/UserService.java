@@ -116,6 +116,12 @@ public class UserService {
 		
 	}
 	
+	public void findAllUsers(Model model) {
+		
+		model.addAttribute("listUsers", userRepo.findAll());
+		
+	}
+	
 	public void editUser(Model model, Long id) {
 		
 		model.addAttribute("user", userRepo.findById(id));

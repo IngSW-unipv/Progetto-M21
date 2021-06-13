@@ -14,16 +14,22 @@ public class AdministratorController {
 	@Autowired
 	UserService userService;
 	
-	@RequestMapping("/CourierList")
+	@RequestMapping("/UserList")
 	public String viewHomePage(Model model) {
-		userService.findAllCouriers(model);
-		return "courierList";
+		userService.findAllUsers(model);
+		return "userList";
 	}
 	
-	@RequestMapping("/editCourier/{id}")
-	public String showEditCourierForm(@PathVariable(name = "id") Long id, Model model) {
+	@RequestMapping("/editUser/{id}")
+	public String showEditUserForm(@PathVariable(name = "id") Long id, Model model) {
 		userService.editUser(model, id);
 		return "redirect:" + "/editUser";
 	}
 
+//	@RequestMapping("/addUser")
+//	public String addUser(Model model) {
+//		//userService.editUser(model);
+//		return "redirect:" + "/editUser";
+//	}
+	
 }

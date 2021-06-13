@@ -42,7 +42,7 @@
 				<!--  INTESTAZIONE TABELLA PRINCIPALE: 7 colonne -->
 				<thead style="background: #3d414a;">
 					<tr>
-						<th>Courier ID</th>
+						<th>User ID</th>
 						<th>Enabled</th>
 						<th>Email</th>
 						<th>First Name</th>
@@ -57,12 +57,12 @@
 				<tbody>
 
 					<!-- PER OGNI ORDINE -->
-					<th:block th:each="user : ${listCouriers}">
+					<th:block th:each="user : ${listUsers}">
 
 						<!--#1 7 COLONNE + BOTTONE -->
 						<tr>
 
-							<td th:text="${user.userId}">Courier ID</td>
+							<td th:text="${user.userId}">User ID</td>
 							<td th:text="${user.isEnabled}">Enabled</td>
 							<td th:text="${user.email} ?: ''">Email</td>
 							<td th:text="${user.firstName} ?: ''">First Name</td>
@@ -70,7 +70,7 @@
 							
 							<td>
 
-							<a style="color: green !important;" th:href="@{'/editCourier/' + ${user.userId}}">Edit</a>
+							<a style="color: green !important;" th:href="@{'/editUser/' + ${user.userId}}">Edit</a>
 
 							</td>
 	
@@ -79,6 +79,7 @@
 						</tr>
 
 					</th:block>
+					<a th:href="@{/addUser}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-success" role="button" aria-pressed="true">Add User</a>
 				</tbody>
 			</table>
 		</main>
