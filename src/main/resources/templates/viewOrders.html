@@ -129,10 +129,10 @@
 								</th:logic>
 						
 							<!-- COLONNA COURIER ASSIGNED PER ADMINISTRATOR -->
-								<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')" th:text="${order.courier.userId} ?: 'null'"></td>
+								<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')" th:text="${order.courier.email} ?: 'null'"></td>
 								
 							<!-- COLONNA CUSTOMER ASSIGNED PER ADMINISTRATOR -->
-								<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')" th:text="${order.customer != null} ? ${order.customer.userId}">Null</td>
+								<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')" th:text="${order.customer != null} ? ${order.customer.email}">Null</td>
 									
 							</td>
 							
