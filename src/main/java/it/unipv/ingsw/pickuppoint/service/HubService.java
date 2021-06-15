@@ -10,7 +10,6 @@ import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
-import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
 
 @Service
 public class HubService {
