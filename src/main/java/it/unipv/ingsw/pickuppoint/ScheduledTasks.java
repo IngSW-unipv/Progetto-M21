@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -24,13 +26,14 @@ public class ScheduledTasks {
 
 	// Coda di ordini da assegnare
 	Deque<OrderDetails> ordersDetailsToAsign = new ArrayDeque<>();
-
 	@Autowired
 	UserService userService;
 	@Autowired
 	OrderDetailsService orderDetailsService;
 	@Autowired
 	EntityManager entityManager;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledTasks.class);
 
 	/**
 	 * Il task viene avviato ogni 10 minuti Gli ordini in attesa di assegnamento
@@ -39,7 +42,7 @@ public class ScheduledTasks {
 
 	@Scheduled(cron = "0 */1 * ? * *")
 	private void checkPendingOrders() {
-		System.out.println("INIZIO ASSEGNAMENTO");
+		LOGGER.trace("INIZIO ASSEGNAMENTO");
 
 		// Tutti gli ordini con status HUB
 		List<OrderDetails> ordersDetails = orderDetailsService.getAllHubOrders();
@@ -48,7 +51,8 @@ public class ScheduledTasks {
 		// BUG: gli ordini vengono inseriti in coda anche se già presenti
 		for (OrderDetails orderDetails : ordersDetails) {
 			ordersDetailsToAsign.add(orderDetails);
-			System.out.println("### Ordine " + orderDetails.getOrderDetailsId() + " inserito in coda ###");
+			LOGGER.debug("### Ordine " + orderDetails.getOrderDetailsId() + " inserito in coda ###");
+			//System.out.println("### Ordine " + orderDetails.getOrderDetailsId() + " inserito in coda ###");
 		}
 		checkFreeCourier();
 	}
@@ -85,9 +89,11 @@ public class ScheduledTasks {
 //			}
 
 			else if (delivering == MAX) {
-				System.out.println("### NIENTE DA ASSEGNARE: raggiunto MAX ordini per corriere " + "[" + MAX + "] ###");
+				LOGGER.debug("### NIENTE DA ASSEGNARE: raggiunto MAX ordini per corriere " + "[" + MAX + "] ###");
+				//System.out.println("### NIENTE DA ASSEGNARE: raggiunto MAX ordini per corriere " + "[" + MAX + "] ###");
 			} else if (ordersDetailsToAsign.size() == 0) {
-				System.out.println("### NIENTE DA ASSEGNARE: nessun ordine in coda ###");
+				LOGGER.debug("### NIENTE DA ASSEGNARE: nessun ordine in coda ###");
+				//System.out.println("### NIENTE DA ASSEGNARE: nessun ordine in coda ###");
 
 			}
 		}
@@ -109,8 +115,10 @@ public class ScheduledTasks {
 			orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERING);
 			orderDetailsService.assignOrder(orderDetails);
 
-			System.out.println("--- Ordine " + orderDetails.getOrderDetailsId() + " assegnato al corrier "
+			LOGGER.info("--- Ordine " + orderDetails.getOrderDetailsId() + " assegnato al corrier "
 					+ courier.getEmail() + " ---");
+			//System.out.println("--- Ordine " + orderDetails.getOrderDetailsId() + " assegnato al corrier "
+				//	+ courier.getEmail() + " ---");
 		}
 	}
 }
