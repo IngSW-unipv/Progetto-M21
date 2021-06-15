@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import it.unipv.ingsw.pickuppoint.model.SlotSize;
+import it.unipv.ingsw.pickuppoint.model.Sizes;
 
 @Entity
 @Table(name = "Slot")
@@ -25,10 +25,6 @@ public class Slot {
 	@Column(name = "slot_id")
 	@GeneratedValue
 	private Long slotId;
-
-	private double height;
-	private double width;
-	private double length;
 
 	/**
 	 * I valore booleani sono definiti come tipo tinyint, JPA li identifica come
@@ -61,7 +57,7 @@ public class Slot {
 	private Product product;
 
 	@Enumerated(EnumType.STRING)
-	private SlotSize size;
+	private Sizes size;
 
 	public Long getSlotId() {
 		return slotId;
@@ -71,28 +67,20 @@ public class Slot {
 		this.slotId = slotId;
 	}
 
-	public double getHeight() {
-		return height;
-	}
-
-	public void setHeight(double height) {
-		this.height = height;
-	}
-
 	public double getWidth() {
-		return width;
-	}
-
-	public void setWidth(double width) {
-		this.width = width;
+		return size.getWidth();
 	}
 
 	public double getLength() {
-		return length;
+		return size.getLength();
 	}
 
-	public void setLength(double length) {
-		this.length = length;
+	public double getHeight() {
+		return size.getHeight();
+	}
+	
+	public double getVolume() {
+		return size.getVolume();
 	}
 
 	public boolean isEmpty() {
@@ -119,11 +107,11 @@ public class Slot {
 		this.product = product;
 	}
 
-	public SlotSize getSize() {
+	public Sizes getSize() {
 		return size;
 	}
 
-	public void setSize(SlotSize size) {
+	public void setSize(Sizes size) {
 		this.size = size;
 	}
 

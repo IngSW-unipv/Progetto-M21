@@ -36,6 +36,10 @@
 				<p th:text="${error}"></p>
 			</div>
 
+			<div th:if="${slotError}" class="alert alert-danger">
+				<p th:text="${error}"></p>
+			</div>
+
 			<!-- TABELLA PRINCIPALE -->
 			<table class="table table-dark" style="margin-top: 3em;">
 
@@ -72,7 +76,8 @@
 									th:data-target="|.demo${order.orderDetailsId}|">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye"
 										viewBox="0 0 16 16">
-									  <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 
+									  <path
+											d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 
 									  1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 
 									  12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"></path>
 									  <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"></path>
@@ -89,9 +94,10 @@
 							<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
 
 							<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
-							<td sec:authorize="hasAnyAuthority('COURIER', 'CUSTOMER')" th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}" style="width: 256px;">
+							<td sec:authorize="hasAnyAuthority('COURIER', 'CUSTOMER')"
+								th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}" style="width: 256px;">
 
-							<!--  CASO CUSTOMER -->
+								<!--  CASO CUSTOMER -->
 								<th:logic th:case="'DELIVERED'" sec:authorize="hasAnyAuthority('CUSTOMER')">
 
 									<form action="#" th:action="@{/withdraw}" method="get">
@@ -113,8 +119,8 @@
 									</script>
 
 								</th:logic>
-							
-							<!--  CASO COURIER -->
+
+								<!--  CASO COURIER -->
 								<th:logic th:case="'DELIVERING'" sec:authorize="hasAnyAuthority('COURIER')">
 									<a style="color: green !important;" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
 								</th:logic>
@@ -127,36 +133,36 @@
 										courierNotification(orderId);
 									</script>
 								</th:logic>
-						
-							<!-- COLONNA COURIER ASSIGNED PER ADMINISTRATOR -->
-								<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')" th:text="${order.courier.email} ?: 'null'"></td>
-								
+
+								<!-- COLONNA COURIER ASSIGNED PER ADMINISTRATOR -->
+							<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')" th:text="${order.courier.email} ?: 'null'"></td>
+
 							<!-- COLONNA CUSTOMER ASSIGNED PER ADMINISTRATOR -->
-								<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')" th:text="${order.customer != null} ? ${order.customer.email}">Null</td>
-									
+							<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')"
+								th:text="${order.customer != null} ? ${order.customer.email}">Null</td>
+
 							</td>
-							
+
 						</tr>
 
-						<!--#2 TABELLA SECONDARIA: 3 colonne --> 
-							<tr th:id="|demo${order.orderDetailsId}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
-								<td colspan="8">
-	
-	
-									<table class="table-dark" style="margin-left: 11%;">
-										<thead style="background: #3d414a;">
-											<tr class="info">
-												<!--  <th>View Products</th> -->
-												<th>Delivery Date</th>
-												<th>Data Deliverd</th>
-												<th>Withdrawal Date</th>
-											</tr>
-										</thead>
-	
-										<tbody>
-	
-											<tr>
-												<!--<td>
+						<!--#2 TABELLA SECONDARIA: 3 colonne -->
+						<tr th:id="|demo${order.orderDetailsId}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
+							<td colspan="8">
+
+
+								<table class="table-dark" style="margin-left: 11%;">
+									<thead style="background: #3d414a;">
+										<tr class="info">
+											<!--  <th>View Products</th> -->
+											<th>Data Deliverd</th>
+											<th>Withdrawal Date</th>
+										</tr>
+									</thead>
+
+									<tbody>
+
+										<tr>
+											<!--<td>
 													<button type="button" data-toggle="collapse" class="btn btn-outline-danger collapsed"
 														th:data-target="|#demo2${order}|">
 														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-view-list" viewBox="0 0 16 16">
@@ -166,48 +172,48 @@
 	
 													</button>
 												</td>-->
-												<td th:text="${order.deliveryDetails.deliveryDate} ?: 'null'"></td>
-												<td th:text="${order.deliveryDetails.dataDeliverd} ?: 'null'"></td>
-												<td th:text="${order.deliveryDetails.withdrawalDate} ?: 'null'"></td>
-											</tr>
-	
-	
-											<!--  Era qui  -->
-	
-	
-	
-	
-										</tbody>
-									</table>
-								</td>
-							</tr>
-	
-	
-							<!--  Da inserire qui  -->
-							<tr th:id="|demo2${order}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
-								<td colspan="8">
-									<table class="table-dark" style="margin-left: 11%;">
-										<thead style="background: #3d414a;">
-											<tr class="info">
-												<th>ProductId</th>
-												<th>Size</th>
-												<th>Slot</th>
-											</tr>
-										</thead>
-	
-										<tbody>
-											<tr th:each="product : ${order.products}">
-												<td th:text="${product.productId} ?: 'null'"></td>
-												<td>------</td>
-												<td>xyz</td>
-												<!--  <td th:text="${product.size} ?: 'null'"></td> -->
-												<!--  <td th:text="${product.slot} ?: 'null'"></td> -->
-											</tr>
-										</tbody>
-									</table>
-								</td>
-							</tr>
-							
+											<td th:text="${order.deliveryDetails.dataDeliverd} ?: 'null'"></td>
+											<td th:text="${order.deliveryDetails.withdrawalDate} ?: 'null'"></td>
+										</tr>
+
+
+										<!--  Era qui  -->
+
+
+
+
+									</tbody>
+								</table>
+							</td>
+						</tr>
+
+
+						<!--  Da inserire qui  -->
+						<tr th:id="|demo2${order}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
+							<td colspan="8">
+								<table class="table-dark" style="margin-left: 11%;">
+									<thead style="background: #3d414a;">
+										<tr class="info">
+											<th>ProductId</th>
+											<th>Size</th>
+											<th>Slot</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr th:each="product : ${order.products}">
+											<td th:text="${product.productId} ?: 'null'"></td>
+											<td th:text="${product.size} ?: 'null'"></td>
+											<td th:text="${product.slot} ?: 'null'"></td>
+
+											<!--  <td th:text="${product.size} ?: 'null'"></td> -->
+											<!--  <td th:text="${product.slot} ?: 'null'"></td> -->
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+
 
 
 					</th:block>

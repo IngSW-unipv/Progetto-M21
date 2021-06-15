@@ -10,6 +10,7 @@ import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
+import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
 
 @Service
 public class HubService {
@@ -25,14 +26,7 @@ public class HubService {
 	@Autowired
 	Date date;
 	
-
-//	public String getCurrentDataTime() {
-//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-//		LocalDateTime now = LocalDateTime.now();
-//		return dtf.format(now);
-//	}
-
-	public void deliver(Long id) {
+	public void deliver(Long id){
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERED);
 		orderDetails.getDeliveryDetails().setDataDeliverd(date.getCurrentDataTime());

@@ -1,13 +1,13 @@
 package it.unipv.ingsw.pickuppoint.model;
 
-public enum SlotSize {
+public enum Sizes {
 	BIG(50, 50, 50, "BIG"), MEDIUM(20, 20, 20, "MEDIUM"), SMALL(10, 10, 10, "SMALL");
 
 	private double length;
 	private double width;
 	private double height;
 
-	SlotSize(int length, int width, int height, String size) {
+	Sizes(int length, int width, int height, String size) {
 		this.length = length;
 		this.width = width;
 		this.height = height;
@@ -23,6 +23,10 @@ public enum SlotSize {
 
 	public double getHeight() {
 		return height;
+	}
+	
+	public double getVolume() {
+		return height*width*length;
 	}
 
 }
