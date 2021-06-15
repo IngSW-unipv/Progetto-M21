@@ -22,7 +22,8 @@ public class UserService {
 	RoleRepo roleRepo;
 	@Autowired
 	OrderDetailsService orderDetailsService;
-
+	@Autowired
+	Date date;
 	BCryptPasswordEncoder passwordEncoder;
 
 	public List<User> getAllCouriers() {
@@ -48,6 +49,7 @@ public class UserService {
 		}
 		customer.setEnabled(true);
 		customer.setRole(getCustomerRole());
+		customer.setRegistrationDate(date.getCurrentDataTime());
 		encodePassword(customer);
 		userRepo.save(customer);
 	}

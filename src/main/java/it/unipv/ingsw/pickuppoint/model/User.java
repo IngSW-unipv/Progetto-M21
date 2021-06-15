@@ -31,11 +31,13 @@ public class User {
 
 	@Id
 	@Column(name = "user_id")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 
 	@Column(columnDefinition = "tinyint(1)")
 	private boolean Enabled;
+	
+	private String registrationDate;
 
 	@NotEmpty(message = "Email cannot be empty")
 	@Email(message = "Email should be valid")
@@ -71,6 +73,14 @@ public class User {
 
 	public boolean isEnabled() {
 		return Enabled;
+	}
+
+	public String getRegistrationDate() {
+		return registrationDate;
+	}
+
+	public void setRegistrationDate(String registrationDate) {
+		this.registrationDate = registrationDate;
 	}
 
 	public void setEnabled(boolean enabled) {

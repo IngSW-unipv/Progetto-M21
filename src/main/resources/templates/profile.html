@@ -82,9 +82,8 @@
 
 				<ul class="list-inline">
 					<li class="list-inline-item" style="font-weight: bold;">Registration date:</li>
-					<li class="list-inline-item">-------</li>
-					<!--  					<li class="list-inline-item" th:text="${#authentication.getPrincipal().getUser().getRegistrationDate()}">Date</li>
-					 -->
+					<li class="list-inline-item" th:text="${#authentication.getPrincipal().getUser().getRegistrationDate()} ?: 'null'">Date</li>
+					
 				</ul>
 
 				<ul class="list-inline">
