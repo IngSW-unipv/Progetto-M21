@@ -25,14 +25,7 @@ public class HubService {
 	@Autowired
 	Date date;
 	
-
-//	public String getCurrentDataTime() {
-//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-//		LocalDateTime now = LocalDateTime.now();
-//		return dtf.format(now);
-//	}
-
-	public void deliver(Long id) {
+	public void deliver(Long id){
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERED);
 		orderDetails.getDeliveryDetails().setDataDeliverd(date.getCurrentDataTime());

@@ -2,6 +2,8 @@ package it.unipv.ingsw.pickuppoint.model.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import it.unipv.ingsw.pickuppoint.model.Sizes;
 
 
 @Entity
@@ -21,9 +25,10 @@ public class Product {
 	private Long productId;
 
 	private double weight;
-	private double width;
-	private double length;
-	private double height;
+	
+	@Enumerated(EnumType.STRING)
+	private Sizes size;
+	
 
 	/**
 	 * Relazione N:1 con la classe OrderDetails che mappa l'entita OrderDetails Il
@@ -39,6 +44,14 @@ public class Product {
 	@OneToOne(mappedBy = "product")
 	private Slot slot;
 
+
+	public Sizes getSize() {
+		return size;
+	}
+	
+	public double getVolume() {
+		return size.getVolume();
+	}
 
 	public Long getOrderId() {
 		return orderDetails.getOrderDetailsId();
@@ -56,34 +69,18 @@ public class Product {
 		return weight;
 	}
 
-	public void setWeight(double weight) {
-		this.weight = weight;
-	}
-
 	public double getWidth() {
-		return width;
-	}
-
-	public void setWidth(double width) {
-		this.width = width;
+		return size.getWidth();
 	}
 
 	public double getLength() {
-		return length;
-	}
-
-	public void setLength(double length) {
-		this.length = length;
+		return size.getLength();
 	}
 
 	public double getHeight() {
-		return height;
+		return size.getHeight();
 	}
-
-	public void setHeight(double height) {
-		this.height = height;
-	}
-
+	
 	public OrderDetails getOrderDetails() {
 		return orderDetails;
 	}
@@ -99,12 +96,5 @@ public class Product {
 	public void setSlot(Slot slot) {
 		this.slot = slot;
 	}
-
-	@Override
-	public String toString() {
-		return "Product [productId=" + productId + ", weight=" + weight + ", width=" + width + ", length=" + length
-				+ ", height=" + height + ", orderDetails=" + orderDetails.getOrderDetailsId() + ", slot=" + slot + "]";
-	}
-	
 	
 }

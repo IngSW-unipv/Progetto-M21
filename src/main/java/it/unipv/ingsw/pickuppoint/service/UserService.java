@@ -51,7 +51,7 @@ public class UserService {
 		customer.setRole(getCustomerRole());
 		customer.setRegistrationDate(date.getCurrentDataTime());
 		encodePassword(customer);
-		userRepo.save(customer);
+		saveUser(customer);
 	}
 
 	/**
@@ -113,20 +113,18 @@ public class UserService {
 	}
 	
 	public void findAllCouriers(Model model) {
-		
 		model.addAttribute("listCouriers", userRepo.findByRole_name("COURIER"));
-		
 	}
 	
 	public void findAllUsers(Model model) {
-		
-		model.addAttribute("listUsers", userRepo.findAll());
-		
+		model.addAttribute("listUsers", userRepo.findAll());		
+	}
+	
+	public void saveUser(User user) {
+		userRepo.save(user);
 	}
 	
 	public void editUser(Model model, Long id) {
-		
 		model.addAttribute("user", userRepo.findById(id));
-		
 	}
 }
