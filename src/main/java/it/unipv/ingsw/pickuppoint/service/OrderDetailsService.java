@@ -40,7 +40,7 @@ public class OrderDetailsService {
 		return orderDetailsRepo.findById(id).orElseThrow();
 	}
 
-	public OrderDetails findByTrackingCode(int trackingCode) {
+	public OrderDetails findByTrackingCode(String trackingCode) {
 		return orderDetailsRepo.findByTrackingCode(trackingCode);
 	}
 

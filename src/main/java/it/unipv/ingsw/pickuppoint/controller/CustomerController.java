@@ -29,7 +29,7 @@ public class CustomerController {
 	 * @return reindirizzamento alla pagina html della vista degli ordini
 	 */
 	@RequestMapping(value = "/add")
-	public String addOrder(@RequestParam(name = "tracking") @NotBlank int tracking, Model model) {
+	public String addOrder(@RequestParam(name = "tracking") @NotBlank String tracking, Model model) {
 
 		try {
 			hubService.addOrder(tracking);

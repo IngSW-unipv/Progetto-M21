@@ -55,7 +55,7 @@ public class OrderDetails {
 	private Long orderDetailsId;
 
 	@Column(nullable = true)
-	private int trackingCode;
+	private String trackingCode;
 
 	// Spostato pickupCode da DD a OD
 	@Column(nullable = true)
@@ -129,11 +129,11 @@ public class OrderDetails {
 		this.orderDetailsId = orderDetailsId;
 	}
 
-	public int getTrackingCode() {
+	public String getTrackingCode() {
 		return trackingCode;
 	}
 
-	public void setTrackingCode(int trackingCode) {
+	public void setTrackingCode(String trackingCode) {
 		this.trackingCode = trackingCode;
 	}
 
