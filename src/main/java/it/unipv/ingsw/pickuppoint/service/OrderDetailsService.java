@@ -1,6 +1,7 @@
 package it.unipv.ingsw.pickuppoint.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -76,5 +77,10 @@ public class OrderDetailsService {
 	
 	public OrderDetails getOrderByPickupCode(String pickupCode) {
 		return orderDetailsRepo.findByPickupCode(pickupCode);
+	}
+	
+	@Transactional
+	public Map<Long, Integer> getfindListOfDifferenceDeliverdDateAndCurrentDate(EntityManager em){
+		return deliveryDetailsRepo.findListOfDifferenceDeliverdDateAndCurrentDate(em);
 	}
 }
