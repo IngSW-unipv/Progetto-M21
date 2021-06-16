@@ -37,7 +37,7 @@
 			</div>
 
 			<div th:if="${slotError}" class="alert alert-danger">
-				<p th:text="${error}"></p>
+				<p th:text="${slotError}"></p>
 			</div>
 
 			<!-- TABELLA PRINCIPALE -->
@@ -122,7 +122,9 @@
 
 								<!--  CASO COURIER -->
 								<th:logic th:case="'DELIVERING'" sec:authorize="hasAnyAuthority('COURIER')">
+
 									<a style="color: green !important;" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
+
 								</th:logic>
 
 								<th:logic th:case="'WITHDRAWN'" sec:authorize="hasAnyAuthority('COURIER')">
@@ -177,7 +179,7 @@
 										</tr>
 
 
-										<!--  Era qui  -->
+
 
 
 
@@ -188,31 +190,36 @@
 						</tr>
 
 
-						<!--  Da inserire qui  -->
-						<tr th:id="|demo2${order}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
-							<td colspan="8">
-								<table class="table-dark" style="margin-left: 11%;">
-									<thead style="background: #3d414a;">
-										<tr class="info">
-											<th>ProductId</th>
-											<th>Size</th>
-											<th>Slot</th>
-										</tr>
-									</thead>
+						<th:block sec:authorize="hasAnyAuthority('CUSTOMER')">
+							<tr th:id="|demo2${order}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
+								<td colspan="8">
+									<table class="table-dark" style="margin-left: 11%;">
+										<thead style="background: #3d414a;">
+											<tr class="info">
+												<th>ProductId</th>
+												<th>Size</th>
+												<th>Weight</th>
+												<th>Slot</th>
 
-									<tbody>
-										<tr th:each="product : ${order.products}">
-											<td th:text="${product.productId} ?: 'null'"></td>
-											<td th:text="${product.size} ?: 'null'"></td>
-											<td th:text="${product.slot} ?: 'null'"></td>
+											</tr>
+										</thead>
 
-											<!--  <td th:text="${product.size} ?: 'null'"></td> -->
-											<!--  <td th:text="${product.slot} ?: 'null'"></td> -->
-										</tr>
-									</tbody>
-								</table>
-							</td>
-						</tr>
+										<tbody>
+											<tr th:each="product : ${order.products}">
+												<td th:text="${product.productId} ?: 'null'"></td>
+												<td th:text="${product.size} ?: 'null'"></td>
+												<td th:text="${product.weight} ?: 'null'"></td>
+												<td th:text="${product.slot != null} ? ${product.slot.slotId}">Null</td>
+
+
+												<!--  <td th:text="${product.size} ?: 'null'"></td> -->
+												<!--  <td th:text="${product.slot} ?: 'null'"></td> -->
+											</tr>
+										</tbody>
+									</table>
+								</td>
+							</tr>
+						</th:block>
 
 
 
