@@ -2,12 +2,15 @@ package it.unipv.ingsw.pickuppoint.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
+import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
 
 @Controller
 public class CourierController {
@@ -18,7 +21,7 @@ public class CourierController {
 	OrderDetailsService orderDetailsService;
 	@Autowired
 	HubService hubService;
-	
+
 //	/**
 //	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
 //	 * /Orders. Recupera e visualizza gli ordini del Courier.
@@ -27,10 +30,18 @@ public class CourierController {
 //	 *              essere visualizzato o manipolato
 //	 * @return la pagina html della vista degli ordini
 //	 */
-	
+
 	@RequestMapping("/deliver/{id}")
-	public String showEditProductFormCourier(@PathVariable(name = "id") Long id) {
-		hubService.deliver(id);
+	public String showEditProductFormCourier(@PathVariable(name = "id") Long id, Model model) {
+		try {
+			hubService.deliver(id);
+		} catch (SlotNotAvailable e) {
+			System.out.println(e.getMessage());
+			userService.addListOrders(model);
+			model.addAttribute("slotError", e.getMessage());
+			return "/viewOrders";
+		}
+
 		return "redirect:" + "/Orders";
 	}
 }
