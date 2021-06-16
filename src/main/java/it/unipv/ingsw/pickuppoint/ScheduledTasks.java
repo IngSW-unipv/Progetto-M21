@@ -43,7 +43,7 @@ public class ScheduledTasks {
 
 	@Scheduled(cron = "0 */1 * ? * *")
 	private void checkPendingOrders() {
-		LOGGER.trace("INIZIO ASSEGNAMENTO");
+		LOGGER.info("INIZIO ASSEGNAMENTO");
 
 		// Tutti gli ordini con status HUB
 		List<OrderDetails> ordersDetails = orderDetailsService.getAllHubOrders();
@@ -52,7 +52,7 @@ public class ScheduledTasks {
 		// BUG: gli ordini vengono inseriti in coda anche se già presenti
 		for (OrderDetails orderDetails : ordersDetails) {
 			ordersDetailsToAsign.add(orderDetails);
-			LOGGER.debug("### Ordine " + orderDetails.getOrderDetailsId() + " inserito in coda ###");
+			LOGGER.debug("Ordine " + orderDetails.getOrderDetailsId() + " inserito in coda");
 			// System.out.println("### Ordine " + orderDetails.getOrderDetailsId() + "
 			// inserito in coda ###");
 		}
@@ -92,11 +92,11 @@ public class ScheduledTasks {
 			// }
 
 			else if (delivering == MAX) {
-				LOGGER.debug("### NIENTE DA ASSEGNARE: raggiunto MAX ordini per corriere " + "[" + MAX + "] ###");
+				LOGGER.debug("NIENTE DA ASSEGNARE: raggiunto MAX ordini per corriere " + "[" + MAX + "]");
 				// System.out.println("### NIENTE DA ASSEGNARE: raggiunto MAX ordini per
 				// corriere " + "[" + MAX + "] ###");
 			} else if (ordersDetailsToAsign.size() == 0) {
-				LOGGER.debug("### NIENTE DA ASSEGNARE: nessun ordine in coda ###");
+				LOGGER.debug("NIENTE DA ASSEGNARE: nessun ordine in coda");
 				// System.out.println("### NIENTE DA ASSEGNARE: nessun ordine in coda ###");
 
 			}
@@ -129,11 +129,13 @@ public class ScheduledTasks {
 
 	@Scheduled(cron = "0 */1 * ? * *")
 	private void checkPendingDelivers() {
-		LOGGER.trace("VERIFICA STATO DELIVERS");
-		HashMap<Long, Integer> checkPendingDeliversMap = (HashMap<Long, Integer>) orderDetailsService.getfindListOfDifferenceDeliverdDateAndCurrentDate(entityManager);
+		LOGGER.info("VERIFICA STATO DELIVERS");
+		HashMap<Long, Integer> checkPendingDeliversMap = (HashMap<Long, Integer>) orderDetailsService
+				.getfindListOfDifferenceDeliverdDateAndCurrentDate(entityManager);
 
+		LOGGER.debug("size" + checkPendingDeliversMap.size());
 		for (HashMap.Entry<Long, Integer> entry : checkPendingDeliversMap.entrySet()) {
-
+			LOGGER.debug("size" + entry.getValue());
 			if (entry.getValue() > 2) {
 
 				System.out.println("Test - " + entry.getKey() + " - " + entry.getValue());
