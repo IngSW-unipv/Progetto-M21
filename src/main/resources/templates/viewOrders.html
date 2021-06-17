@@ -4,8 +4,8 @@
 
 <head>
 <!--  Refresh pagina ogni 30 secondi  -->
-<meta charset="UTF-8" http-equiv="refresh" content="30">
-
+<!-- <meta charset="UTF-8" http-equiv="refresh" content="30"> -->
+<meta charset="UTF-8">
 <title>View Orders</title>
 
 <link rel="icon" href="/images/favicons/favicon.ico">
@@ -53,8 +53,8 @@
 						<th>Locker Name</th>
 						<th>Locker Address</th>
 						<th>Status</th>
-						<th sec:authorize="hasAnyAuthority('CUSTOMER')">Withdraw</th>
-						<th sec:authorize="hasAnyAuthority('COURIER')">Deliver</th>
+						<th sec:authorize="hasAnyAuthority('CUSTOMER')" style="width: 212px;">Withdraw</th>
+						<th sec:authorize="hasAnyAuthority('COURIER')" style="width: 190px;">Deliver</th>
 						<th sec:authorize="hasAnyAuthority('ADMINISTRATOR')">Courier Email</th>
 						<th sec:authorize="hasAnyAuthority('ADMINISTRATOR')">Customer Email</th>
 					</tr>
@@ -69,6 +69,7 @@
 					<th:block th:each="order : ${listOrders}">
 
 						<!--#1 7 COLONNE + BOTTONE -->
+
 						<tr>
 							<td>
 
@@ -94,65 +95,80 @@
 							<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
 
 							<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
-							<td sec:authorize="hasAnyAuthority('COURIER', 'CUSTOMER')"
-								th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}" style="width: 256px;">
+							<th:block th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}">
 
-								<!--  CASO CUSTOMER -->
-								<th:logic th:case="'DELIVERED'" sec:authorize="hasAnyAuthority('CUSTOMER')">
 
-									<form action="#" th:action="@{/withdraw}" method="get">
-										<div class="form-row">
-											<div class="col">
-												<input type="text" th:name="pickupCode" name="pickupCode" placeholder="Pickup code" class="form-control">
+								<!-- ################# CUSTOMER ################# -->
+								<th:logic sec:authorize="hasAnyAuthority('CUSTOMER')">
+									<td th:case="'DELIVERED'">
+
+										<form action="#" th:action="@{/withdraw}" method="get">
+											<div class="form-row">
+												<div class="col">
+													<input type="text" th:name="pickupCode" name="pickupCode" placeholder="Pickup code" class="form-control">
+												</div>
+
+												<button type="submit" class="btn btn-outline-success" style="font-weight: bold;">Pickup</button>
+
 											</div>
-											<div class="col">
-												<button type="submit" class="btn btn-outline-light btn-sm">Pickup</button>
-											</div>
-										</div>
-									</form>
+										</form>
+
+										<!--  NOTIFICA CUSTOMER  -->
+										<script th:inline="javascript">
+											var orderId = /*[[${order.orderDetailsId}]]*/'';
+											customerNotification(orderId);
+										</script>
+
+									</td>
+								</th:logic>
+								<!-- ################# CUSTOMER ################# -->
 
 
-									<!--  NOTIFICA CUSTOMER  -->
-									<script th:inline="javascript">
-										var orderId = /*[[${order.orderDetailsId}]]*/'';
-										customerNotification(orderId);
-									</script>
+
+
+								<!--  ################# COURIER ################# -->
+								<!-- 	<th:logic th:case="'DELIVERING'" sec:authorize="hasAnyAuthority('COURIER')"> -->
+								<th:logic sec:authorize="hasAnyAuthority('COURIER')">
+
+									<td th:case="'DELIVERING'">
+										<a role="button" class="btn btn-outline-success" style="font-weight: bold; display: block;"
+											th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
+									</td>
+
+
+									<th:block th:case="'WITHDRAWN'">
+										<!--  	<th:logic th:case="'WITHDRAWN'" sec:authorize="hasAnyAuthority('COURIER')"> -->
+
+										<!--  NOTIFICA COURIER  -->
+										<script th:inline="javascript">
+											var orderId = /*[[${order.orderDetailsId}]]*/'';
+											courierNotification(orderId);
+										</script>
+
+									</th:block>
 
 								</th:logic>
+							</th:block>
+							<!--  ################# COURIER ################# -->
 
-								<!--  CASO COURIER -->
-								<th:logic th:case="'DELIVERING'" sec:authorize="hasAnyAuthority('COURIER')">
 
-									<a style="color: green !important;" th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
 
+
+							<!--  ################# ADMINISTRATOR ################# -->
+							<th:block sec:authorize="hasAnyAuthority('ADMINISTRATOR')">
+								<td th:text="${order.courier.email} ?: 'null'">Courier Email</td>
+								<td th:text="${order.customer != null} ? ${order.customer.email}">Customer Email</td>
 								</th:logic>
-
-								<th:logic th:case="'WITHDRAWN'" sec:authorize="hasAnyAuthority('COURIER')">
-
-									<!--  NOTIFICA COURIER  -->
-									<script th:inline="javascript">
-										var orderId = /*[[${order.orderDetailsId}]]*/'';
-										courierNotification(orderId);
-									</script>
-								</th:logic>
-
-								<!-- COLONNA COURIER ASSIGNED PER ADMINISTRATOR -->
-							<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')" th:text="${order.courier.email} ?: 'null'"></td>
-
-							<!-- COLONNA CUSTOMER ASSIGNED PER ADMINISTRATOR -->
-							<td sec:authorize="hasAnyAuthority('ADMINISTRATOR')"
-								th:text="${order.customer != null} ? ${order.customer.email}">Null</td>
-
-							</td>
-
+								<!--  ################# ADMINISTRATOR ################# -->
 						</tr>
+
 
 						<!--#2 TABELLA SECONDARIA: 3 colonne -->
 						<tr th:id="|demo${order.orderDetailsId}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
 							<td colspan="8">
 
 
-								<table class="table-dark" style="margin-left: 11%;">
+								<table class="table-dark" style="margin-left: 11%; line-height: 15px;">
 									<thead style="background: #3d414a;">
 										<tr class="info">
 											<!--  <th>View Products</th> -->
@@ -193,7 +209,7 @@
 						<th:block sec:authorize="hasAnyAuthority('CUSTOMER')">
 							<tr th:id="|demo2${order}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
 								<td colspan="8">
-									<table class="table-dark" style="margin-left: 11%;">
+									<table class="table-dark" style="margin-left: 11%; line-height: 15px; margin-bottom: 2em;">
 										<thead style="background: #3d414a;">
 											<tr class="info">
 												<th>ProductId</th>

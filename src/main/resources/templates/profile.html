@@ -91,10 +91,12 @@
 					<li class="list-inline-item" sec:authentication="principal.authorities">Roles</li>
 				</ul>
 
-				<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('CUSTOMER', 'COURIER')" class="btn btn-success" role="button" aria-pressed="true">Your orders</a>
-				<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-success" role="button" aria-pressed="true">All orders</a>
+				<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('CUSTOMER', 'COURIER')" class="btn btn-success btn-lg" role="button" aria-pressed="true">Your orders</a>
+				<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success" role="button" aria-pressed="true" style="display: inline-block; width: 60%; margin-bottom: 15px; margin-top: 30px;">All orders</a>
+				<a th:href="@{/register}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success" role="button" aria-pressed="true" style="display: inline-block; width: 60%; margin-bottom: 15px;">Add User</a>
 				
-				<a th:href="@{/UserList}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-success" role="button" aria-pressed="true">User List</a>
+				
+				<a th:href="@{/UserList}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success" role="button" aria-pressed="true" style="display: inline-block; width: 60%;">User List</a>
 
 
 				<div sec:authorize="hasAnyAuthority('CUSTOMER')" style="margin-top: 5em;">

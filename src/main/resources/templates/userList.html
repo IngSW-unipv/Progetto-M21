@@ -47,7 +47,7 @@
 						<th>Email</th>
 						<th>First Name</th>
 						<th>Last Name</th>
-						<th sec:authorize="hasAnyAuthority('ADMINISTRATOR')">Edit</th>
+						<th sec:authorize="hasAnyAuthority('ADMINISTRATOR')" style="width: 190px;">Edit</th>
 					</tr>
 				</thead>
 				<!--  INTESTAZIONE TABELLA PRINCIPALE: 7 colonne -->
@@ -67,19 +67,15 @@
 							<td th:text="${user.email} ?: ''">Email</td>
 							<td th:text="${user.firstName} ?: ''">First Name</td>
 							<td th:text="${user.lastName} ?: ''">Last Name</td>
-							
+
 							<td>
-
-							<a style="color: green !important;" th:href="@{'/editUser/' + ${user.userId}}">Edit</a>
-
+								<a role="button" class="btn btn-outline-warning" style="font-weight: bold; display: block;"
+									th:href="@{'/editUser/' + ${user.userId}}">Edit User</a>
 							</td>
-	
-							</td>
-							
+
 						</tr>
 
 					</th:block>
-					<a th:href="@{/addUser}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-success" role="button" aria-pressed="true">Add User</a>
 				</tbody>
 			</table>
 		</main>
