@@ -2,6 +2,8 @@ package it.unipv.ingsw.pickuppoint.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -126,5 +128,10 @@ public class UserService {
 	
 	public void editUser(Model model, Long id) {
 		model.addAttribute("user", userRepo.findById(id));
+	}
+
+	@Transactional
+	public void delete(Long id) {
+		userRepo.deleteByUserId(id);
 	}
 }

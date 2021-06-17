@@ -33,4 +33,6 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	 * @return
 	 */
 	User findByUserId(Long userId);
+
+	void deleteByUserId(Long id);
 }

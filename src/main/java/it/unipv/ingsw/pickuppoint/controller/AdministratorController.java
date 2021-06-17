@@ -75,4 +75,11 @@ public class AdministratorController {
 		userService.saveUser(user);
 		return "redirect:" + "/UserList";
 	}
+	
+	@RequestMapping("/delete/{id}")
+	public String deleteProduct(@PathVariable(name = "id") Long id) {
+		userService.delete(id);
+		
+		return "redirect:" + "/UserList";
+	}
 }

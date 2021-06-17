@@ -156,7 +156,7 @@
 
 							<!--  ################# ADMINISTRATOR ################# -->
 							<th:block sec:authorize="hasAnyAuthority('ADMINISTRATOR')">
-								<td th:text="${order.courier.email} ?: 'null'">Courier Email</td>
+								<td th:text="${order.courier != null} ? ${order.courier.email}">Courier Email</td>
 								<td th:text="${order.customer != null} ? ${order.customer.email}">Customer Email</td>
 								</th:logic>
 								<!--  ################# ADMINISTRATOR ################# -->
