@@ -31,19 +31,26 @@
 		<!-- ############  MAIN ############ -->
 		<main role="main" class="inner cover">
 
-			<!--  Gestione pickup code errato -->
+			<!-- ############ Pickup code errato ############ -->
 			<div th:if="${error}" class="alert alert-danger">
 				<p th:text="${error}"></p>
 			</div>
 
+
+
+			<!-- ############ IMPOSSIBILE CONSEGNARE ############ -->
 			<div th:if="${slotError}" class="alert alert-danger">
 				<p th:text="${slotError}"></p>
 			</div>
 
-			<!-- TABELLA PRINCIPALE -->
+
+
+			<!-- ############ TABELLA PRINCIPALE ############ -->
 			<table class="table table-dark" style="margin-top: 3em;">
 
-				<!--  INTESTAZIONE TABELLA PRINCIPALE: 8 colonne -->
+
+
+				<!--  ############ INTESTAZIONE TABELLA PRINCIPALE ############-->
 				<thead style="background: #3d414a;">
 					<tr>
 						<th></th>
@@ -59,20 +66,17 @@
 						<th sec:authorize="hasAnyAuthority('ADMINISTRATOR')">Customer Email</th>
 					</tr>
 				</thead>
-				<!--  INTESTAZIONE TABELLA PRINCIPALE: 8 colonne -->
 
 
-				<!--  CORPO TABELLA PRINCIPALE -->
+
+				<!--  ############ CORPO TABELLA PRINCIPALE ############ -->
 				<tbody>
 
 					<!-- PER OGNI ORDINE -->
 					<th:block th:each="order : ${listOrders}">
-
-						<!--#1 7 COLONNE + BOTTONE -->
-
 						<tr>
-							<td>
 
+							<td>
 								<button type="button" data-toggle="collapse" class="btn btn-outline-light"
 									th:data-target="|.demo${order.orderDetailsId}|">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye"
@@ -83,10 +87,9 @@
 									  12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"></path>
 									  <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"></path>
 									</svg>
-
 								</button>
-
 							</td>
+
 							<td th:text="${order.orderDetailsId}">Order ID</td>
 							<td th:text="${order.trackingCode}">Tracking Code</td>
 							<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
@@ -94,8 +97,10 @@
 							<td th:text="${order.locker.lockerAddress.city} ?: ''">Locker address</td>
 							<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
 
+
 							<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
 							<th:block th:switch="${#strings.toString(order.deliveryDetails.deliveryStatus)}">
+
 
 
 								<!-- ################# CUSTOMER ################# -->
@@ -113,7 +118,6 @@
 											</div>
 										</form>
 
-										<!--  NOTIFICA CUSTOMER  -->
 										<script th:inline="javascript">
 											var orderId = /*[[${order.orderDetailsId}]]*/'';
 											customerNotification(orderId);
@@ -121,36 +125,26 @@
 
 									</td>
 								</th:logic>
-								<!-- ################# CUSTOMER ################# -->
-
 
 
 
 								<!--  ################# COURIER ################# -->
-								<!-- 	<th:logic th:case="'DELIVERING'" sec:authorize="hasAnyAuthority('COURIER')"> -->
 								<th:logic sec:authorize="hasAnyAuthority('COURIER')">
-
 									<td th:case="'DELIVERING'">
 										<a role="button" class="btn btn-outline-success" style="font-weight: bold; display: block;"
 											th:href="@{'/deliver/' + ${order.orderDetailsId}}">Deliver</a>
 									</td>
 
-
 									<th:block th:case="'WITHDRAWN'">
-										<!--  	<th:logic th:case="'WITHDRAWN'" sec:authorize="hasAnyAuthority('COURIER')"> -->
-
-										<!--  NOTIFICA COURIER  -->
 										<script th:inline="javascript">
 											var orderId = /*[[${order.orderDetailsId}]]*/'';
 											courierNotification(orderId);
 										</script>
-
 									</th:block>
 
 								</th:logic>
-							</th:block>
-							<!--  ################# COURIER ################# -->
 
+							</th:block>
 
 
 
@@ -158,15 +152,17 @@
 							<th:block sec:authorize="hasAnyAuthority('ADMINISTRATOR')">
 								<td th:text="${order.courier != null} ? ${order.courier.email}">Courier Email</td>
 								<td th:text="${order.customer != null} ? ${order.customer.email}">Customer Email</td>
-								</th:logic>
-								<!--  ################# ADMINISTRATOR ################# -->
+							</th:block>
+
 						</tr>
+						<!--  ############ FINE CORPO TABELLA PRINCIPALE ############ -->
 
 
-						<!--#2 TABELLA SECONDARIA: 3 colonne -->
+
+
+						<!-- ############ TABELLA 2 : DATE CONSEGNA E RITIRO ############ -->
 						<tr th:id="|demo${order.orderDetailsId}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
 							<td colspan="8">
-
 
 								<table class="table-dark" style="margin-left: 11%; line-height: 15px;">
 									<thead style="background: #3d414a;">
@@ -178,37 +174,23 @@
 									</thead>
 
 									<tbody>
-
 										<tr>
-											<!--<td>
-													<button type="button" data-toggle="collapse" class="btn btn-outline-danger collapsed"
-														th:data-target="|#demo2${order}|">
-														<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-view-list" viewBox="0 0 16 16">
-	  															<path	d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 
-	  															1 0 0 0 1-1v-3a1 1 0 0 0-1-1H3zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2zm0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14z" />
-														</svg>
-	
-													</button>
-												</td>-->
 											<td th:text="${order.deliveryDetails.dataDeliverd} ?: 'null'"></td>
 											<td th:text="${order.deliveryDetails.withdrawalDate} ?: 'null'"></td>
 										</tr>
-
-
-
-
-
-
-
 									</tbody>
 								</table>
+
 							</td>
 						</tr>
 
 
-						<th:block sec:authorize="hasAnyAuthority('CUSTOMER')">
+
+						<!-- ############ TABELLA 3 : PRODOTTI ############ -->
+						<th:block sec:authorize="hasAnyAuthority('CUSTOMER','COURIER')">
 							<tr th:id="|demo2${order}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
 								<td colspan="8">
+
 									<table class="table-dark" style="margin-left: 11%; line-height: 15px; margin-bottom: 2em;">
 										<thead style="background: #3d414a;">
 											<tr class="info">
@@ -216,7 +198,6 @@
 												<th>Size</th>
 												<th>Weight</th>
 												<th>Slot</th>
-
 											</tr>
 										</thead>
 
@@ -225,20 +206,17 @@
 												<td th:text="${product.productId} ?: 'null'"></td>
 												<td th:text="${product.size} ?: 'null'"></td>
 												<td th:text="${product.weight} ?: 'null'"></td>
-												<td th:text="${product.slot != null} ? ${product.slot.slotId}">Null</td>
-
-
-												<!--  <td th:text="${product.size} ?: 'null'"></td> -->
-												<!--  <td th:text="${product.slot} ?: 'null'"></td> -->
+												<td th:text="${product.slot != null} ? ${product.slot.slotId}"></td>
 											</tr>
 										</tbody>
 									</table>
+
 								</td>
 							</tr>
 						</th:block>
 
 
-
+						<!-- ############ FINE ITERAZIONE ORDINI ############ -->
 					</th:block>
 				</tbody>
 			</table>

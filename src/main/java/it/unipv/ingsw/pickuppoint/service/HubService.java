@@ -5,12 +5,12 @@ import javax.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.unipv.ingsw.pickuppoint.model.DeliveryStatus;
+import it.unipv.ingsw.pickuppoint.model.OrderDetails;
 import it.unipv.ingsw.pickuppoint.model.User;
-import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
 import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
+import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
 
 @Service
 public class HubService {

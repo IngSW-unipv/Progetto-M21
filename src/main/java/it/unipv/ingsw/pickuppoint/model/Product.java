@@ -1,4 +1,4 @@
-package it.unipv.ingsw.pickuppoint.model.entity;
+package it.unipv.ingsw.pickuppoint.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import it.unipv.ingsw.pickuppoint.model.Sizes;
+import it.unipv.ingsw.pickuppoint.utility.ProductSize;
 
 
 @Entity
@@ -27,7 +27,7 @@ public class Product {
 	private double weight;
 	
 	@Enumerated(EnumType.STRING)
-	private Sizes size;
+	private ProductSize size;
 	
 
 	/**
@@ -45,7 +45,7 @@ public class Product {
 	private Slot slot;
 
 
-	public Sizes getSize() {
+	public ProductSize getSize() {
 		return size;
 	}
 	

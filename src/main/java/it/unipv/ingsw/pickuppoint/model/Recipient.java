@@ -1,4 +1,4 @@
-package it.unipv.ingsw.pickuppoint.model.entity;
+package it.unipv.ingsw.pickuppoint.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

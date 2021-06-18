@@ -10,8 +10,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import it.unipv.ingsw.pickuppoint.data.UserRepo;
+import it.unipv.ingsw.pickuppoint.model.Role;
 import it.unipv.ingsw.pickuppoint.model.User;
-import it.unipv.ingsw.pickuppoint.model.entity.Role;
 
 public class UserAuthorization implements UserDetails {
 	private User user;

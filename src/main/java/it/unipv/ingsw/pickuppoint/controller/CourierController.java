@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
@@ -36,7 +35,6 @@ public class CourierController {
 		try {
 			hubService.deliver(id);
 		} catch (SlotNotAvailable e) {
-			System.out.println(e.getMessage());
 			userService.addListOrders(model);
 			model.addAttribute("slotError", e.getMessage());
 			return "/viewOrders";

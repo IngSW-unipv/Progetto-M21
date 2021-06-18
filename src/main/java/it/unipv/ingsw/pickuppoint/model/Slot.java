@@ -1,4 +1,4 @@
-package it.unipv.ingsw.pickuppoint.model.entity;
+package it.unipv.ingsw.pickuppoint.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import it.unipv.ingsw.pickuppoint.model.Sizes;
+import it.unipv.ingsw.pickuppoint.utility.SlotSize;
 
 @Entity
 @Table(name = "Slot")
@@ -57,7 +57,7 @@ public class Slot {
 	private Product product;
 
 	@Enumerated(EnumType.STRING)
-	private Sizes size;
+	private SlotSize size;
 
 	public Long getSlotId() {
 		return slotId;
@@ -107,11 +107,11 @@ public class Slot {
 		this.product = product;
 	}
 
-	public Sizes getSize() {
+	public SlotSize getSize() {
 		return size;
 	}
 
-	public void setSize(Sizes size) {
+	public void setSize(SlotSize size) {
 		this.size = size;
 	}
 

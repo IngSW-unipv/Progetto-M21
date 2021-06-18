@@ -1,4 +1,4 @@
-package it.unipv.ingsw.pickuppoint.model.entity;
+package it.unipv.ingsw.pickuppoint.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import it.unipv.ingsw.pickuppoint.model.DeliveryStatus;
+import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
 
 @Entity
 @Table(name = "DeliveryDetails")

@@ -15,9 +15,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
-import it.unipv.ingsw.pickuppoint.model.entity.Role;
-
 /**
  * 
  * Comportamento di default caricamento oggetti Entity relazionati OneToOne:
@@ -51,7 +48,7 @@ public class User {
 	@NotEmpty(message = "Surname cannot be empty")
 	private String lastName;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "role_id", nullable = false)
 	private Role role;
 

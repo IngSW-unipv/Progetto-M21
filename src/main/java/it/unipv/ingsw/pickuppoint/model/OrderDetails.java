@@ -1,4 +1,4 @@
-package it.unipv.ingsw.pickuppoint.model.entity;
+package it.unipv.ingsw.pickuppoint.model;
 
 import java.util.List;
 
@@ -16,8 +16,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
-
-import it.unipv.ingsw.pickuppoint.model.User;
 
 /**
  * Entity specifica che questa classe è un'entità che rappresenta una tabella

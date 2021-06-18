@@ -1,4 +1,4 @@
-package it.unipv.ingsw.pickuppoint.model.entity;
+package it.unipv.ingsw.pickuppoint.model;
 
 import java.util.Set;
 
@@ -9,8 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import it.unipv.ingsw.pickuppoint.model.User;
 
 @Entity
 @Table(name = "roles")
@@ -26,7 +24,7 @@ public class Role {
 	/**
 	 * Relazione 1:N con l'entita User
 	 */
-	@OneToMany(mappedBy = "role")
+	@OneToMany(mappedBy = "role", orphanRemoval=true)
 	private Set<User> user;
 
 	public Long getId() {

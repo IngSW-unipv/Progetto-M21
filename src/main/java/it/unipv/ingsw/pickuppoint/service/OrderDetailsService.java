@@ -13,8 +13,8 @@ import it.unipv.ingsw.pickuppoint.data.DeliveryDetailsRepo;
 import it.unipv.ingsw.pickuppoint.data.OrderDetailsRepo;
 import it.unipv.ingsw.pickuppoint.data.ProductRepo;
 import it.unipv.ingsw.pickuppoint.data.RecipientRepo;
-import it.unipv.ingsw.pickuppoint.model.DeliveryStatus;
-import it.unipv.ingsw.pickuppoint.model.entity.OrderDetails;
+import it.unipv.ingsw.pickuppoint.model.OrderDetails;
+import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
 
 @Service
 public class OrderDetailsService {

@@ -1,4 +1,4 @@
-package it.unipv.ingsw.pickuppoint.model;
+package it.unipv.ingsw.pickuppoint.utility;
 
 public enum DeliveryStatus {
 	HUB, DELIVERING, DELIVERED, WITHDRAWN
