@@ -41,7 +41,7 @@ public class Product {
 	/**
 	 * Associazione 1:1 con l'entita slot
 	 */
-	@OneToOne(mappedBy = "product")
+	@OneToOne(mappedBy = "product", orphanRemoval=true)
 	private Slot slot;
 
 

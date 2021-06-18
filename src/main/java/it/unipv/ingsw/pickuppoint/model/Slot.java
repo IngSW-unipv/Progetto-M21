@@ -52,7 +52,7 @@ public class Slot {
 	 * 
 	 */
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(orphanRemoval=true)
 	@JoinColumn(name = "product_id")
 	private Product product;
 

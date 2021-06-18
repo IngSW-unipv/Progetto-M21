@@ -77,7 +77,6 @@ public class LockerService {
 
 					check = true;
 				}
-
 			}
 
 			if (check == false)
@@ -89,5 +88,4 @@ public class LockerService {
 		}
 
 	}
-
 }

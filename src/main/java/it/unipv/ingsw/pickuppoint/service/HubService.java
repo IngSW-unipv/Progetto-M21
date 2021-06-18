@@ -1,11 +1,16 @@
 package it.unipv.ingsw.pickuppoint.service;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.unipv.ingsw.pickuppoint.data.SlotRepo;
 import it.unipv.ingsw.pickuppoint.model.OrderDetails;
+import it.unipv.ingsw.pickuppoint.model.Product;
 import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
@@ -25,6 +30,9 @@ public class HubService {
 	LockerService lockerService;
 	@Autowired
 	Date date;
+	@Autowired
+	SlotRepo slotRepo;
+	
 	
 	public void deliver(Long id) throws SlotNotAvailable{
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
@@ -33,7 +41,8 @@ public class HubService {
 		lockerService.setSlotDeliver(orderDetails);
 		orderDetailsService.save(orderDetails);
 	}
-
+	
+	@Transactional
 	public void withdraw(String pickupCode) throws ErrorPickupCode {
 		OrderDetails orderDetails = null;
 		orderDetails = orderDetailsService.getOrderByPickupCode(pickupCode);
@@ -43,8 +52,18 @@ public class HubService {
 
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.WITHDRAWN);
 		orderDetails.getDeliveryDetails().setWithdrawalDate(date.getCurrentDataTime());
-		// rimuovere dallo slot
+//		orderDetails.removeProducts();
 		orderDetailsService.save(orderDetails);
+		removeProducts(orderDetails.getProducts());
+		System.out.println("########"+orderDetails.getProducts());
+	}
+	
+
+	private void removeProducts(List<Product> list) {
+		for(Product product: list) {
+			System.out.println("@@@@@@@@@@@@@"+ product);
+			slotRepo.deleteByProduct(product);
+		}
 	}
 
 	public void addOrder(String tracking) throws ErrorTrackingCode {

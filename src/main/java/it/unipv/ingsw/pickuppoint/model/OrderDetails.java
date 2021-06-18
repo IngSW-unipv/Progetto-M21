@@ -69,7 +69,7 @@ public class OrderDetails {
 	 * 
 	 * E' attivo il cascade su tutte le operazioni di INSERT, DELETE, UPDATE
 	 */
-	@OneToMany(mappedBy = "orderDetails", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "orderDetails", orphanRemoval=true)
 	private List<Product> products;
 
 	/**
@@ -126,6 +126,8 @@ public class OrderDetails {
 	public void setOrderDetailsId(Long orderDetailsId) {
 		this.orderDetailsId = orderDetailsId;
 	}
+	
+	
 
 	public String getTrackingCode() {
 		return trackingCode;
