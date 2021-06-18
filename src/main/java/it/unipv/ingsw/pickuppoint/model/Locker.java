@@ -62,6 +62,17 @@ public class Locker {
 	@OneToMany(mappedBy = "locker", cascade = CascadeType.ALL)
 	private List<OrderDetails> orderDetails;
 
+	public Locker(Long lockerId) {
+		this.lockerId = lockerId;
+	}
+
+	public Locker() {
+	}
+
+	public void setLockerId(Long lockerId) {
+		this.lockerId = lockerId;
+	}
+
 	public Long getLockerId() {
 		return lockerId;
 	}
@@ -69,7 +80,7 @@ public class Locker {
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}

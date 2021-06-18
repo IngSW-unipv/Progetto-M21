@@ -1,5 +1,6 @@
 package it.unipv.ingsw.pickuppoint.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -31,7 +32,6 @@ import org.hibernate.annotations.Where;
 @Entity
 @Table(name = "OrderDetails")
 public class OrderDetails {
-	
 
 	/**
 	 * GeneratedValue indica che il valore della chiave primaria viene generato
@@ -69,8 +69,8 @@ public class OrderDetails {
 	 * 
 	 * E' attivo il cascade su tutte le operazioni di INSERT, DELETE, UPDATE
 	 */
-	@OneToMany(mappedBy = "orderDetails", orphanRemoval=true)
-	private List<Product> products;
+	@OneToMany(mappedBy = "orderDetails", orphanRemoval = true, cascade = CascadeType.PERSIST)
+	private List<Product> products = new ArrayList<Product>();
 
 	/**
 	 * Relazione 1:1 con l'entita DeliveryDetails
@@ -93,7 +93,7 @@ public class OrderDetails {
 	 * Relazione 1:1 con l'entità Recipient...
 	 */
 
-	@OneToOne(mappedBy = "orderDetails", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "orderDetails", cascade = CascadeType.PERSIST)
 	@PrimaryKeyJoinColumn
 	private Recipient recipient;
 
@@ -123,11 +123,21 @@ public class OrderDetails {
 		return orderDetailsId;
 	}
 
+	public OrderDetails() {
+	}
+
+	public OrderDetails(String trackingCode, String pickupCode, Locker locker, Recipient recipient,
+			List<Product> products) {
+		this.trackingCode = trackingCode;
+		this.pickupCode = pickupCode;
+		this.locker = locker;
+		this.recipient = recipient;
+		this.products = products;
+	}
+
 	public void setOrderDetailsId(Long orderDetailsId) {
 		this.orderDetailsId = orderDetailsId;
 	}
-	
-	
 
 	public String getTrackingCode() {
 		return trackingCode;
@@ -157,8 +167,9 @@ public class OrderDetails {
 		return products;
 	}
 
-	public void setProducts(List<Product> products) {
-		this.products = products;
+	public void setProducts(Product products) {
+		this.products.add(products);
+		products.setOrderDetails(this);
 	}
 
 	public DeliveryDetails getDeliveryDetails() {
@@ -175,6 +186,7 @@ public class OrderDetails {
 
 	public void setRecipient(Recipient recipient) {
 		this.recipient = recipient;
+		recipient.setOrderDetails(this);
 	}
 
 	public User getCourier() {

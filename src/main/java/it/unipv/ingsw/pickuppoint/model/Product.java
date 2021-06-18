@@ -45,6 +45,14 @@ public class Product {
 	private Slot slot;
 
 
+	
+	public Product() {}
+
+	public Product(double weight, ProductSize size) {
+		this.weight = weight;
+		this.size = size;
+	}
+
 	public ProductSize getSize() {
 		return size;
 	}

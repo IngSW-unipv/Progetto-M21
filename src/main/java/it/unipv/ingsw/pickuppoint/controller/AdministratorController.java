@@ -1,5 +1,7 @@
 package it.unipv.ingsw.pickuppoint.controller;
 
+import java.io.IOException;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.unipv.ingsw.pickuppoint.data.UserRepo;
 import it.unipv.ingsw.pickuppoint.model.User;
+import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
+import it.unipv.ingsw.pickuppoint.service.exception.FilesStorageService;
 
 @Controller
 public class AdministratorController {
@@ -22,6 +28,10 @@ public class AdministratorController {
 	UserService userService;
 	@Autowired
 	UserRepo userRepo;
+	@Autowired
+	FilesStorageService storageService;
+	@Autowired
+	HubService hubService;
 
 	/**
 	 * Questo metodo viene invocato quando il client invia una richiesta GET a
@@ -62,12 +72,12 @@ public class AdministratorController {
 	 * @param bindingResult per la verifica di errori di compilazione del form
 	 * @param model         si riferisce all'istanza di user, serve in caso di
 	 *                      errori nella compilazione.
-	 * @return	la pagina stessa editUser in caso di problemi, o userList in caso
-	 *			di successo.
+	 * @return la pagina stessa editUser in caso di problemi, o userList in caso di
+	 *         successo.
 	 */
 
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public String saveUser(@Valid  @ModelAttribute User user, BindingResult bindingResult, Model model) {
+	public String saveUser(@Valid @ModelAttribute User user, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("user", user);
 			return "editUser";
@@ -75,11 +85,20 @@ public class AdministratorController {
 		userService.saveUser(user);
 		return "redirect:" + "/UserList";
 	}
-	
+
 	@RequestMapping("/delete/{id}")
-	public String deleteProduct(@PathVariable(name = "id") Long id) {
+	public String deleteUser(@PathVariable(name = "id") Long id) {
 		userService.delete(id);
-		
+
 		return "redirect:" + "/UserList";
+	}
+
+	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
+	public String uploadFile(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
+		//storageService.init();
+		storageService.save(file);
+		hubService.addOrders(file);
+
+		return "redirect:" + "/profile";
 	}
 }

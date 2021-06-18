@@ -19,32 +19,45 @@ public class Recipient {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long orderDetailsId;
 
-	private String recipientFirstName;
-	private String recipientLastName;
-	private String recipientEmail;
+	private String firstName;
+	private String lastName;
+	private String email;
 
 	/**
 	 * Relazione 1:1 con l'entita orderDetails, chiave primaria condivisa
 	 */
+	
 	@OneToOne
 	@MapsId
 	@JoinColumn(name = "order_id")
 	private OrderDetails orderDetails;
+
+	public Recipient() {}
+
+	public Recipient(String firstName, String lastName, String email) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+	}
+
+	public void setOrderDetails(OrderDetails orderDetails) {
+		this.orderDetails = orderDetails;
+	}
 
 	public Long getOrderDetailsId() {
 		return orderDetailsId;
 	}
 
 	public String getRecipientFirstName() {
-		return recipientFirstName;
+		return firstName;
 	}
 
 	public String getRecipientLastName() {
-		return recipientLastName;
+		return lastName;
 	}
 
 	public String getRecipientEmail() {
-		return recipientEmail;
+		return email;
 	}
 
 	public OrderDetails getOrderDetails() {

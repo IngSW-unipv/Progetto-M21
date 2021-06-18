@@ -32,7 +32,7 @@ public class CustomerController {
 	public String addOrder(@RequestParam(name = "tracking") @NotBlank String tracking, Model model) {
 
 		try {
-			hubService.addOrder(tracking);
+			hubService.addOrderToProfile(tracking);
 		} catch (ErrorTrackingCode e) {
 			userService.addListOrders(model);
 			model.addAttribute("error", e.getMessage());
