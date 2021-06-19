@@ -95,7 +95,7 @@ public class AdministratorController {
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
 	public String uploadFile(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
-		//storageService.init();
+		storageService.init();
 		storageService.save(file);
 		hubService.addOrders(file);
 
