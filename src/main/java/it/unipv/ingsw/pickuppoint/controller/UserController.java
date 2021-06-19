@@ -107,7 +107,7 @@ public class UserController {
 			return "registration";
 		}
 
-		if (userService.getAuthenticatedUser().getRole().getId() == 1) {
+		if (userService.getAuthenticatedUser().getRole().getName().equals("ADMINISTRATOR")){
 			return "redirect:" + "profile";
 		}
 		return "redirect:" + "/"; // Ritorna alla schermata di login

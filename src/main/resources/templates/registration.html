@@ -32,7 +32,7 @@
 
 
 		<!-- PRINCIPALE -->
-		<main role="main" class="inner cover">
+		<main role="main" class="inner cover" style="width: 42em;">
 
 			<h2>Register</h2>
 			<br>
@@ -43,32 +43,54 @@
 					<p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
 				</div>
 
-				<div class="form-group">
-					<input type="text" class="form-control" th:field="*{email}"
-						placeholder="Email" th:errorclass="is-invalid" required="required"
-						autofocus="autofocus" aria-describedby="emailHelp" />
+				<div class="form-group row">
+
+					<h1 class="col-sm-2 col-form-label">Email</h1>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{email}"
+							placeholder="Email" th:errorclass="is-invalid"
+							required="required" autofocus="autofocus"
+							aria-describedby="emailHelp" />
+					</div>
+
 				</div>
 
-				<div class="form-group">
-					<input type="text" class="form-control" th:field="*{firstName}"
-						placeholder="First name" th:errorclass="is-invalid"
-						required="required" autofocus="autofocus">
+				<div class="form-group row">
+
+					<h1 class="col-sm-2 col-form-label">First Name</h1>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{firstName}"
+							placeholder="First name" th:errorclass="is-invalid"
+							required="required" autofocus="autofocus">
+					</div>
+
 				</div>
 
-				<div class="form-group">
-					<input type="text" class="form-control" th:field="*{lastName}"
-						placeholder="Last name" th:errorclass="is-invalid"
-						required="required" autofocus="autofocus">
+				<div class="form-group row">
+
+					<h1 class="col-sm-2 col-form-label">Last Name</h1>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{lastName}"
+							placeholder="Last name" th:errorclass="is-invalid"
+							required="required" autofocus="autofocus">
+					</div>
+
 				</div>
 
-				<div class="form-group">
-					<input type="password" class="form-control" th:field="*{password}"
-						placeholder="Password" th:errorclass="is-invalid"
-						required="required" autofocus="autofocus">
+				<div class="form-group row">
+
+					<h1 class="col-sm-2 col-form-label">Password</h1>
+					<div class="col-sm-10">
+						<input type="password" class="form-control" th:field="*{password}"
+							placeholder="Password" th:errorclass="is-invalid"
+							required="required" autofocus="autofocus">
+					</div>
+
 				</div>
 
 				<div sec:authorize="hasAnyAuthority('ADMINISTRATOR')">
 					<div class="form-group row">
+
 						<h1 class="col-sm-2 col-form-label">Role</h1>
 						<div class="col-sm-10">
 							<select class="custom-select" id="inputGroupSelect04"
@@ -78,9 +100,11 @@
 								<option value="3">Customer</option>
 							</select>
 						</div>
+
 					</div>
 
 					<div class="form-group row">
+
 						<h1 class="col-sm-2 col-form-label">Enabled</h1>
 						<div class="col-sm-3">
 							<div class="form-check form-check-inline">
@@ -97,11 +121,11 @@
 									class="form-check-label" for="inlineRadio2">False</label>
 							</div>
 						</div>
+
 					</div>
 				</div>
 
-				<button type="submit" class="btn btn-primary btn-lg btn-block">Sign
-					up</button>
+				<button type="submit" class="btn btn-primary btn-lg btn-block">Submit</button>
 			</form>
 
 		</main>
