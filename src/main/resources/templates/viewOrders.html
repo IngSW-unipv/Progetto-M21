@@ -150,8 +150,8 @@
 
 							<!--  ################# ADMINISTRATOR ################# -->
 							<th:block sec:authorize="hasAnyAuthority('ADMINISTRATOR')">
-								<td th:text="${order.courier != null} ? ${order.courier.email}">Courier Email</td>
-								<td th:text="${order.customer != null} ? ${order.customer.email}">Customer Email</td>
+								<td th:text="${order?.courier?.email} ?: 'Not assigned'">Courier Email</td>
+								<td th:text="${order?.customer?.email} ?: 'Not added'">Customer Email</td>
 							</th:block>
 
 						</tr>
@@ -176,7 +176,7 @@
 									<tbody>
 										<tr>
 											<td th:text="${order.deliveryDetails.dataDeliverd} ?: 'Not delivered'"></td>
-											<td th:text="${order.deliveryDetails.withdrawalDate} ?: ''"></td>
+											<td th:text="${order.deliveryDetails.withdrawalDate} ?: 'Not withdrawn'"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -206,7 +206,7 @@
 												<td th:text="${product.productId} ?: 'null'"></td>
 												<td th:text="${product.size} ?: 'null'"></td>
 												<td th:text="${product.weight} ?: 'null'"></td>
-												<td th:text="${product.slot != null} ? ${product.slot.slotId}"></td>
+												<td th:text="${product?.slot?.slotId} ?: ''"></td>
 											</tr>
 										</tbody>
 									</table>

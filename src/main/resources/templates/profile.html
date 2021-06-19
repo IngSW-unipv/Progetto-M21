@@ -16,7 +16,24 @@
 
 <script src="/JS/notification.js" type="text/javascript"></script>
 
+<style>
+th {
+	background: #3d414a;
+	border: solid;
+	border-color: grey;
+	width: 35%;
+}
+
+tr {
+	line-height: 14px;
+}
+</style>
+
+
+
 </head>
+
+
 
 <body class="text-center">
 
@@ -65,6 +82,36 @@
 				</td>
 			</th:block>
 
+			<table class="table table-dark" style="text-align: left;">
+
+				<tbody>
+					<tr>
+						<th>First Name</th>
+						<td th:text="${#authentication.getPrincipal().getUser().getFirstName()}"></td>
+					</tr>
+
+					<tr>
+						<th>Last Name</th>
+						<td th:text="${#authentication.getPrincipal().getUser().getLastName()}"></td>
+					</tr>
+
+					<tr>
+						<th>Email</th>
+						<td sec:authentication="name"></td>
+					</tr>
+
+					<tr>
+						<th>Registration date</th>
+						<td th:text="${#authentication.getPrincipal().getUser().getRegistrationDate()} ?: 'null'"></td>
+					</tr>
+
+					<tr>
+						<th>User type</th>
+						<td sec:authentication="principal.authorities"></td>
+					</tr>
+				</tbody>
+			</table>
+			<!-- 
 			<div class="text-left">
 				<ul class="list-inline">
 					<li class="list-inline-item" style="font-weight: bold;">First Name:</li>
@@ -91,51 +138,49 @@
 					<li class="list-inline-item" style="font-weight: bold;">User type:</li>
 					<li class="list-inline-item" sec:authentication="principal.authorities">Roles</li>
 				</ul>
+-->
+			<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('CUSTOMER', 'COURIER')" class="btn btn-success btn-lg"
+				role="button" aria-pressed="true" style="display: block; margin-top: 20px;">Your orders</a>
 
-				<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('CUSTOMER', 'COURIER')" class="btn btn-success btn-lg"
-					role="button" aria-pressed="true">Your orders</a>
-
-				<div sec:authorize="hasAnyAuthority('ADMINISTRATOR')" style="margin-top: 4em">
-					<h1>Upload Orders</h1>
-					<form th:action="@{/uploadFile}" enctype="multipart/form-data" method="post">
-						<div class="input-group">
-							<div class="custom-file">
-								<input type="file" class="custom-file-input" th:name="file" id="customFile">
-								<label class="custom-file-label" for="customFile">Choose file</label>
-							</div>
-							<div class="input-group-append">
-								<button class="btn btn-primary" type="submit" id="myInput">Upload</button>
-							</div>
-
+			<div sec:authorize="hasAnyAuthority('ADMINISTRATOR')" style="margin-top: 4em">
+				<h1 style="margin-bottom: 15px; text-align: left;">Upload Orders</h1>
+				<form th:action="@{/uploadFile}" enctype="multipart/form-data" method="post">
+					<div class="input-group">
+						<div class="custom-file">
+							<input type="file" class="custom-file-input" th:name="file" id="customFile">
+							<label class="custom-file-label" for="customFile">Choose file</label>
 						</div>
-					</form>
-				</div>
-
-				<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success"
-					role="button" aria-pressed="true" style="display: block; margin-bottom: 15px; margin-top: 30px;">All orders</a>
-				<a th:href="@{/register}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success"
-					role="button" aria-pressed="true" style="display: block; margin-bottom: 15px;">Add User</a>
-				<a th:href="@{/UserList}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success"
-					role="button" aria-pressed="true" style="display: block;">User List</a>
-
-
-
-				<div sec:authorize="hasAnyAuthority('CUSTOMER')" style="margin-top: 5em;">
-
-					<h2>Add order to profile</h2>
-
-					<form th:action="@{/add}" method="get">
-						<div class="form-group">
-							<input type="text" th:name="tracking" th:placeholder="Tracking" class="form-control" required="required"
-								autofocus="autofocus" />
+						<div class="input-group-append">
+							<button class="btn btn-primary" type="submit" id="myInput">Upload</button>
 						</div>
-						<button type="submit" class="btn btn-primary btn-lg btn-block" aria-pressed="true">Add</button>
-					</form>
 
-				</div>
+					</div>
+				</form>
+			</div>
 
+			<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success" role="button"
+				aria-pressed="true" style="display: block; margin-bottom: 15px; margin-top: 30px;">All orders</a>
+			<a th:href="@{/register}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success"
+				role="button" aria-pressed="true" style="display: block; margin-bottom: 15px;">Add User</a>
+			<a th:href="@{/UserList}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success"
+				role="button" aria-pressed="true" style="display: block;">User List</a>
+
+
+
+			<div sec:authorize="hasAnyAuthority('CUSTOMER')" style="margin-top: 3em;">
+
+				<h2>Add order to profile</h2>
+
+				<form th:action="@{/add}" method="get">
+					<div class="form-group">
+						<input type="text" th:name="tracking" th:placeholder="Tracking" class="form-control" required="required"
+							autofocus="autofocus" />
+					</div>
+					<button type="submit" class="btn btn-primary btn-lg btn-block" aria-pressed="true">Add</button>
+				</form>
 
 			</div>
+
 
 
 		</main>
@@ -156,7 +201,8 @@
 				.addEventListener(
 						'change',
 						function(e) {
-							var fileName = document.getElementById("customFile").files[0].name;
+							var fileName = document
+									.getElementById("customFile").files[0].name;
 							var nextSibling = e.target.nextElementSibling
 							nextSibling.innerText = fileName
 						})
