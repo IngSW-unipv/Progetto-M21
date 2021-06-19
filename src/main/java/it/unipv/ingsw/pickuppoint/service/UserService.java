@@ -42,18 +42,21 @@ public class UserService {
 	/**
 	 * Questo metodo effettua la registrazione del Customer
 	 * 
-	 * @param customer da registrare
+	 * @param newUser da registrare
 	 * @throws CustomerAlreadyExistException
 	 */
-	public void register(User customer) throws CustomerAlreadyExistException {
-		if (checkIfUserExist(customer.getEmail())) {
+	public void register(User newUser) throws CustomerAlreadyExistException {
+		if (checkIfUserExist(newUser.getEmail())) {
 			throw new CustomerAlreadyExistException("Customer already exists for this email");
 		}
-		customer.setEnabled(true);
-		customer.setRole(getCustomerRole());
-		customer.setRegistrationDate(date.getCurrentDataTime());
-		encodePassword(customer);
-		saveUser(customer);
+
+		if (newUser.getRole() == null) {
+			newUser.setEnabled(true);
+			newUser.setRole(getCustomerRole());
+		}
+		newUser.setRegistrationDate(date.getCurrentDataTime());
+		encodePassword(newUser);
+		saveUser(newUser);
 	}
 
 	/**

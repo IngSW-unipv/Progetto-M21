@@ -90,6 +90,7 @@ public class UserController {
 	 *                      inoltrare la stessa istanza (ed evitare di crearne
 	 *                      un'altra) alla pagina di registrazione
 	 * @return In caso di errori ritorna la pagina di registrazione, altrimenti
+	 * 		   se l'utente loggato è un admin ritorna al profilo, sennò
 	 *         ritorna un reindirizzamento alla pagina root
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
@@ -104,6 +105,10 @@ public class UserController {
 			bindingResult.rejectValue("email", "user.email", "An account already exists for this email");
 			model.addAttribute("user", customer);
 			return "registration";
+		}
+
+		if (userService.getAuthenticatedUser().getRole().getId() == 1) {
+			return "redirect:" + "profile";
 		}
 		return "redirect:" + "/"; // Ritorna alla schermata di login
 	}
