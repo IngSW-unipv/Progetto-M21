@@ -95,7 +95,7 @@
 							<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
 							<td th:text="${order.locker.name} ?: ''">Locker Name</td>
 							<td th:text="${order.locker.lockerAddress.city} ?: ''">Locker address</td>
-							<td th:text="${order.deliveryDetails.deliveryStatus}">Status</td>
+							<td th:text="${order.deliveryDetails.deliveryStatus} ?: ''">Status</td>
 
 
 							<!-- VERIFICA LO STATO E IL RUOLO DELL'UTENTE PER INSERIMENTO DELL'APPOSITO PULSANTE -->
@@ -175,8 +175,8 @@
 
 									<tbody>
 										<tr>
-											<td th:text="${order.deliveryDetails.dataDeliverd} ?: 'null'"></td>
-											<td th:text="${order.deliveryDetails.withdrawalDate} ?: 'null'"></td>
+											<td th:text="${order.deliveryDetails.dataDeliverd} ?: 'Not delivered'"></td>
+											<td th:text="${order.deliveryDetails.withdrawalDate} ?: ''"></td>
 										</tr>
 									</tbody>
 								</table>

@@ -22,7 +22,7 @@ public class FilesStorageService {
 		try {
 			Files.createDirectory(root);
 		} catch (IOException e) {
-			throw new RuntimeException("Could not initialize folder for upload!");
+			System.out.println("folder already exists");
 		}
 	}
 

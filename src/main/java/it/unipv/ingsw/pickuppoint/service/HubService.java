@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.unipv.ingsw.pickuppoint.data.OrderDetailsRepo;
 import it.unipv.ingsw.pickuppoint.data.SlotRepo;
+import it.unipv.ingsw.pickuppoint.model.DeliveryDetails;
 import it.unipv.ingsw.pickuppoint.model.Locker;
 import it.unipv.ingsw.pickuppoint.model.OrderDetails;
 import it.unipv.ingsw.pickuppoint.model.Product;
@@ -123,6 +124,7 @@ public class HubService {
 			newOrder.setTrackingCode(trackingCode);
 			newOrder.setPickupCode(pickupCode);
 			newOrder.setRecipient(newRecipient);
+			newOrder.setDeliveryDetails(new DeliveryDetails());
 
 //			SAVE ORDER
 			orderDetailsRepo.save(newOrder);

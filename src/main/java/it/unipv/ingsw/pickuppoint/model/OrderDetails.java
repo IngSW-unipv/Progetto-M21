@@ -178,6 +178,7 @@ public class OrderDetails {
 
 	public void setDeliveryDetails(DeliveryDetails deliveryDetails) {
 		this.deliveryDetails = deliveryDetails;
+		deliveryDetails.setOrderDetails(this);
 	}
 
 	public Recipient getRecipient() {
