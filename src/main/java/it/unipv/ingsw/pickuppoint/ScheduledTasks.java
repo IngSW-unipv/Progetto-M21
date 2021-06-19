@@ -116,8 +116,7 @@ public class ScheduledTasks {
 		LOGGER.info("VERIFICA STATO DELIVERS");
 		HashMap<Long, Integer> checkPendingDeliversMap = (HashMap<Long, Integer>) orderDetailsService
 				.getfindListOfDifferenceDeliverdDateAndCurrentDate(entityManager);
-
-		LOGGER.debug("size" + checkPendingDeliversMap.size());
+		
 		for (HashMap.Entry<Long, Integer> entry : checkPendingDeliversMap.entrySet()) {
 			if ((entry.getValue() > 2)&&(orderDetailsService.getOrderDetailsById(entry.getKey()).getDeliveryDetails().getDeliveryStatus() != DeliveryStatus.NOT_WITHDRAWN)) {
 				

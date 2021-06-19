@@ -51,7 +51,7 @@ public class Slot {
 	 * 
 	 */
 
-	@OneToOne(orphanRemoval=true)
+	@OneToOne()
 	@JoinColumn(name = "product_id")
 	private Product product;
 

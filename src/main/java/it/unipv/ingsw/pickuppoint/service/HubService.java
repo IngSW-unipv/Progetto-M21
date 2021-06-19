@@ -3,7 +3,6 @@ package it.unipv.ingsw.pickuppoint.service;
 import java.io.IOException;
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import org.json.JSONArray;
@@ -19,6 +18,7 @@ import it.unipv.ingsw.pickuppoint.model.Locker;
 import it.unipv.ingsw.pickuppoint.model.OrderDetails;
 import it.unipv.ingsw.pickuppoint.model.Product;
 import it.unipv.ingsw.pickuppoint.model.Recipient;
+import it.unipv.ingsw.pickuppoint.model.Slot;
 import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
@@ -72,7 +72,11 @@ public class HubService {
 	private void removeProducts(List<Product> list) {
 		for (Product product : list) {
 			System.out.println("@@@@@@@@@@@@@" + product);
-			slotRepo.deleteByProduct(product);
+			Slot slot = slotRepo.findByProductId(product.getProductId());
+			slot.setEmpty(true);
+			slot.setProduct(null);
+			slotRepo.save(slot);
+			//slotRepo.deleteProductFromSlot(product.getProductId());
 		}
 	}
 

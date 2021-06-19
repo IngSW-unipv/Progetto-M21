@@ -44,7 +44,7 @@ public class CourierController {
 	}
 	
 	@RequestMapping("/sendBackToHub/{id}")
-	public String sendBacktoHub(@PathVariable(name = "id") Long id, Model model) {
+	public String sendBacktoHub(@PathVariable(name = "id") Long id) {
 
 		hubService.sendBackToHub(id);
 
