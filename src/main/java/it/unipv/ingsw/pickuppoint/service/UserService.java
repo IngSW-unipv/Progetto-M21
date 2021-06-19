@@ -1,5 +1,7 @@
 package it.unipv.ingsw.pickuppoint.service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 
 import it.unipv.ingsw.pickuppoint.data.RoleRepo;
 import it.unipv.ingsw.pickuppoint.data.UserRepo;
+import it.unipv.ingsw.pickuppoint.model.Product;
 import it.unipv.ingsw.pickuppoint.model.Role;
 import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.exception.CustomerAlreadyExistException;
@@ -116,19 +119,30 @@ public class UserService {
 		}
 
 	}
-	
+
 	public void findAllCouriers(Model model) {
 		model.addAttribute("listCouriers", userRepo.findByRole_name("COURIER"));
 	}
-	
+
 	public void findAllUsers(Model model) {
-		model.addAttribute("listUsers", userRepo.findAll());		
+		List<User> users = userRepo.findAll();
+		Collections.sort(users, new Comparator<User>() {
+
+			@Override
+			public int compare(User user0, User user1) {
+
+				return user0.getRole().getName().compareTo(user1.getRole().getName());
+
+			}
+		});
+
+		model.addAttribute("listUsers", users);
 	}
-	
+
 	public void saveUser(User user) {
 		userRepo.save(user);
 	}
-	
+
 	public void editUser(Model model, Long id) {
 		model.addAttribute("user", userRepo.findById(id));
 	}
