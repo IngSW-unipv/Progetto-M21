@@ -67,7 +67,8 @@ public class HubService {
 		removeProducts(orderDetails.getProducts());
 		System.out.println("########" + orderDetails.getProducts());
 	}
-
+	
+	@Transactional
 	private void removeProducts(List<Product> list) {
 		for (Product product : list) {
 			System.out.println("@@@@@@@@@@@@@" + product);
@@ -136,4 +137,23 @@ public class HubService {
 			order.setCourier(null);
 		}
 	}
+	
+	@Transactional
+	public void setNotWithdrawnState (Long id) {
+		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
+		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.NOT_WITHDRAWN);
+		orderDetailsService.save(orderDetails);
+	}
+	
+	@Transactional
+	public void sendBackToHub(Long id) {	
+		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
+		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.HUB);
+		orderDetails.setCourier(null);
+		orderDetails.getDeliveryDetails().setDataDeliverd(null);
+		removeProducts(orderDetails.getProducts());
+		orderDetailsService.save(orderDetails);
+		
+	}
+	
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import it.unipv.ingsw.pickuppoint.model.DeliveryDetails;
 import it.unipv.ingsw.pickuppoint.model.OrderDetails;
 import it.unipv.ingsw.pickuppoint.model.User;
+import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
 import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
@@ -33,6 +34,8 @@ public class ScheduledTasks {
 	OrderDetailsService orderDetailsService;
 	@Autowired
 	EntityManager entityManager;
+	@Autowired
+	HubService hubService;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledTasks.class);
 
@@ -116,10 +119,10 @@ public class ScheduledTasks {
 
 		LOGGER.debug("size" + checkPendingDeliversMap.size());
 		for (HashMap.Entry<Long, Integer> entry : checkPendingDeliversMap.entrySet()) {
-			LOGGER.debug("size" + entry.getValue());
 			if (entry.getValue() > 2) {
-
-				System.out.println("Test - " + entry.getKey() + " - " + entry.getValue());
+				
+				hubService.setNotWithdrawnState(entry.getKey());
+				LOGGER.debug("SET WITHDRAWN STATE TO ORDER: " + entry.getKey());
 
 			}
 

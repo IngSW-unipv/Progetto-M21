@@ -83,4 +83,5 @@ public class OrderDetailsService {
 	public Map<Long, Integer> getfindListOfDifferenceDeliverdDateAndCurrentDate(EntityManager em){
 		return deliveryDetailsRepo.findListOfDifferenceDeliverdDateAndCurrentDate(em);
 	}
+	
 }

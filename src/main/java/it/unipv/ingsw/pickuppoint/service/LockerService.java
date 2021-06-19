@@ -88,4 +88,10 @@ public class LockerService {
 		}
 
 	}
+	
+	
+	public void emptySlot() {
+		
+	}
+	
 }

@@ -32,4 +32,5 @@ public interface DeliveryDetailsRepo extends JpaRepository<DeliveryDetails, Long
 
 	}
 
+
 }

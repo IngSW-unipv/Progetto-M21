@@ -42,4 +42,14 @@ public class CourierController {
 
 		return "redirect:" + "/Orders";
 	}
+	
+	@RequestMapping("/sendBackToHub/{id}")
+	public String sendBacktoHub(@PathVariable(name = "id") Long id, Model model) {
+
+		hubService.sendBackToHub(id);
+
+		return "redirect:" + "/Orders";
+	}
+	
+	
 }
