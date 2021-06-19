@@ -61,7 +61,7 @@ public class User {
 	/**
 	 * Relazione 1:N con l'entità OrderDetails
 	 */
-	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderDetails> orderDetailsCustomer;
 
 	public Long getUserId() {

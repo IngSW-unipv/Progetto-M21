@@ -100,15 +100,14 @@ public class HubService {
 			String pickupCode = (String) order.get("pickupCode");
 			Long lockerId = ((Number) order.get("lockerId")).longValue();
 			Locker newLocker = new Locker(lockerId);
-			
+
 //			RECIPIENT
 			JSONObject recipient = order.getJSONObject("recipient");
 			String firstName = (String) recipient.get("name");
 			String lastName = (String) recipient.get("last");
 			String email = (String) recipient.get("email");
 			Recipient newRecipient = new Recipient(firstName, lastName, email);
-			
-			
+
 //			PRODUCTS
 			JSONArray products = order.getJSONArray("products");
 			for (int x = 0; x < products.length(); x++) {
@@ -124,10 +123,15 @@ public class HubService {
 			newOrder.setTrackingCode(trackingCode);
 			newOrder.setPickupCode(pickupCode);
 			newOrder.setRecipient(newRecipient);
-			
+
 //			SAVE ORDER
 			orderDetailsRepo.save(newOrder);
 		}
 	}
 
+	public void deleteCourier(Long id) {
+		for (OrderDetails order : orderDetailsRepo.findByCourier_userId(id)) {
+			order.setCourier(null);
+		}
+	}
 }

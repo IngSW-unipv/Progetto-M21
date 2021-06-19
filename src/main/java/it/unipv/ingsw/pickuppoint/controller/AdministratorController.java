@@ -88,8 +88,8 @@ public class AdministratorController {
 
 	@RequestMapping("/delete/{id}")
 	public String deleteUser(@PathVariable(name = "id") Long id) {
+		hubService.deleteCourier(id);
 		userService.delete(id);
-
 		return "redirect:" + "/UserList";
 	}
 
