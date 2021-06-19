@@ -119,7 +119,7 @@ public class ScheduledTasks {
 
 		LOGGER.debug("size" + checkPendingDeliversMap.size());
 		for (HashMap.Entry<Long, Integer> entry : checkPendingDeliversMap.entrySet()) {
-			if (entry.getValue() > 2) {
+			if ((entry.getValue() > 2)&&(orderDetailsService.getOrderDetailsById(entry.getKey()).getDeliveryDetails().getDeliveryStatus() != DeliveryStatus.NOT_WITHDRAWN)) {
 				
 				hubService.setNotWithdrawnState(entry.getKey());
 				LOGGER.debug("SET WITHDRAWN STATE TO ORDER: " + entry.getKey());
