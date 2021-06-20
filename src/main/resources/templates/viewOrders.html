@@ -57,7 +57,6 @@
 						<th>Order ID</th>
 						<th>Tracking Code</th>
 						<th>Pickup Code</th>
-						<th>Locker Name</th>
 						<th>Locker Address</th>
 						<th>Status</th>
 						<th sec:authorize="hasAnyAuthority('CUSTOMER')" style="width: 212px;">Withdraw</th>
@@ -93,7 +92,6 @@
 							<td th:text="${order.orderDetailsId}">Order ID</td>
 							<td th:text="${order.trackingCode}">Tracking Code</td>
 							<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
-							<td th:text="${order.locker.name} ?: ''">Locker Name</td>
 							<td th:text="${order.locker.lockerAddress.city} ?: ''">Locker address</td>
 							<td th:text="${order.deliveryDetails.deliveryStatus} ?: ''">Status</td>
 
@@ -196,7 +194,7 @@
 							<tr th:id="|demo2${order}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
 								<td colspan="8">
 
-									<table class="table-dark" style="margin-left: 11%; line-height: 15px; margin-bottom: 2em;">
+									<table class="table-dark" style="margin-left: 11%; line-height: 15px">
 										<thead style="background: #3d414a;">
 											<tr class="info">
 												<th>ProductId</th>
@@ -219,6 +217,33 @@
 								</td>
 							</tr>
 						</th:block>
+
+						<!-- ############ TABELLA 4 : LOCKER ADDRESS ############ -->
+						<tr th:id="|demo${order.locker}|" class="collapse"
+							th:classappend="|demo${order.orderDetailsId}|">
+							<td colspan="8">
+
+								<table class="table-dark"
+									style="margin-left: 11%; line-height: 15px; margin-bottom: 2em;">
+									<thead style="background: #3d414a;">
+										<tr class="info">
+											<th>Locker Name</th>
+											<th>Locker City</th>
+											<th>Postal Code</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td th:text="${order.locker.name}"></td>
+											<td th:text="${order.locker.lockerAddress.city}"></td>
+											<td th:text="${order.locker.lockerAddress.postalCode}"></td>
+										</tr>
+									</tbody>
+								</table>
+
+							</td>
+						</tr>
 
 
 						<!-- ############ FINE ITERAZIONE ORDINI ############ -->
