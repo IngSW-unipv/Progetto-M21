@@ -11,7 +11,7 @@
 <link rel="icon" href="/images/favicons/favicon.ico">
 
 <link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/examples/cover/cover.css">
+<link rel="stylesheet" href="/CSS/cover.css">
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
 <script src="/JS/notification.js" type="text/javascript"></script>
@@ -137,7 +137,7 @@
 											courierNotification(orderId);
 										</script>
 									</th:block>
-									
+
 									<td th:case="'NOT_WITHDRAWN'">
 										<a role="button" class="btn btn-outline-success" style="font-weight: bold; display: block;"
 											th:href="@{'/sendBackToHub/' + ${order.orderDetailsId}}">Send Back to HUB</a>
@@ -217,12 +217,10 @@
 						</th:block>
 
 						<!-- ############ TABELLA 4 : LOCKER ADDRESS ############ -->
-						<tr th:id="|demo${order.locker}|" class="collapse"
-							th:classappend="|demo${order.orderDetailsId}|">
+						<tr th:id="|demo${order.locker}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
 							<td colspan="8">
 
-								<table class="table-dark"
-									style="margin-left: 11%; line-height: 15px;">
+								<table class="table-dark" style="margin-left: 11%; line-height: 15px;">
 									<thead style="background: #3d414a;">
 										<tr class="info">
 											<th>Locker Name</th>
@@ -242,14 +240,12 @@
 
 							</td>
 						</tr>
-						
+
 						<!-- ############ TABELLA 5 : DATI RECIPIENT ############ -->
-						<tr th:id="|demo${order.recipient}|" class="collapse"
-							th:classappend="|demo${order.orderDetailsId}|">
+						<tr th:id="|demo${order.recipient}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
 							<td colspan="8">
 
-								<table class="table-dark"
-									style="margin-left: 11%; line-height: 15px; margin-bottom: 2em;">
+								<table class="table-dark" style="margin-left: 11%; line-height: 15px; margin-bottom: 2em;">
 									<thead style="background: #3d414a;">
 										<tr class="info">
 											<th>Recipient's First Name</th>
