@@ -57,7 +57,6 @@
 						<th>Order ID</th>
 						<th>Tracking Code</th>
 						<th>Pickup Code</th>
-						<th>Locker Address</th>
 						<th>Status</th>
 						<th sec:authorize="hasAnyAuthority('CUSTOMER')" style="width: 212px;">Withdraw</th>
 						<th sec:authorize="hasAnyAuthority('COURIER')" style="width: 190px;">Deliver</th>
@@ -92,7 +91,6 @@
 							<td th:text="${order.orderDetailsId}">Order ID</td>
 							<td th:text="${order.trackingCode}">Tracking Code</td>
 							<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
-							<td th:text="${order.locker.lockerAddress.city} ?: ''">Locker address</td>
 							<td th:text="${order.deliveryDetails.deliveryStatus} ?: ''">Status</td>
 
 
@@ -171,7 +169,7 @@
 									<thead style="background: #3d414a;">
 										<tr class="info">
 											<!--  <th>View Products</th> -->
-											<th>Data Deliverd</th>
+											<th>Data Delivered</th>
 											<th>Withdrawal Date</th>
 										</tr>
 									</thead>
@@ -224,7 +222,7 @@
 							<td colspan="8">
 
 								<table class="table-dark"
-									style="margin-left: 11%; line-height: 15px; margin-bottom: 2em;">
+									style="margin-left: 11%; line-height: 15px;">
 									<thead style="background: #3d414a;">
 										<tr class="info">
 											<th>Locker Name</th>
@@ -244,7 +242,33 @@
 
 							</td>
 						</tr>
+						
+						<!-- ############ TABELLA 5 : DATI RECIPIENT ############ -->
+						<tr th:id="|demo${order.recipient}|" class="collapse"
+							th:classappend="|demo${order.orderDetailsId}|">
+							<td colspan="8">
 
+								<table class="table-dark"
+									style="margin-left: 11%; line-height: 15px; margin-bottom: 2em;">
+									<thead style="background: #3d414a;">
+										<tr class="info">
+											<th>Recipient's First Name</th>
+											<th>Last Name</th>
+											<th>Email</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr>
+											<td th:text="${order.recipient.RecipientFirstName} ?: 'null'"></td>
+											<td th:text="${order.recipient.RecipientLastName} ?: 'null'"></td>
+											<td th:text="${order.recipient.RecipientEmail} ?: 'null'"></td>
+										</tr>
+									</tbody>
+								</table>
+
+							</td>
+						</tr>
 
 						<!-- ############ FINE ITERAZIONE ORDINI ############ -->
 					</th:block>
