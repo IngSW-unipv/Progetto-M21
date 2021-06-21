@@ -1,12 +1,11 @@
 package it.unipv.ingsw.pickuppoint.service;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -124,17 +123,7 @@ public class UserService {
 	}
 
 	public void findAllUsers(Model model) {
-		List<User> users = userRepo.findAll();
-		Collections.sort(users, new Comparator<User>() {
-
-			@Override
-			public int compare(User user0, User user1) {
-
-				return user0.getRole().getName().compareTo(user1.getRole().getName());
-
-			}
-		});
-
+		List<User> users = userRepo.findAll(Sort.by(Sort.Direction.ASC, "role"));
 		model.addAttribute("listUsers", users);
 	}
 
