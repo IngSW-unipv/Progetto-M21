@@ -1,5 +1,8 @@
 package it.unipv.ingsw.pickuppoint.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -8,13 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import it.unipv.ingsw.pickuppoint.utility.SlotSize;
 
 @Entity
-@Table(name = "Slot")
+@Table(name = "slot")
 public class Slot {
 
 	/**
@@ -51,9 +54,8 @@ public class Slot {
 	 * 
 	 */
 
-	@OneToOne()
-	@JoinColumn(name = "product_id")
-	private Product product;
+	@OneToMany(mappedBy = "slot", cascade = CascadeType.ALL)
+	private List<Product> products;
 
 	@Enumerated(EnumType.STRING)
 	private SlotSize size;
@@ -77,7 +79,7 @@ public class Slot {
 	public double getHeight() {
 		return size.getHeight();
 	}
-	
+
 	public double getVolume() {
 		return size.getVolume();
 	}
@@ -98,12 +100,21 @@ public class Slot {
 		this.locker = locker;
 	}
 
-	public Product getProduct() {
-		return product;
+	public List<Product> getProduct() {
+		return products;
 	}
 
-	public void setProduct(Product product) {
-		this.product = product;
+	public void addProduct(Product product) {
+		this.products.add(product);
+		product.setSlot(this);
+	}
+	
+	public void setProduct(List<Product> products) {
+		this.products = products;
+	}
+
+	public void removeProduct(Product product) {
+		this.products.remove(product);
 	}
 
 	public SlotSize getSize() {

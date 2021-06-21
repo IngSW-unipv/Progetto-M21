@@ -1,16 +1,15 @@
 package it.unipv.ingsw.pickuppoint.service;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.unipv.ingsw.pickuppoint.data.LockerAddressRepo;
 import it.unipv.ingsw.pickuppoint.data.LockerRepo;
 import it.unipv.ingsw.pickuppoint.data.SlotRepo;
-import it.unipv.ingsw.pickuppoint.model.Locker;
 import it.unipv.ingsw.pickuppoint.model.OrderDetails;
 import it.unipv.ingsw.pickuppoint.model.Product;
 import it.unipv.ingsw.pickuppoint.model.Slot;
@@ -27,71 +26,66 @@ public class LockerService {
 	@Autowired
 	LockerAddressRepo addressRepo;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(LockerService.class);
+
 	public void setSlotDeliver(OrderDetails orderDetails) throws SlotNotAvailable {
-		Locker locker = orderDetails.getLocker();
 		List<Product> products = orderDetails.getProducts();
-		Collections.sort(products, new Comparator<Product>() {
+		List<Slot> slots = getLockerSlot(orderDetails.getLocker().getLockerId());
 
-			@Override
-			public int compare(Product o1, Product o2) {
-				if (o1.getVolume() > o2.getVolume()) {
-					return 1;
-				} else if (o1.getVolume() < o2.getVolume()) {
-					return -1;
-				} else {
-					return 0;
-				}
-			}
+//		Volume totale prodotti dell'ordine
+		double totVolume = totVolumeProduct(products);
 
-		});
-
-		List<Slot> slotList = slotRepo.findByLockerId(locker.getLockerId());
-
-		Collections.sort(slotList, new Comparator<Slot>() {
-
-			@Override
-			public int compare(Slot o1, Slot o2) {
-				if (o1.getVolume() > o2.getVolume()) {
-					return 1;
-				} else if (o1.getVolume() < o2.getVolume()) {
-					return -1;
-				} else {
-					return 0;
-				}
-			}
-
-		});
-
-		String error = "";
+		Long slotId = allInOneSlot(slots, totVolume);
 
 		for (Product product : products) {
 
-			boolean check = false;
-
-			for (int i = 0; i < slotList.size(); i++) {
-
-				if ((slotList.get(i).isEmpty()) && (slotList.get(i).getVolume()  >= product.getVolume())) {
-					slotList.get(i).setEmpty(false);
-					slotList.get(i).setProduct(product);
-					i = slotList.size();
-
-					check = true;
-				}
+			if (slotId != null) {
+				Slot slot = slotRepo.findBySlotId(slotId);
+				product.setSlot(slot);
+				slot.addProduct(product);
+				slot.setEmpty(false);
 			}
 
-			if (check == false)
-				error = "Impossibile consegnare ordine " + product.getOrderId() + "\n";
-		}
+			else {
+				double productVolume = product.getVolume();
 
-		if (error.length() != 0) {
-			throw new SlotNotAvailable(error);
-		}
+				for (Slot slot : slots) {
+					double slotVolume = slot.getVolume();
 
+					if (slot.isEmpty() && product.getSlot() == null) {
+						if (slotVolume >= productVolume) {
+							slot.addProduct(product);
+							slot.setEmpty(false);
+						}
+					}
+				}
+
+				if (product.getSlot() == null) {
+					throw new SlotNotAvailable(
+							"NON è POSSIBILE CONSEGNARE L'ORDINE " + product.getOrderId() + " SLOT NON DISPONIBILI");
+				}
+			}
+		}
 	}
-	
-	
-	public void emptySlot() {
-		
+
+	private Long allInOneSlot(List<Slot> slots, double totVolume) {
+		Long slotId = null;
+		for (Slot slot : slots) {
+			if (Math.abs(slot.getVolume()) >= Math.abs(totVolume) && slot.isEmpty())
+				slotId = slot.getSlotId();
+		}
+		return slotId;
 	}
-	
+
+	private double totVolumeProduct(List<Product> products) {
+		double totVolume = 0;
+		for (Product product : products) {
+			totVolume += product.getVolume();
+		}
+		return totVolume;
+	}
+
+	public List<Slot> getLockerSlot(Long id) {
+		return slotRepo.findByLockerId(id);
+	}
 }

@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 
 import it.unipv.ingsw.pickuppoint.data.RoleRepo;
 import it.unipv.ingsw.pickuppoint.data.UserRepo;
-import it.unipv.ingsw.pickuppoint.model.Product;
 import it.unipv.ingsw.pickuppoint.model.Role;
 import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.exception.CustomerAlreadyExistException;
