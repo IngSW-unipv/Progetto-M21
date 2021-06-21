@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org"
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
 
@@ -13,10 +11,9 @@
 
 <link rel="icon" href="/images/favicons/favicon.ico">
 
-<link rel="stylesheet"
-	href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://getbootstrap.com/docs/4.0/examples/cover/cover.css">
+<link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="/CSS/cover.css">
+
 
 
 </head>
@@ -36,8 +33,7 @@
 
 			<h2>Register</h2>
 			<br>
-			<form action="#" class="form-signin" th:action="@{/register}"
-				th:object="${user}" method="post">
+			<form action="#" class="form-signin" th:action="@{/register}" th:object="${user}" method="post">
 
 				<div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
 					<p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
@@ -47,10 +43,8 @@
 
 					<h1 class="col-sm-2 col-form-label">Email</h1>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" th:field="*{email}"
-							placeholder="Email" th:errorclass="is-invalid"
-							required="required" autofocus="autofocus"
-							aria-describedby="emailHelp" />
+						<input type="text" class="form-control" th:field="*{email}" placeholder="Email" th:errorclass="is-invalid"
+							required="required" autofocus="autofocus" aria-describedby="emailHelp" />
 					</div>
 
 				</div>
@@ -59,9 +53,8 @@
 
 					<h1 class="col-sm-2 col-form-label">First Name</h1>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" th:field="*{firstName}"
-							placeholder="First name" th:errorclass="is-invalid"
-							required="required" autofocus="autofocus">
+						<input type="text" class="form-control" th:field="*{firstName}" placeholder="First name"
+							th:errorclass="is-invalid" required="required" autofocus="autofocus">
 					</div>
 
 				</div>
@@ -70,8 +63,7 @@
 
 					<h1 class="col-sm-2 col-form-label">Last Name</h1>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" th:field="*{lastName}"
-							placeholder="Last name" th:errorclass="is-invalid"
+						<input type="text" class="form-control" th:field="*{lastName}" placeholder="Last name" th:errorclass="is-invalid"
 							required="required" autofocus="autofocus">
 					</div>
 
@@ -81,9 +73,8 @@
 
 					<h1 class="col-sm-2 col-form-label">Password</h1>
 					<div class="col-sm-10">
-						<input type="password" class="form-control" th:field="*{password}"
-							placeholder="Password" th:errorclass="is-invalid"
-							required="required" autofocus="autofocus">
+						<input type="password" class="form-control" th:field="*{password}" placeholder="Password"
+							th:errorclass="is-invalid" required="required" autofocus="autofocus">
 					</div>
 
 				</div>
@@ -93,8 +84,7 @@
 
 						<h1 class="col-sm-2 col-form-label">Role</h1>
 						<div class="col-sm-10">
-							<select class="custom-select" id="inputGroupSelect04"
-								th:field="*{role}">
+							<select class="custom-select" id="inputGroupSelect04" th:field="*{role}">
 								<option value="1">Admin</option>
 								<option value="2">Courier</option>
 								<option value="3">Customer</option>
@@ -108,17 +98,15 @@
 						<h1 class="col-sm-2 col-form-label">Enabled</h1>
 						<div class="col-sm-3">
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio"
-									th:field="*{Enabled}" name="inlineRadioOptions"
-									id="inlineRadio1" value="true"> <label
-									class="form-check-label" for="inlineRadio1">True</label>
+								<input class="form-check-input" type="radio" th:field="*{Enabled}" name="inlineRadioOptions" id="inlineRadio1"
+									value="true">
+								<label class="form-check-label" for="inlineRadio1">True</label>
 							</div>
 
 							<div class="form-check form-check-inline">
-								<input class="form-check-input" type="radio"
-									th:field="*{Enabled}" name="inlineRadioOptions"
-									id="inlineRadio2" value="false"> <label
-									class="form-check-label" for="inlineRadio2">False</label>
+								<input class="form-check-input" type="radio" th:field="*{Enabled}" name="inlineRadioOptions" id="inlineRadio2"
+									value="false">
+								<label class="form-check-label" for="inlineRadio2">False</label>
 							</div>
 						</div>
 
@@ -137,9 +125,7 @@
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-	<script
-		src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
-	<script
-		src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
+	<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
+	<script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
