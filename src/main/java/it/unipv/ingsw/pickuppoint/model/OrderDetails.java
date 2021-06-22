@@ -58,6 +58,9 @@ public class OrderDetails {
 	// Spostato pickupCode da DD a OD
 	@Column(nullable = true)
 	private String pickupCode;
+	
+	@Column(nullable = false)
+	private String sender;
 
 	@ManyToOne
 	@JoinColumn(name = "locker_id")
@@ -126,13 +129,22 @@ public class OrderDetails {
 	public OrderDetails() {
 	}
 
-	public OrderDetails(String trackingCode, String pickupCode, Locker locker, Recipient recipient,
+	public OrderDetails(String trackingCode, String pickupCode, Locker locker, Recipient recipient, String sender,
 			List<Product> products) {
 		this.trackingCode = trackingCode;
 		this.pickupCode = pickupCode;
 		this.locker = locker;
 		this.recipient = recipient;
 		this.products = products;
+		this.sender = sender;
+	}
+
+	public String getSender() {
+		return sender;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
 	}
 
 	public void setOrderDetailsId(Long orderDetailsId) {

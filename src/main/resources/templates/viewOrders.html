@@ -57,6 +57,7 @@
 						<th>Order ID</th>
 						<th>Tracking Code</th>
 						<th>Pickup Code</th>
+						<th>Sender</th>
 						<th>Status</th>
 						<th sec:authorize="hasAnyAuthority('CUSTOMER')" style="width: 212px;">Withdraw</th>
 						<th sec:authorize="hasAnyAuthority('COURIER')" style="width: 190px;">Deliver</th>
@@ -91,6 +92,7 @@
 							<td th:text="${order.orderDetailsId}">Order ID</td>
 							<td th:text="${order.trackingCode}">Tracking Code</td>
 							<td th:text="${order.pickupCode} ?: ''">Pickup Code</td>
+							<td th:text="${order.sender} ?: ''">Sender</td>
 							<td th:text="${order.deliveryDetails.deliveryStatus} ?: ''">Status</td>
 
 
