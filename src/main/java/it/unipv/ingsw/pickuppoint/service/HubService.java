@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +47,8 @@ public class HubService {
 	@Autowired
 	JsonReader jsonReader;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(LockerService.class);
+
 	public void deliver(Long id) throws SlotNotAvailable {
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERED);
@@ -65,20 +69,19 @@ public class HubService {
 		orderDetails.getDeliveryDetails().setWithdrawalDate(date.getCurrentDataTime());
 		orderDetailsService.save(orderDetails);
 		removeProducts(orderDetails.getProducts());
-		System.out.println("########" + orderDetails.getProducts());
 	}
 
 	@Transactional
 	private void removeProducts(List<Product> list) {
 		for (Product product : list) {
-			System.out.println("@@@@@@@@@@@@@" + product);
-//			Slot slot = slotRepo.findByProductId(product.getProductId());
-//			Long slotId = productRepo.findSlotByProductId(product.getProductId());
 			Slot slot = product.getSlot();
 			slot.setEmpty(true);
 			slot.removeProduct(product);
 			product.removeSlot();
 			slotRepo.save(slot);
+			LOGGER.info("CUSTOMER: " + userService.getAuthenticatedUser().getEmail() + "\t prodotto "
+					+ product.getProductId() + " RITIRATO" + "\t slot: " + slot.getSlotId() + "\t locker: "
+					+ slot.getLocker().getLockerId());
 		}
 	}
 

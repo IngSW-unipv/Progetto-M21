@@ -19,12 +19,12 @@ import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
 public class LockerService {
 	@Autowired
 	LockerRepo lockerRepo;
-
 	@Autowired
 	SlotRepo slotRepo;
-
 	@Autowired
 	LockerAddressRepo addressRepo;
+	@Autowired
+	UserService userService;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LockerService.class);
 
@@ -44,6 +44,9 @@ public class LockerService {
 				product.setSlot(slot);
 				slot.addProduct(product);
 				slot.setEmpty(false);
+				LOGGER.info("COURIER: " + userService.getAuthenticatedUser().getEmail() + "\t \t prodotto "
+						+ product.getProductId() + " CONSEGNATO" + "\t slot: " + slot.getSlotId() + "\t locker: "
+						+ slot.getLocker().getLockerId());
 			}
 
 			else {
@@ -56,6 +59,9 @@ public class LockerService {
 						if (slotVolume >= productVolume) {
 							slot.addProduct(product);
 							slot.setEmpty(false);
+							LOGGER.info("COURIER: " + userService.getAuthenticatedUser().getEmail() + "\t prodotto "
+									+ product.getProductId() + " CONSEGNATO" + "\t slot: " + slot.getSlotId()
+									+ "\t locker: " + slot.getLocker().getLockerId());
 						}
 					}
 				}

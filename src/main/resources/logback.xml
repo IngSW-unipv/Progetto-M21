@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<conversionRule conversionWord="highlightex"
+		converterClass="it.unipv.ingsw.pickuppoint.utility.HighlightingCompositeConverter" />
+	<property name="LOGS" value="./logs" />
+
+	<appender name="SAVE-TO-FILE"
+		class="ch.qos.logback.core.FileAppender">
+		<file>${LOGS}/log.log</file>
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>
+				%d{HH:mm:ss} - %msg%n
+			</Pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>INFO</level>
+		</filter>
+	</appender>
+
+	<!-- SCHEDULED -->
+	<logger name="it.unipv.ingsw.pickuppoint.ScheduledTasks">
+		<appender-ref ref="SAVE-TO-FILE" />
+	</logger>
+
+	<!-- Consegna corriere -->
+	<logger name="it.unipv.ingsw.pickuppoint.service.LockerService">
+		<appender-ref ref="SAVE-TO-FILE" />
+	</logger>
+
+	<!-- Consegna corriere -->
+	<logger name="it.unipv.ingsw.pickuppoint.service.HubService">
+		<appender-ref ref="SAVE-TO-FILE" />
+	</logger>
+
+
+
+
+	<appender name="Console"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%white(%d{HH:mm:ss}) %highlightex([%level]) %cyan(%logger{0}) - %msg%n </pattern>
+		</encoder>
+	</appender>
+
+
+	<!-- LOG everything at INFO level -->
+	<logger name="it.unipv.ingsw.pickuppoint">
+		<appender-ref ref="Console" />
+	</logger>
+
+</configuration>

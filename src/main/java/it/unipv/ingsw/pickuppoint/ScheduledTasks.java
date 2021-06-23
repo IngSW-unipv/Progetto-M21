@@ -38,6 +38,7 @@ public class ScheduledTasks {
 	HubService hubService;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledTasks.class);
+	
 
 	/**
 	 * Il task viene avviato ogni x minuti Gli ordini in attesa di assegnamento
@@ -46,7 +47,7 @@ public class ScheduledTasks {
 
 	@Scheduled(cron = "0 */1 * ? * *")
 	private void checkPendingOrders() {
-		LOGGER.info("INIZIO ASSEGNAMENTO");
+		LOGGER.debug("INIZIO ASSEGNAMENTO ORDINI AI CORRIERI");
 
 		// Tutti gli ordini con status HUB
 		List<OrderDetails> ordersDetails = orderDetailsService.getAllHubOrders();
@@ -76,13 +77,9 @@ public class ScheduledTasks {
 				dynamicAssignment(courier.getUserId(), delivering);
 			}
 			else if (delivering == MAX) {
-				LOGGER.debug("NIENTE DA ASSEGNARE: raggiunto MAX ordini per corriere " + "[" + MAX + "]");
-				// System.out.println("### NIENTE DA ASSEGNARE: raggiunto MAX ordini per
-				// corriere " + "[" + MAX + "] ###");
+				LOGGER.debug("NIENTE DA ASSEGNARE: raggiunto MAX ordini per corriere " + "[ " + MAX + " ]");
 			} else if (ordersDetailsToAsign.size() == 0) {
 				LOGGER.debug("NIENTE DA ASSEGNARE: nessun ordine in coda");
-				// System.out.println("### NIENTE DA ASSEGNARE: nessun ordine in coda ###");
-
 			}
 		}
 	}
@@ -103,17 +100,13 @@ public class ScheduledTasks {
 			orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERING);
 			orderDetailsService.assignOrder(orderDetails);
 
-			LOGGER.info("--- Ordine " + orderDetails.getOrderDetailsId() + " assegnato al corrier " + courier.getEmail()
-					+ " ---");
-			// System.out.println("--- Ordine " + orderDetails.getOrderDetailsId() + "
-			// assegnato al corrier "
-			// + courier.getEmail() + " ---");
+			LOGGER.info("Ordine " + orderDetails.getOrderDetailsId() + " assegnato al COURIER: \t" + courier.getEmail());
 		}
 	}
 
 	@Scheduled(cron = "0 */1 * ? * *")
 	private void checkPendingDelivers() {
-		LOGGER.info("VERIFICA STATO DELIVERS");
+		LOGGER.debug("VERIFICA GIORNI MANCANTI");
 		HashMap<Long, Integer> checkPendingDeliversMap = (HashMap<Long, Integer>) orderDetailsService
 				.getfindListOfDifferenceDeliverdDateAndCurrentDate(entityManager);
 		
