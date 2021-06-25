@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.HubService;
-import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
 import it.unipv.ingsw.pickuppoint.service.exception.CustomerAlreadyExistException;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
@@ -21,8 +20,6 @@ import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 public class UserController {
 	@Autowired
 	UserService userService;
-	@Autowired
-	OrderDetailsService orderDetailsService;
 	@Autowired
 	HubService hubService;
 

@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import it.unipv.ingsw.pickuppoint.data.DeliveryDetailsRepo;
 import it.unipv.ingsw.pickuppoint.data.OrderDetailsRepo;
-import it.unipv.ingsw.pickuppoint.data.ProductRepo;
-import it.unipv.ingsw.pickuppoint.data.RecipientRepo;
 import it.unipv.ingsw.pickuppoint.model.OrderDetails;
 import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
 
@@ -22,13 +20,7 @@ public class OrderDetailsService {
 	@Autowired
 	OrderDetailsRepo orderDetailsRepo;
 	@Autowired
-	ProductRepo productRepo;
-	@Autowired
-	RecipientRepo recipientRepo;
-	@Autowired
 	DeliveryDetailsRepo deliveryDetailsRepo;
-	@Autowired
-	EntityManager entityManager;
 
 	/**
 	 * Ritorna OrderDetails con chiave id se presente, altrimenti

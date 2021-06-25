@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import it.unipv.ingsw.pickuppoint.service.HubService;
-import it.unipv.ingsw.pickuppoint.service.OrderDetailsService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
 import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
 
@@ -16,8 +15,6 @@ public class CourierController {
 
 	@Autowired
 	UserService userService;
-	@Autowired
-	OrderDetailsService orderDetailsService;
 	@Autowired
 	HubService hubService;
 

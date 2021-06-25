@@ -4,20 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import it.unipv.ingsw.pickuppoint.data.UserRepo;
 import it.unipv.ingsw.pickuppoint.model.Role;
 import it.unipv.ingsw.pickuppoint.model.User;
 
 public class UserAuthorization implements UserDetails {
 	private User user;
-
-	@Autowired
-	UserRepo userRepo;
 
 	public UserAuthorization(User user) {
 		this.user = user;
