@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import it.unipv.ingsw.pickuppoint.data.LockerAddressRepo;
 import it.unipv.ingsw.pickuppoint.data.LockerRepo;
 import it.unipv.ingsw.pickuppoint.data.SlotRepo;
+import it.unipv.ingsw.pickuppoint.model.Locker;
 import it.unipv.ingsw.pickuppoint.model.OrderDetails;
 import it.unipv.ingsw.pickuppoint.model.Product;
 import it.unipv.ingsw.pickuppoint.model.Slot;
@@ -59,7 +60,7 @@ public class LockerService {
 						if (slotVolume >= productVolume) {
 							slot.addProduct(product);
 							slot.setEmpty(false);
-							LOGGER.info("COURIER: " + userService.getAuthenticatedUser().getEmail() + "\t prodotto "
+							LOGGER.info("COURIER: " + userService.getAuthenticatedUser().getEmail() + "\t \t prodotto "
 									+ product.getProductId() + " CONSEGNATO" + "\t slot: " + slot.getSlotId()
 									+ "\t locker: " + slot.getLocker().getLockerId());
 						}
@@ -93,5 +94,13 @@ public class LockerService {
 
 	public List<Slot> getLockerSlot(Long id) {
 		return slotRepo.findByLockerId(id);
+	}
+	
+	public List <Locker> getAllLocker(){
+		return lockerRepo.findAll();
+	}
+	
+	public Locker getLockerById(Long lockerId) {
+		return lockerRepo.findByLockerId(lockerId);
 	}
 }

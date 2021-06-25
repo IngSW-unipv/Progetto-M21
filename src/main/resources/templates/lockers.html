@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>Lockers</title>
+
+<link rel="icon" href="/images/favicons/favicon.ico">
+
+<link rel="stylesheet" href="https://getbootstrap.com/docs/4.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="/CSS/cover.css">
+<style>
+.rectangle {
+	height: 50px;
+	width: 100px;
+}
+
+.wrapper {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 50px;
+	grid-auto-rows: 50px;
+	padding: 20px;
+	background-color: #70a57f;
+	border: 2px solid #000000;
+}
+
+p {
+	margin: auto;
+	width: fit-content;
+	padding: 10px;
+	font-weight: bold;
+}
+</style>
+
+
+</head>
+
+
+<body>
+
+	<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+
+		<!--  NAVBAR -->
+		<header th:replace="fragments/components:: navbar"></header>
+
+
+
+
+		<!-- PRINCIPALE -->
+		<main role="main" class="inner cover" style="width: 42em;">
+
+			<h2>Choose Lockers</h2>
+			<form action="#" class="form-signin" th:action="@{/lockers}" method="post">
+				<div class="form-row">
+					<div class="col">
+						<select id="TagList" th:name="lockerId" class="form-control form-control-lg" style="width: 25em;">
+
+							<option th:each="locker :${lockers}" th:value="${locker.lockerId}" th:text="${locker.name}"
+								th:selected="${locker} == ${lk}" />
+
+						</select>
+					</div>
+
+					<div class="col">
+						<button type="submit" class="btn btn-primary" style="width: 95%; height: 45px;">Go</button>
+					</div>
+
+				</div>
+
+			</form>
+
+
+			<th:block th:if=${slots}>
+				<div style="margin-top: 7em;">
+					<h4>Address: [[${lk.lockerAddress.address}]] [[${lk.lockerAddress.city}]]</h4>
+
+					<div class="wrapper">
+						<th:block th:each="slot : ${slots}">
+							<div class="rectangle" th:style="${slot.isEmpty} == FALSE ? 'background: #a91111' : 'background: #31e631'">
+								<p>[[${slot.slotId}]]</p>
+							</div>
+						</th:block>
+					</div>
+				</div>
+			</th:block>
+		</main>
+
+
+		<!--  FOOTER -->
+		<footer th:replace="fragments/components:: footer"> </footer>
+
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+	<script src="https://getbootstrap.com/docs/4.0/assets/js/vendor/popper.min.js"></script>
+	<script src="https://getbootstrap.com/docs/4.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

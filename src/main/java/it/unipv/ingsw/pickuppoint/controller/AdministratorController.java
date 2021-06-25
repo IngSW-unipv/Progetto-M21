@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import it.unipv.ingsw.pickuppoint.data.UserRepo;
 import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.HubService;
+import it.unipv.ingsw.pickuppoint.service.LockerService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
 import it.unipv.ingsw.pickuppoint.service.exception.FilesStorageService;
 
@@ -27,11 +27,11 @@ public class AdministratorController {
 	@Autowired
 	UserService userService;
 	@Autowired
-	UserRepo userRepo;
-	@Autowired
 	FilesStorageService storageService;
 	@Autowired
 	HubService hubService;
+	@Autowired
+	LockerService lockerService;
 
 	/**
 	 * Questo metodo viene invocato quando il client invia una richiesta GET a
@@ -100,5 +100,19 @@ public class AdministratorController {
 		hubService.addOrders(file);
 
 		return "redirect:" + "/profile";
+	}
+	
+	@RequestMapping("/lockers")
+	public String viewLocker(Model model) {
+		model.addAttribute("lockers", lockerService.getAllLocker());
+		return "lockers";
+	}
+	
+	@RequestMapping(value="/lockers", method = RequestMethod.POST)
+	public String lockerId(Model model, @RequestParam(value = "lockerId") Long lockerId) {
+		model.addAttribute("lk", lockerService.getLockerById(lockerId));
+		model.addAttribute("lockers", lockerService.getAllLocker());
+		model.addAttribute("slots", lockerService.getLockerSlot(lockerId));
+		return "lockers";
 	}
 }

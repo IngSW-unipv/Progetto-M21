@@ -7,5 +7,6 @@ import it.unipv.ingsw.pickuppoint.model.Locker;
 
 @Repository
 public interface LockerRepo extends JpaRepository<Locker, Long> {
+	Locker findByLockerId(Long lockerId);
 
 }
