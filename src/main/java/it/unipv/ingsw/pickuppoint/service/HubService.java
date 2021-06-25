@@ -108,8 +108,11 @@ public class HubService {
 
 //			Order attributes
 			String trackingCode = (String) order.get("trackingCode");
+			//Da rimuovere
 			String pickupCode = (String) order.get("pickupCode");
 			Long lockerId = ((Number) order.get("lockerId")).longValue();
+			String sender = (String) order.get("sender");
+			
 			Locker newLocker = new Locker(lockerId);
 
 //			RECIPIENT
@@ -133,9 +136,10 @@ public class HubService {
 			newOrder.setLocker(newLocker);
 			newOrder.setTrackingCode(trackingCode);
 			newOrder.setPickupCode(pickupCode);
+			newOrder.setSender(sender);
 			newOrder.setRecipient(newRecipient);
 			newOrder.setDeliveryDetails(new DeliveryDetails());
-
+			
 //			SAVE ORDER
 			orderDetailsRepo.save(newOrder);
 		}
@@ -162,7 +166,5 @@ public class HubService {
 		orderDetails.getDeliveryDetails().setDataDeliverd(null);
 		removeProducts(orderDetails.getProducts());
 		orderDetailsService.save(orderDetails);
-
 	}
-
 }
