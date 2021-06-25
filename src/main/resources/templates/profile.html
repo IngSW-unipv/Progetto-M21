@@ -65,7 +65,15 @@ tr {
 
 						<script th:inline="javascript">
 							var orderId = /*[[${order.orderDetailsId}]]*/'';
-							customerNotification(orderId);
+
+							var lockerCity = /*[[${order.locker.lockerAddress.city}]]*/'';
+							var lockerAddress = /*[[${order.locker.lockerAddress.address}]]*/'';
+
+							var lockerInfo = lockerAddress.concat(", " +lockerCity);
+
+							var pickupCode = /*[[${order.pickupCode}]]*/'';
+							customerNotification(orderId, pickupCode,
+									lockerInfo);
 						</script>
 
 					</span>
@@ -112,61 +120,38 @@ tr {
 					</tr>
 				</tbody>
 			</table>
-			<!-- 
-			<div class="text-left">
-				<ul class="list-inline">
-					<li class="list-inline-item" style="font-weight: bold;">First Name:</li>
-					<li class="list-inline-item" th:text="${#authentication.getPrincipal().getUser().getFirstName()}">First Name</li>
-				</ul>
 
-				<ul class="list-inline">
-					<li class="list-inline-item" style="font-weight: bold;">Last Name:</li>
-					<li class="list-inline-item" th:text="${#authentication.getPrincipal().getUser().getLastName()}">Last Name</li>
-				</ul>
-
-				<ul class="list-inline">
-					<li class="list-inline-item" style="font-weight: bold;">Email:</li>
-					<li class="list-inline-item" sec:authentication="name">Username</li>
-				</ul>
-
-				<ul class="list-inline">
-					<li class="list-inline-item" style="font-weight: bold;">Registration date:</li>
-					<li class="list-inline-item" th:text="${#authentication.getPrincipal().getUser().getRegistrationDate()} ?: 'null'">Date</li>
-
-				</ul>
-
-				<ul class="list-inline">
-					<li class="list-inline-item" style="font-weight: bold;">User type:</li>
-					<li class="list-inline-item" sec:authentication="principal.authorities">Roles</li>
-				</ul>
--->
 			<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('CUSTOMER', 'COURIER')" class="btn btn-success btn-lg"
 				role="button" aria-pressed="true" style="display: block; margin-top: 20px;">Your orders</a>
 
-			<div sec:authorize="hasAnyAuthority('ADMINISTRATOR')" style="margin-top: 4em">
-				<h1 style="margin-bottom: 15px; text-align: left;">Upload Orders</h1>
-				<form th:action="@{/uploadFile}" enctype="multipart/form-data" method="post">
-					<div class="input-group">
-						<div class="custom-file">
-							<input type="file" class="custom-file-input" th:name="file" id="customFile">
-							<label class="custom-file-label" for="customFile">Choose file</label>
+			<th:block sec:authorize="hasAnyAuthority('ADMINISTRATOR')">
+
+				<div style="margin-top: 4em">
+					<h1 style="margin-bottom: 15px; text-align: left;">Upload Orders</h1>
+					<form th:action="@{/uploadFile}" enctype="multipart/form-data" method="post">
+						<div class="input-group">
+							<div class="custom-file">
+								<input type="file" class="custom-file-input" th:name="file" id="customFile">
+								<label class="custom-file-label" for="customFile">Choose file</label>
+							</div>
+							<div class="input-group-append">
+								<button class="btn btn-primary" type="submit" id="myInput">Upload</button>
+							</div>
+
 						</div>
-						<div class="input-group-append">
-							<button class="btn btn-primary" type="submit" id="myInput">Upload</button>
-						</div>
+					</form>
+				</div>
 
-					</div>
-				</form>
-			</div>
+				<a th:href="@{/Orders}" class="btn btn-lg btn-success" role="button" aria-pressed="true"
+					style="display: block; margin-bottom: 15px; margin-top: 30px;">All orders</a>
+				<a th:href="@{/register}" class="btn btn-lg btn-success" role="button" aria-pressed="true"
+					style="display: block; margin-bottom: 15px;">Add User</a>
+				<a th:href="@{/UserList}" class="btn btn-lg btn-success" role="button" aria-pressed="true"
+					style="display: block; margin-bottom: 15px;">User List</a>
 
-			<a th:href="@{/Orders}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success" role="button"
-				aria-pressed="true" style="display: block; margin-bottom: 15px; margin-top: 30px;">All orders</a>
-			<a th:href="@{/register}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success"
-				role="button" aria-pressed="true" style="display: block; margin-bottom: 15px;">Add User</a>
-			<a th:href="@{/UserList}" sec:authorize="hasAnyAuthority('ADMINISTRATOR')" class="btn btn-lg btn-success"
-				role="button" aria-pressed="true" style="display: block;">User List</a>
-
-
+				<a th:href="@{/lockers}" class="btn btn-lg btn-success" role="button" aria-pressed="true" style="display: block;">Lockers
+					Status</a>
+			</th:block>
 
 			<div sec:authorize="hasAnyAuthority('CUSTOMER')" style="margin-top: 3em;">
 

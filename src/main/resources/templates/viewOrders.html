@@ -117,8 +117,16 @@
 										</form>
 
 										<script th:inline="javascript">
-											var orderId = /*[[${order.orderDetailsId}]]*/'';
-											customerNotification(orderId);
+										var orderId = /*[[${order.orderDetailsId}]]*/'';
+
+										var lockerCity = /*[[${order.locker.lockerAddress.city}]]*/'';
+										var lockerAddress = /*[[${order.locker.lockerAddress.address}]]*/'';
+
+										var lockerInfo = lockerAddress.concat(", " +lockerCity);
+
+										var pickupCode = /*[[${order.pickupCode}]]*/'';
+										customerNotification(orderId, pickupCode,
+												lockerInfo);
 										</script>
 
 									</td>

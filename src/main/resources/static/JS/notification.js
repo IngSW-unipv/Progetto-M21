@@ -10,7 +10,7 @@ function notify(callback) {
 	}
 }
 
-function customerNotification(orderId) {
+function customerNotification(orderId, pickupCode, lockerInfo) {
 	notify(() => {
 		var orders = Cookies.get("customer");
 
@@ -19,7 +19,7 @@ function customerNotification(orderId) {
 
 		if (orders == null || !orders.includes(orderId)) {
 			new Notification("Notifica consegna avvenuta", {
-				body: "ordine " + orderId + " CONSEGNATO",
+				body: "Ordine " + orderId + " CONSEGNATO" + "\nPickupCode: " + pickupCode + "\nLocker: " + lockerInfo,
 				icon: "https://cdn.iconscout.com/icon/premium/png-256-thumb/delivered-1681114-1427946.png",
 			});
 			setCookie("customer", orderId);
