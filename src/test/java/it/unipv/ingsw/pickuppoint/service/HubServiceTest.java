@@ -81,7 +81,7 @@ public class HubServiceTest {
 		Mockito.when(orderDetailsMock.getDeliveryDetails()).thenReturn(deliveryDetails);
 
 		hubService.deliver(id);
-		assertEquals(dateMock.getCurrentDataTime(), deliveryDetails.getDataDeliverd());
+		assertEquals(dateMock.getCurrentDataTime(), deliveryDetails.getDataDelivered());
 	}
 
 	/**
@@ -129,7 +129,7 @@ public class HubServiceTest {
 		Mockito.when(orderDetailsMock.getDeliveryDetails()).thenReturn(deliveryDetails);
 
 		hubService.sendBackToHub(id);
-		assertEquals(null, deliveryDetails.getDataDeliverd());
+		assertEquals(null, deliveryDetails.getDataDelivered());
 	}
 
 	/**

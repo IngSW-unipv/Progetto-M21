@@ -127,12 +127,13 @@ public class OrderDetails {
 	}
 
 	public OrderDetails() {
+		generatePickUpCode();
 	}
 
 	public OrderDetails(String trackingCode, String pickupCode, Locker locker, Recipient recipient, String sender,
 			List<Product> products) {
 		this.trackingCode = trackingCode;
-		this.pickupCode = pickupCode;
+		generatePickUpCode();
 		this.locker = locker;
 		this.recipient = recipient;
 		this.products = products;
@@ -163,7 +164,7 @@ public class OrderDetails {
 		return pickupCode;
 	}
 
-	public void setPickupCode(String pickupCode) {
+	private void setPickupCode(String pickupCode) {
 		this.pickupCode = pickupCode;
 	}
 
@@ -216,6 +217,10 @@ public class OrderDetails {
 
 	public void setCustomer(User customer) {
 		this.customer = customer;
+	}
+	
+	private void generatePickUpCode() {
+		setPickupCode(Integer.toString((int) (Math.random() * 100000 + 1)));
 	}
 
 }

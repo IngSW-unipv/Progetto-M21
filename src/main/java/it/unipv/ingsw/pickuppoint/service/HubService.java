@@ -52,7 +52,7 @@ public class HubService {
 	public void deliver(Long id) throws SlotNotAvailable {
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERED);
-		orderDetails.getDeliveryDetails().setDataDeliverd(date.getCurrentDataTime());
+		orderDetails.getDeliveryDetails().setDataDelivered(date.getCurrentDataTime());
 		lockerService.setSlotDeliver(orderDetails);
 		orderDetailsService.save(orderDetails);
 	}
@@ -109,7 +109,7 @@ public class HubService {
 //			Order attributes
 			String trackingCode = (String) order.get("trackingCode");
 			//Da rimuovere
-			String pickupCode = (String) order.get("pickupCode");
+			//String pickupCode = (String) order.get("pickupCode");
 			Long lockerId = ((Number) order.get("lockerId")).longValue();
 			String sender = (String) order.get("sender");
 			
@@ -135,7 +135,7 @@ public class HubService {
 //			SET ORDER
 			newOrder.setLocker(newLocker);
 			newOrder.setTrackingCode(trackingCode);
-			newOrder.setPickupCode(pickupCode);
+			//newOrder.setPickupCode(pickupCode);
 			newOrder.setSender(sender);
 			newOrder.setRecipient(newRecipient);
 			newOrder.setDeliveryDetails(new DeliveryDetails());
@@ -163,7 +163,7 @@ public class HubService {
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.HUB);
 		orderDetails.setCourier(null);
-		orderDetails.getDeliveryDetails().setDataDeliverd(null);
+		orderDetails.getDeliveryDetails().setDataDelivered(null);
 		removeProducts(orderDetails.getProducts());
 		orderDetailsService.save(orderDetails);
 	}

@@ -1,5 +1,9 @@
 package it.unipv.ingsw.pickuppoint.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,7 +27,8 @@ public class DeliveryDetails {
 	@Id
 	@Column(name = "order_id")
 	private Long orderDetailsId;
-	private String dataDeliverd;
+	private String dataDelivered;
+	private String hubDate;
 	private String withdrawalDate;
 
 	/**
@@ -41,7 +46,13 @@ public class DeliveryDetails {
 	 */
 	@Column(length = 32, columnDefinition = "varchar(32) default 'HUB'")
 	@Enumerated(EnumType.STRING)
-	private DeliveryStatus deliveryStatus = DeliveryStatus.HUB;
+	private DeliveryStatus deliveryStatus;
+	
+	public DeliveryDetails() {
+		generateHubDate();
+		
+		
+	}
 
 	public String getWithdrawalDate() {
 		return withdrawalDate;
@@ -59,12 +70,12 @@ public class DeliveryDetails {
 		this.orderDetailsId = orderDetailsId;
 	}
 
-	public String getDataDeliverd() {
-		return dataDeliverd;
+	public String getDataDelivered() {
+		return dataDelivered;
 	}
 
-	public void setDataDeliverd(String dataDeliverd) {
-		this.dataDeliverd = dataDeliverd;
+	public void setDataDelivered(String dataDelivered) {
+		this.dataDelivered = dataDelivered;
 	}
 
 	public OrderDetails getOrderDetails() {
@@ -81,6 +92,21 @@ public class DeliveryDetails {
 
 	public void setDeliveryStatus(DeliveryStatus deliveryStatus) {
 		this.deliveryStatus = deliveryStatus;
+	}
+
+	public String getHubDate() {
+		return hubDate;
+	}
+
+	public void setHubDate(String hubDate) {
+		this.hubDate = hubDate;
+	}
+	
+	private void generateHubDate() {
+		Date date = Calendar.getInstance().getTime();  
+		SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
+		setHubDate(currentDate.format(date));
+		deliveryStatus = DeliveryStatus.HUB;
 	}
 
 }
