@@ -22,16 +22,22 @@ public class FilesStorageService {
 		try {
 			Files.createDirectory(root);
 		} catch (IOException e) {
-			System.out.println("folder already exists");
 		}
 	}
 
-	public void save(MultipartFile file) {
+	public void save(MultipartFile file) throws EmptyFile, FileFormat {
+		String fileName = file.getOriginalFilename();
+		String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+		
 		try {
 			Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()),
 					StandardCopyOption.REPLACE_EXISTING);
 		} catch (Exception e) {
-			throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+			throw new EmptyFile("Empty file, please upload a json file ");
+		}
+
+		if(!extension.equals("json")) {
+			throw new FileFormat("Wrong file format, please upload a json file");
 		}
 	}
 

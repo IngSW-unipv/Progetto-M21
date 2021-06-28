@@ -6,10 +6,12 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,6 +26,7 @@ import it.unipv.ingsw.pickuppoint.model.Slot;
 import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
+import it.unipv.ingsw.pickuppoint.service.exception.JsonFormat;
 import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
 import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
 import it.unipv.ingsw.pickuppoint.utility.JsonReader;
@@ -97,8 +100,14 @@ public class HubService {
 		orderDetailsService.assignOrder(orderDetails);
 	}
 
-	public void addOrders(MultipartFile multipartFile) throws IOException {
-		JSONObject json = jsonReader.readJson(multipartFile);
+	public void addOrders(MultipartFile multipartFile) throws JsonFormat, JSONException, IOException {
+		JSONObject json = null;
+		try {
+			json = jsonReader.readJson(multipartFile);
+		} catch (JSONException | IOException | InvalidDataAccessResourceUsageException e) {
+			throw new JsonFormat("Wrong Json Format, please try again");
+		}
+
 		JSONArray orders = json.getJSONArray("orders");
 
 		for (int i = 0; i < orders.length(); i++) {
@@ -108,11 +117,11 @@ public class HubService {
 
 //			Order attributes
 			String trackingCode = (String) order.get("trackingCode");
-			//Da rimuovere
-			//String pickupCode = (String) order.get("pickupCode");
+			// Da rimuovere
+			// String pickupCode = (String) order.get("pickupCode");
 			Long lockerId = ((Number) order.get("lockerId")).longValue();
 			String sender = (String) order.get("sender");
-			
+
 			Locker newLocker = new Locker(lockerId);
 
 //			RECIPIENT
@@ -135,13 +144,15 @@ public class HubService {
 //			SET ORDER
 			newOrder.setLocker(newLocker);
 			newOrder.setTrackingCode(trackingCode);
-			//newOrder.setPickupCode(pickupCode);
+			// newOrder.setPickupCode(pickupCode);
 			newOrder.setSender(sender);
 			newOrder.setRecipient(newRecipient);
 			newOrder.setDeliveryDetails(new DeliveryDetails());
-			
+
 //			SAVE ORDER
 			orderDetailsRepo.save(newOrder);
+			LOGGER.info(
+					"Ordine " + newOrder.getOrderDetailsId() + " in hub " + newOrder.getDeliveryDetails().getHubDate());
 		}
 	}
 

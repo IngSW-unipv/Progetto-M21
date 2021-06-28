@@ -53,6 +53,16 @@ tr {
 				<p th:text="${error}"></p>
 			</div>
 
+			<!--  Gestione errore formato file -->
+			<div th:if="${errorfile}" class="alert alert-danger">
+				<p th:text="${errorfile}"></p>
+			</div>
+
+			<!--  Gestione file vuoto -->
+			<div th:if="${emptyfile}" class="alert alert-danger">
+				<p th:text="${emptyfile}"></p>
+			</div>
+
 
 
 			<th:block th:each="order : ${listOrders}">
@@ -69,7 +79,8 @@ tr {
 							var lockerCity = /*[[${order.locker.lockerAddress.city}]]*/'';
 							var lockerAddress = /*[[${order.locker.lockerAddress.address}]]*/'';
 
-							var lockerInfo = lockerAddress.concat(", " +lockerCity);
+							var lockerInfo = lockerAddress.concat(", "
+									+ lockerCity);
 
 							var pickupCode = /*[[${order.pickupCode}]]*/'';
 							customerNotification(orderId, pickupCode,

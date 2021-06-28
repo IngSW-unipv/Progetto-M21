@@ -1,9 +1,10 @@
 package it.unipv.ingsw.pickuppoint.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.Random;
-import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,12 +19,11 @@ import it.unipv.ingsw.pickuppoint.data.OrderDetailsRepo;
 import it.unipv.ingsw.pickuppoint.data.SlotRepo;
 import it.unipv.ingsw.pickuppoint.model.DeliveryDetails;
 import it.unipv.ingsw.pickuppoint.model.OrderDetails;
+import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
 import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
 import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
 import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
-import it.unipv.ingsw.pickuppoint.model.Product;
-import it.unipv.ingsw.pickuppoint.model.User;
 
 @ExtendWith(MockitoExtension.class)
 @ExtendWith(SpringExtension.class)

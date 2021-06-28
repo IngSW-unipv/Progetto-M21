@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.validation.Valid;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,10 @@ import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.LockerService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
+import it.unipv.ingsw.pickuppoint.service.exception.EmptyFile;
+import it.unipv.ingsw.pickuppoint.service.exception.FileFormat;
 import it.unipv.ingsw.pickuppoint.service.exception.FilesStorageService;
+import it.unipv.ingsw.pickuppoint.service.exception.JsonFormat;
 
 @Controller
 public class AdministratorController {
@@ -94,21 +98,35 @@ public class AdministratorController {
 	}
 
 	@RequestMapping(value = "/uploadFile", method = RequestMethod.POST)
-	public String uploadFile(@RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
+	public String uploadFile(@RequestParam("file") MultipartFile file, Model model)
+			throws EmptyFile, FileFormat, JsonFormat, JSONException, IOException {
 		storageService.init();
-		storageService.save(file);
-		hubService.addOrders(file);
+		try {
+			storageService.save(file);
+		} catch (EmptyFile emptyFile) {
+			model.addAttribute("emptyfile", emptyFile.getMessage());
+			return "/profile";
+		} catch (FileFormat fileFormat) {
+			model.addAttribute("errorfile", fileFormat.getMessage());
+			return "/profile";
+		}
+		try {
+			hubService.addOrders(file);
+		} catch (JsonFormat jsonFormat) {
+			model.addAttribute("errorfile", jsonFormat.getMessage());
+			return "/profile";
+		}
 
 		return "redirect:" + "/profile";
 	}
-	
+
 	@RequestMapping("/lockers")
 	public String viewLocker(Model model) {
 		model.addAttribute("lockers", lockerService.getAllLocker());
 		return "lockers";
 	}
-	
-	@RequestMapping(value="/lockers", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/lockers", method = RequestMethod.POST)
 	public String lockerId(Model model, @RequestParam(value = "lockerId") Long lockerId) {
 		model.addAttribute("lk", lockerService.getLockerById(lockerId));
 		model.addAttribute("lockers", lockerService.getAllLocker());
