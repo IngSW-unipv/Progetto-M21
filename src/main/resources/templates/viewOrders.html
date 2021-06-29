@@ -235,6 +235,7 @@
 										<tr class="info">
 											<th>Locker Name</th>
 											<th>Locker City</th>
+											<th>Locker Address</th>
 											<th>Postal Code</th>
 										</tr>
 									</thead>
@@ -243,6 +244,7 @@
 										<tr>
 											<td th:text="${order.locker.name}"></td>
 											<td th:text="${order.locker.lockerAddress.city}"></td>
+											<td th:text="${order.locker.lockerAddress.address}"></td>
 											<td th:text="${order.locker.lockerAddress.postalCode}"></td>
 										</tr>
 									</tbody>
