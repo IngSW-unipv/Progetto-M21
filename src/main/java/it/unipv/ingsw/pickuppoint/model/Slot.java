@@ -58,8 +58,9 @@ public class Slot {
 	private List<Product> products;
 
 	@Enumerated(EnumType.STRING)
-	private SlotSize size;
 
+	private SlotSize size;
+	
 	public Long getSlotId() {
 		return slotId;
 	}
@@ -124,10 +125,4 @@ public class Slot {
 	public void setSize(SlotSize size) {
 		this.size = size;
 	}
-
-//	private void initSize() {
-//		this.height = size.getHeight();
-//		this.width = size.getWidth();
-//		this.length = size.getLength();
-//	}
 }

@@ -32,7 +32,6 @@
 p {
 	margin: auto;
 	width: fit-content;
-	padding: 10px;
 	font-weight: bold;
 }
 </style>
@@ -82,7 +81,8 @@ p {
 					<div class="wrapper">
 						<th:block th:each="slot : ${slots}">
 							<div class="rectangle" th:style="${slot.isEmpty} == FALSE ? 'background: #a91111' : 'background: #31e631'">
-								<p>[[${slot.slotId}]]</p>
+								<p>[[${slot.slotId}]] </p>
+								<p>[[${slot.size.name}]]</p>
 							</div>
 						</th:block>
 					</div>
