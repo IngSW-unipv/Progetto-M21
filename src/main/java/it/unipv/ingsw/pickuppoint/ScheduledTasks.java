@@ -26,7 +26,6 @@ public class ScheduledTasks {
 
 	private static final int MAX = 3;
 
-	// Coda di ordini da assegnare
 	Deque<OrderDetails> ordersDetailsToAsign = new ArrayDeque<>();
 	@Autowired
 	UserService userService;
@@ -38,13 +37,11 @@ public class ScheduledTasks {
 	HubService hubService;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduledTasks.class);
-	
 
 	/**
-	 * Il task viene avviato ogni x minuti Gli ordini in attesa di assegnamento
-	 * vengono inseriti dentro una Deque
+	 * Il task viene avviato ogni x minuti. Gli ordini in attesa di assegnamento
+	 * vengono inseriti all'interno di una coda.
 	 */
-
 	@Scheduled(cron = "0 */1 * ? * *")
 	private void checkPendingOrders() {
 		LOGGER.debug("INIZIO ASSEGNAMENTO ORDINI AI CORRIERI");
@@ -56,12 +53,13 @@ public class ScheduledTasks {
 	}
 
 	/**
-	 * Controlla periodicamente i corrieri disponibili per l'assegnamento degli ordini
+	 * Controlla periodicamente i corrieri disponibili per l'assegnamento degli
+	 * ordini. Max indica il numero di ordini massimo che possono essere assegnati
+	 * ai corrieri
 	 */
 	public void checkFreeCourier() {
 		List<User> couriers = userService.getAllCouriers();
 
-		// Per ogni courier, tutti gli ordini assegnatti
 		for (User courier : couriers) {
 			List<OrderDetails> ordersDetails = orderDetailsService.getCourierOrders(courier.getUserId());
 			int delivering = 0;
@@ -75,8 +73,7 @@ public class ScheduledTasks {
 
 			if (delivering < MAX && ordersDetailsToAsign.size() != 0) {
 				dynamicAssignment(courier.getUserId(), delivering);
-			}
-			else if (delivering == MAX) {
+			} else if (delivering == MAX) {
 				LOGGER.debug("NIENTE DA ASSEGNARE: raggiunto MAX ordini per corriere " + "[ " + MAX + " ]");
 			} else if (ordersDetailsToAsign.size() == 0) {
 				LOGGER.debug("NIENTE DA ASSEGNARE: nessun ordine in coda");
@@ -85,7 +82,8 @@ public class ScheduledTasks {
 	}
 
 	/**
-	 * Assegnamento dinamico degli ordini
+	 * Assegnamento dinamico degli ordini: vengono assegnati gli ordini ai corrieri
+	 * in base a quanti ordini devono ancora consegnare
 	 * 
 	 * @param courier:    corriere a cui assegnare l'ordine
 	 * @param delivering: ordini in stato di consegna del corriere
@@ -100,26 +98,29 @@ public class ScheduledTasks {
 			orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERING);
 			orderDetailsService.assignOrder(orderDetails);
 
-			LOGGER.info("Ordine " + orderDetails.getOrderDetailsId() + " assegnato al COURIER: \t" + courier.getEmail());
+			LOGGER.info(
+					"Ordine " + orderDetails.getOrderDetailsId() + " assegnato al COURIER: \t" + courier.getEmail());
 		}
 	}
 
+	/**
+	 * Controllo periodico giorni mancati consentiti al cliente per il ritiro
+	 */
 	@Scheduled(cron = "0 */1 * ? * *")
 	private void checkPendingDelivers() {
 		LOGGER.debug("VERIFICA GIORNI MANCANTI");
 		HashMap<Long, Integer> checkPendingDeliversMap = (HashMap<Long, Integer>) orderDetailsService
 				.getfindListOfDifferenceDeliverdDateAndCurrentDate(entityManager);
-		
+
 		for (HashMap.Entry<Long, Integer> entry : checkPendingDeliversMap.entrySet()) {
-			if ((entry.getValue() > 2)&&(orderDetailsService.getOrderDetailsById(entry.getKey()).getDeliveryDetails().getDeliveryStatus() != DeliveryStatus.NOT_WITHDRAWN)) {
-				
+			if ((entry.getValue() > 2) && (orderDetailsService.getOrderDetailsById(entry.getKey()).getDeliveryDetails()
+					.getDeliveryStatus() != DeliveryStatus.NOT_WITHDRAWN)) {
+
 				hubService.setNotWithdrawnState(entry.getKey());
 				LOGGER.debug("SET WITHDRAWN STATE TO ORDER: " + entry.getKey());
 
 			}
-
 		}
-
+		
 	}
-
 }

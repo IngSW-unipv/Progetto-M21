@@ -3,8 +3,8 @@ package it.unipv.ingsw.pickuppoint.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
@@ -18,16 +18,14 @@ public class CourierController {
 	@Autowired
 	HubService hubService;
 
-//	/**
-//	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
-//	 * /Orders. Recupera e visualizza gli ordini del Courier.
-//	 * 
-//	 * @param model è un contenitore di attributi che viene inoltrato al client per
-//	 *              essere visualizzato o manipolato
-//	 * @return la pagina html della vista degli ordini
-//	 */
-
-	@RequestMapping("/deliver/{id}")
+	/**
+	 * Invocato dal courier quando effettua una richiesta GET a /deliver/id
+	 * 
+	 * @param id
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("/deliver/{id}")
 	public String showEditProductFormCourier(@PathVariable(name = "id") Long id, Model model) {
 		try {
 			hubService.deliver(id);
@@ -36,17 +34,18 @@ public class CourierController {
 			model.addAttribute("slotError", e.getMessage());
 			return "/viewOrders";
 		}
-
 		return "redirect:" + "/Orders";
 	}
-	
-	@RequestMapping("/sendBackToHub/{id}")
+
+	/**
+	 * Invocato dal courier quando effettua una richiesta GET a /sendBackToHub/id
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/sendBackToHub/{id}")
 	public String sendBacktoHub(@PathVariable(name = "id") Long id) {
-
 		hubService.sendBackToHub(id);
-
 		return "redirect:" + "/Orders";
 	}
-	
-	
 }

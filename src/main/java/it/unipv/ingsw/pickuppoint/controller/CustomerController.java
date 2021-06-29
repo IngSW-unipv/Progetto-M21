@@ -1,10 +1,11 @@
 package it.unipv.ingsw.pickuppoint.controller;
 
 import javax.validation.constraints.NotBlank;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.unipv.ingsw.pickuppoint.service.HubService;
@@ -20,15 +21,13 @@ public class CustomerController {
 	HubService hubService;
 
 	/**
-	 * Questo metodo viene invocato quando il client effettua una richiesta GET a
-	 * /add. Aggiunge un prodotto nella lista dei prodotti del Customer tramite
-	 * inserimento del tracking code; Viene aggiunto il riferimento di chiave
-	 * esterna (CustomerID) all'interno dell'entità genitore OrderDetails
+	 * Invocato quando il client effettua una richiesta GET a /add. Aggiunge un
+	 * prodotto nella lista dei prodotti del Customer tramite tracking code;
 	 * 
 	 * @param tracking code dell'ordine
 	 * @return reindirizzamento alla pagina html della vista degli ordini
 	 */
-	@RequestMapping(value = "/add")
+	@GetMapping(value = "/add")
 	public String addOrder(@RequestParam(name = "tracking") @NotBlank String tracking, Model model) {
 
 		try {
@@ -42,9 +41,8 @@ public class CustomerController {
 	}
 
 	/**
-	 * Questo metodo viene invocato quando il client effettua una richiesta POST a
-	 * /withdraw/{id}; Permette al Customer di ritirare l'ordine; Viene settato
-	 * DeliveryStatus = WITHDRAW e WithdrawalDate
+	 * Invocato quando il client effettua una richiesta GET a /withdraw/{id};
+	 * Permette al Customer di ritirare l'ordine;
 	 * 
 	 * @param id ordine da ritirare
 	 * @return reindirizzamento alla pagina per il recupero e la visualizzazione
@@ -52,7 +50,7 @@ public class CustomerController {
 	 *         client
 	 * 
 	 */
-	@RequestMapping(value = "/withdraw")
+	@GetMapping(value = "/withdraw")
 	public String showEditProductForm(@RequestParam(name = "pickupCode") @NotBlank String pickupCode, Model model) {
 
 		try {

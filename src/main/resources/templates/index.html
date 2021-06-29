@@ -31,14 +31,6 @@
 		<!-- ############  MAIN ############ -->
 		<main role="main" class="inner cover">
 
-			<!--  
-			Gestione pickup code errato
-			<div th:if="${error}" class="alert alert-danger">
-				<p th:text="${error}"></p>
-			</div>
-			 -->
-
-
 			<h2>Login</h2>
 			<br>
 			<form action="#" th:action="@{/login}" method='POST'>
@@ -57,23 +49,7 @@
 
 			<a role="button" class="btn btn-success btn-lg" th:href="@{/register}" style="margin-top: 20px;"> Create New
 				Account </a>
-
-			<!-- 
-			<h2 style="padding-top: 2em;">Pickup a Package</h2>
-
-			<br>
-			<form action="#" method="POST">
-				<div class="row">
-					<div class="col">
-						<input type="text" class="form-control" placeholder="Pickup code">
-					</div>
-					<div class="col">
-						<button class="btn btn-light" style="margin-left: 20px !important;">Pickup</button>
-					</div>
-				</div>
-			</form>
--->
-
+				
 		</main>
 
 
