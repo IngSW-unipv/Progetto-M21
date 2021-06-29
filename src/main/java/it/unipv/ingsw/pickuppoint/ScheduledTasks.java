@@ -96,7 +96,7 @@ public class ScheduledTasks {
 			OrderDetails orderDetails = ordersDetailsToAsign.poll();
 			orderDetails.setCourier(courier);
 			orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERING);
-			orderDetailsService.assignOrder(orderDetails);
+			orderDetailsService.save(orderDetails);
 
 			LOGGER.info(
 					"Ordine " + orderDetails.getOrderDetailsId() + " assegnato al COURIER: \t" + courier.getEmail());

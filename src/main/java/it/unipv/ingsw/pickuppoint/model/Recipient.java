@@ -26,7 +26,6 @@ public class Recipient {
 	/**
 	 * Relazione 1:1 con l'entita orderDetails, chiave primaria condivisa
 	 */
-	
 	@OneToOne
 	@MapsId
 	@JoinColumn(name = "order_id")

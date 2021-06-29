@@ -34,14 +34,16 @@ public class UserService {
 	}
 
 	/**
-	 * @return utente autenticato
+	 * Restituisce User autenticato nel momento della richiesta
+	 * 
+	 * @return User
 	 */
 	public User getAuthenticatedUser() {
 		return ((UserAuthorization) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
 	}
 
 	/**
-	 * Questo metodo effettua la registrazione del Customer
+	 * Metodo per la registrazione di un nuovo user:
 	 * 
 	 * @param newUser da registrare
 	 * @throws CustomerAlreadyExistException
@@ -71,8 +73,8 @@ public class UserService {
 	}
 
 	/**
-	 * Questo metodo restitusce il ruole associato al Customer, utile quando il
-	 * customer viene registrato per settare il ruolo
+	 * Restitusce il ruole associato al Customer, utile quando il customer viene
+	 * registrato per settare il ruolo
 	 * 
 	 * @return Ruolo Customer
 	 */
@@ -106,6 +108,11 @@ public class UserService {
 		return false;
 	}
 
+	/**
+	 * Metodo per aggiungere la lista di orders al model in base al tipo di user
+	 * 
+	 * @param model
+	 */
 	public void addListOrders(Model model) {
 		User user = getAuthenticatedUser();
 		if (user.getRole().getName().equals("COURIER")) {
@@ -118,23 +125,30 @@ public class UserService {
 
 	}
 
-	public void findAllCouriers(Model model) {
-		model.addAttribute("listCouriers", userRepo.findByRole_name("COURIER"));
-	}
-
+	/**
+	 * Metodo per aggiungere tutti gli user al modello di profile dell'admin
+	 * 
+	 * @param model
+	 */
 	public void findAllUsers(Model model) {
 		List<User> users = userRepo.findAll(Sort.by(Sort.Direction.ASC, "role"));
 		model.addAttribute("listUsers", users);
 	}
 
+	/**
+	 * Metodo per il salvataggio di un nuovo User
+	 * 
+	 * @param user
+	 */
 	public void saveUser(User user) {
 		userRepo.save(user);
 	}
 
-	public void editUser(Model model, Long id) {
-		model.addAttribute("user", userRepo.findById(id));
-	}
-
+	/**
+	 * Metodo per eliminare un u+ tente
+	 * 
+	 * @param id
+	 */
 	@Transactional
 	public void delete(Long id) {
 		userRepo.deleteByUserId(id);

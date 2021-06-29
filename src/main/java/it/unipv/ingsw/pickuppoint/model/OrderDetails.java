@@ -55,10 +55,9 @@ public class OrderDetails {
 	@Column(nullable = true)
 	private String trackingCode;
 
-	// Spostato pickupCode da DD a OD
 	@Column(nullable = true)
 	private String pickupCode;
-	
+
 	@Column(nullable = false)
 	private String sender;
 
@@ -95,7 +94,6 @@ public class OrderDetails {
 	/**
 	 * Relazione 1:1 con l'entità Recipient...
 	 */
-
 	@OneToOne(mappedBy = "orderDetails", cascade = CascadeType.PERSIST)
 	@PrimaryKeyJoinColumn
 	private Recipient recipient;
@@ -115,12 +113,6 @@ public class OrderDetails {
 	@JoinColumn(name = "customer_id")
 	@Where(clause = "role_id = 3")
 	private User customer;
-
-	/**
-	 * insertable = false, updatable = false indica che la responsabilità di creare
-	 * o aggiornare la colonna in questione non è dell'entità corrente, ma di altre
-	 * entità
-	 */
 
 	public Long getOrderDetailsId() {
 		return orderDetailsId;
@@ -218,9 +210,8 @@ public class OrderDetails {
 	public void setCustomer(User customer) {
 		this.customer = customer;
 	}
-	
+
 	private void generatePickUpCode() {
 		setPickupCode(Integer.toString((int) (Math.random() * 100000 + 1)));
 	}
-
 }

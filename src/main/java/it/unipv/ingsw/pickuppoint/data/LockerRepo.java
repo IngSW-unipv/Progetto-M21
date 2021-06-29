@@ -7,6 +7,13 @@ import it.unipv.ingsw.pickuppoint.model.Locker;
 
 @Repository
 public interface LockerRepo extends JpaRepository<Locker, Long> {
+
+	/**
+	 * Restituisce un locker data la sua chiave primaria
+	 * 
+	 * @param lockerId
+	 * @return Locker
+	 */
 	Locker findByLockerId(Long lockerId);
 
 }

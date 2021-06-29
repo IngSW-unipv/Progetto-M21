@@ -11,15 +11,15 @@ import it.unipv.ingsw.pickuppoint.model.User;
 public interface UserRepo extends JpaRepository<User, Long> {
 
 	/**
-	 * Questo metodo restituisce l'utente data l'email
+	 * Restituisce l'utente data l'email
 	 * 
 	 * @param email
-	 * @return
+	 * @return User
 	 */
 	User findByEmail(String email);
 
 	/**
-	 * Questo metodo restituisce una lista di utenti in base la ruolo
+	 * Restituisce una lista di utenti in base al ruolo
 	 * 
 	 * @param name del ruolo
 	 * @return lista di user
@@ -27,15 +27,23 @@ public interface UserRepo extends JpaRepository<User, Long> {
 	List<User> findByRole_name(String name);
 
 	/**
-	 * Questo metodo restitusce l'utente data la chiave primaria
+	 * Restitusce l'utente data la chiave primaria
 	 * 
 	 * @param userId
-	 * @return
+	 * @return User
 	 */
 	User findByUserId(Long userId);
 
+	/**
+	 * Elimina user data la chiave primaria
+	 * 
+	 * @param id
+	 */
 	void deleteByUserId(Long id);
-	
+
+	/**
+	 * Restituisce tutte gli user
+	 */
 	List<User> findAll();
 
 }

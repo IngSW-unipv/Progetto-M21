@@ -34,7 +34,6 @@ public class Slot {
 	 * 
 	 * Di default è true
 	 */
-
 	@Column(columnDefinition = "tinyint(1) default 1")
 	private boolean isEmpty;
 
@@ -53,14 +52,13 @@ public class Slot {
 	 * Associazione 1:1 con Product
 	 * 
 	 */
-
 	@OneToMany(mappedBy = "slot", cascade = CascadeType.ALL)
 	private List<Product> products;
 
 	@Enumerated(EnumType.STRING)
 
 	private SlotSize size;
-	
+
 	public Long getSlotId() {
 		return slotId;
 	}
@@ -109,7 +107,7 @@ public class Slot {
 		this.products.add(product);
 		product.setSlot(this);
 	}
-	
+
 	public void setProduct(List<Product> products) {
 		this.products = products;
 	}

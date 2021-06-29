@@ -36,14 +36,11 @@ public class OrderDetailsService {
 	public OrderDetails findByTrackingCode(String trackingCode) {
 		return orderDetailsRepo.findByTrackingCode(trackingCode);
 	}
-
+	
+	@Transactional
 	public void save(OrderDetails orderDetails) {
 		orderDetailsRepo.save(orderDetails);
 	}
-
-//	public void setSlotEmpty(OrderDetails orderDetails) {
-//		orderDetailsRepo.save(orderDetails);
-//	}
 
 	public List<OrderDetails> getCustomerOrders(Long customerId) {
 		return orderDetailsRepo.findByCustomer_userId(customerId);
@@ -60,11 +57,6 @@ public class OrderDetailsService {
 	
 	public List <OrderDetails> getAllHubOrders(){
 		return orderDetailsRepo.findByDeliveryDetails_deliveryStatus(DeliveryStatus.HUB);
-	}
-	
-	@Transactional
-	public void assignOrder(OrderDetails orderDetails) {
-		orderDetailsRepo.save(orderDetails);
 	}
 	
 	public OrderDetails getOrderByPickupCode(String pickupCode) {

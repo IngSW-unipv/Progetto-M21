@@ -44,7 +44,6 @@ public class AdministratorController {
 	 *              database
 	 * @return la pagina userList
 	 */
-
 	@GetMapping("/UserList")
 	public String viewUserList(Model model) {
 		userService.findAllUsers(model);

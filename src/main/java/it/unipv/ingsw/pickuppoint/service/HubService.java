@@ -52,6 +52,14 @@ public class HubService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LockerService.class);
 
+	/**
+	 * Metodo per la consegna del corriere: Ottiene l'ordine tramite id, setta lo
+	 * stato in Delivered, setta la data corrente, salva i prodotti negli slot,
+	 * salva l'ordine
+	 * 
+	 * @param id
+	 * @throws SlotNotAvailable gestione errore slot non disponibile per la consegna
+	 */
 	public void deliver(Long id) throws SlotNotAvailable {
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERED);
@@ -60,6 +68,14 @@ public class HubService {
 		orderDetailsService.save(orderDetails);
 	}
 
+	/**
+	 * Metodo per il ritiro del customer: ottiene l'ordine tramite pickup code,
+	 * verifica il pickup code, setta lo stato in WITHDRAWN, setta la data corrente,
+	 * salva l'ordine, rimuove i prodotti dallo slot
+	 * 
+	 * @param pickupCode
+	 * @throws ErrorPickupCode gestione errore pickup code inserito non corretto
+	 */
 	@Transactional
 	public void withdraw(String pickupCode) throws ErrorPickupCode {
 		OrderDetails orderDetails = null;
@@ -74,6 +90,11 @@ public class HubService {
 		removeProducts(orderDetails.getProducts());
 	}
 
+	/**
+	 * Metodo per la rimozione dei prodotti dagli slot
+	 * 
+	 * @param list di prodotti
+	 */
 	@Transactional
 	private void removeProducts(List<Product> list) {
 		for (Product product : list) {
@@ -88,6 +109,14 @@ public class HubService {
 		}
 	}
 
+	/**
+	 * Metodo per aggiugere ordini al profilo del customer: ottiene l'ordine tramite
+	 * tracking code, verifica il tracking code, ottiene l'user che ha effettuato la
+	 * richiesta, setta il customer in order, salva l'ordine
+	 * 
+	 * @param tracking
+	 * @throws ErrorTrackingCode
+	 */
 	public void addOrderToProfile(String tracking) throws ErrorTrackingCode {
 		OrderDetails orderDetails = null;
 		orderDetails = orderDetailsService.findByTrackingCode(tracking);
@@ -97,9 +126,19 @@ public class HubService {
 
 		User customer = userService.getAuthenticatedUser();
 		orderDetails.setCustomer(customer);
-		orderDetailsService.assignOrder(orderDetails);
+		orderDetailsService.save(orderDetails);
 	}
 
+	/**
+	 * Metodo per aggiungere ordini nell'HUB: legge json, assegna il json a un array
+	 * di json identificati da order, crea un nuovo ordini settando tutti i suoi
+	 * campi, salva l'ordine
+	 * 
+	 * @param multipartFile file caricato da admin
+	 * @throws JsonFormat
+	 * @throws JSONException
+	 * @throws IOException
+	 */
 	public void addOrders(MultipartFile multipartFile) throws JsonFormat, JSONException, IOException {
 		JSONObject json = null;
 		try {
@@ -156,6 +195,11 @@ public class HubService {
 		}
 	}
 
+	/**
+	 * Meotodo per eliminare i couriers dall'ordine identificato tramite id
+	 * 
+	 * @param id ordine
+	 */
 	public void deleteCourier(Long id) {
 		for (OrderDetails order : orderDetailsRepo.findByCourier_userId(id)) {
 			order.setCourier(null);
