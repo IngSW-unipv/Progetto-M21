@@ -14,9 +14,9 @@ import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
 public class CourierController {
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
-	HubService hubService;
+	private HubService hubService;
 
 	/**
 	 * Invocato dal courier quando effettua una richiesta GET a /deliver/id

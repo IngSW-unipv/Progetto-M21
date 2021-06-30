@@ -19,15 +19,17 @@ import it.unipv.ingsw.pickuppoint.service.exception.CustomerAlreadyExistExceptio
 
 @Service
 public class UserService {
+	
 	@Autowired
-	UserRepo userRepo;
+	private UserRepo userRepo;
 	@Autowired
-	RoleRepo roleRepo;
+	private RoleRepo roleRepo;
 	@Autowired
-	OrderDetailsService orderDetailsService;
+	private OrderDetailsService orderDetailsService;
 	@Autowired
-	Date date;
-	BCryptPasswordEncoder passwordEncoder;
+	private Date date;
+	
+	private BCryptPasswordEncoder passwordEncoder;
 
 	public List<User> getAllCouriers() {
 		return userRepo.findByRole_name("COURIER");

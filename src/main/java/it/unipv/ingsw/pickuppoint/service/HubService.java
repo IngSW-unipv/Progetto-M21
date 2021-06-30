@@ -36,19 +36,19 @@ import it.unipv.ingsw.pickuppoint.utility.ProductSize;
 public class HubService {
 
 	@Autowired
-	OrderDetailsService orderDetailsService;
+	private OrderDetailsService orderDetailsService;
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
-	LockerService lockerService;
+	private LockerService lockerService;
 	@Autowired
-	Date date;
+	private Date date;
 	@Autowired
-	SlotRepo slotRepo;
+	private SlotRepo slotRepo;
 	@Autowired
-	OrderDetailsRepo orderDetailsRepo;
+	private OrderDetailsRepo orderDetailsRepo;
 	@Autowired
-	JsonReader jsonReader;
+	private JsonReader jsonReader;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LockerService.class);
 

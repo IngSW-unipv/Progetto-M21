@@ -16,9 +16,9 @@ import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
 @Controller
 public class CustomerController {
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
-	HubService hubService;
+	private HubService hubService;
 
 	/**
 	 * Invocato quando il client effettua una richiesta GET a /add. Aggiunge un

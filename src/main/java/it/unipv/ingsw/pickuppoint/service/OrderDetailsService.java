@@ -18,9 +18,9 @@ import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
 public class OrderDetailsService {
 
 	@Autowired
-	OrderDetailsRepo orderDetailsRepo;
+	private OrderDetailsRepo orderDetailsRepo;
 	@Autowired
-	DeliveryDetailsRepo deliveryDetailsRepo;
+	private DeliveryDetailsRepo deliveryDetailsRepo;
 
 	/**
 	 * Ritorna OrderDetails con chiave id se presente, altrimenti

@@ -17,9 +17,9 @@ import it.unipv.ingsw.pickuppoint.service.exception.CustomerAlreadyExistExceptio
 @Controller
 public class UserController {
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
-	HubService hubService;
+	private HubService hubService;
 
 	/**
 	 * Invocato quando il client effettua una richiesta GET alla root del sito

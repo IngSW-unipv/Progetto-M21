@@ -29,13 +29,13 @@ import it.unipv.ingsw.pickuppoint.service.exception.JsonFormat;
 public class AdministratorController {
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	@Autowired
-	FilesStorageService storageService;
+	private FilesStorageService storageService;
 	@Autowired
-	HubService hubService;
+	private HubService hubService;
 	@Autowired
-	LockerService lockerService;
+	private LockerService lockerService;
 
 	/**
 	 * Invocato quando l'admin effettua una richiesta GET a /userList da profile
