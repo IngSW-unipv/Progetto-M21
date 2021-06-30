@@ -98,9 +98,11 @@ public class UserController {
 			model.addAttribute("user", customer);
 			return "registration";
 		}
+		if (userService.getAuthenticatedUser() == null)
+			return "index";
 		if (userService.getAuthenticatedUser().getRole().getName().equals("ADMINISTRATOR"))
 			return "redirect:" + "profile";
 
-		return "redirect:" + "/";
+		return "index";
 	}
 }

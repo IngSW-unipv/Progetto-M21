@@ -39,6 +39,8 @@ public class UserService {
 	 * @return User
 	 */
 	public User getAuthenticatedUser() {
+		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().equals("anonymousUser"))
+			return null;
 		return ((UserAuthorization) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUser();
 	}
 
