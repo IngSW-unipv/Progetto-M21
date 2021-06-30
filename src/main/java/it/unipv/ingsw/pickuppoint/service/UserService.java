@@ -16,6 +16,7 @@ import it.unipv.ingsw.pickuppoint.data.UserRepo;
 import it.unipv.ingsw.pickuppoint.model.Role;
 import it.unipv.ingsw.pickuppoint.model.User;
 import it.unipv.ingsw.pickuppoint.service.exception.CustomerAlreadyExistException;
+import it.unipv.ingsw.pickuppoint.utility.DateUtils;
 
 @Service
 public class UserService {
@@ -27,7 +28,7 @@ public class UserService {
 	@Autowired
 	private OrderDetailsService orderDetailsService;
 	@Autowired
-	private Date date;
+	private DateUtils date;
 	
 	private BCryptPasswordEncoder passwordEncoder;
 

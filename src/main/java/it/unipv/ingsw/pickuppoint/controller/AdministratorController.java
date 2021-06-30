@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import javax.validation.Valid;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.unipv.ingsw.pickuppoint.model.User;
-import it.unipv.ingsw.pickuppoint.service.HubService;
+import it.unipv.ingsw.pickuppoint.service.AdminService;
+import it.unipv.ingsw.pickuppoint.service.FilesStorageService;
 import it.unipv.ingsw.pickuppoint.service.LockerService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
-import it.unipv.ingsw.pickuppoint.service.exception.EmptyFile;
-import it.unipv.ingsw.pickuppoint.service.exception.FileFormat;
-import it.unipv.ingsw.pickuppoint.service.exception.FilesStorageService;
-import it.unipv.ingsw.pickuppoint.service.exception.JsonFormat;
+import it.unipv.ingsw.pickuppoint.service.exception.EmptyFileException;
+import it.unipv.ingsw.pickuppoint.service.exception.FileFormatException;
+import it.unipv.ingsw.pickuppoint.service.exception.JsonFormatException;
 
 @Controller
 public class AdministratorController {
@@ -33,9 +35,9 @@ public class AdministratorController {
 	@Autowired
 	private FilesStorageService storageService;
 	@Autowired
-	private HubService hubService;
-	@Autowired
 	private LockerService lockerService;
+	@Autowired
+	private AdminService adminService;
 
 	/**
 	 * Invocato quando l'admin effettua una richiesta GET a /userList da profile
@@ -95,7 +97,7 @@ public class AdministratorController {
 	 */
 	@GetMapping("/delete/{id}")
 	public String deleteUser(@PathVariable(name = "id") Long id) {
-		hubService.deleteCourier(id);
+		adminService.deleteCourier(id);
 		userService.delete(id);
 		return "redirect:" + "/UserList";
 	}
@@ -106,28 +108,28 @@ public class AdministratorController {
 	 * @param file  caricato dall'admin
 	 * @param model
 	 * @return /profile
-	 * @throws EmptyFile     verifica se il file è vuoto
-	 * @throws FileFormat    verifica il formato del file
+	 * @throws EmptyFileException     verifica se il file è vuoto
+	 * @throws FileFormatException    verifica il formato del file
 	 * @throws JsonFormat    verifica il formato del json
 	 * @throws JSONException gestisce eccezione json
 	 * @throws IOException   gestisce eccezione i/o
 	 */
 	@PostMapping(value = "/uploadFile")
 	public String uploadFile(@RequestParam("file") MultipartFile file, Model model)
-			throws EmptyFile, FileFormat, JsonFormat, JSONException, IOException {
+			throws EmptyFileException, FileFormatException, JsonFormatException, JSONException, IOException {
 		storageService.init();
 		try {
 			storageService.save(file);
-		} catch (EmptyFile emptyFile) {
+		} catch (EmptyFileException emptyFile) {
 			model.addAttribute("emptyfile", emptyFile.getMessage());
 			return "/profile";
-		} catch (FileFormat fileFormat) {
+		} catch (FileFormatException fileFormat) {
 			model.addAttribute("errorfile", fileFormat.getMessage());
 			return "/profile";
 		}
 		try {
-			hubService.addOrders(file);
-		} catch (JsonFormat jsonFormat) {
+			adminService.addOrders(file);
+		} catch (JsonFormatException jsonFormat) {
 			model.addAttribute("errorfile", jsonFormat.getMessage());
 			return "/profile";
 		}

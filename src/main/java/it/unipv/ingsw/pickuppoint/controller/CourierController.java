@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
-import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
+import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailableException;
 
 @Controller
 public class CourierController {
@@ -29,7 +29,7 @@ public class CourierController {
 	public String showEditProductFormCourier(@PathVariable(name = "id") Long id, Model model) {
 		try {
 			hubService.deliver(id);
-		} catch (SlotNotAvailable e) {
+		} catch (SlotNotAvailableException e) {
 			userService.addListOrders(model);
 			model.addAttribute("slotError", e.getMessage());
 			return "/viewOrders";

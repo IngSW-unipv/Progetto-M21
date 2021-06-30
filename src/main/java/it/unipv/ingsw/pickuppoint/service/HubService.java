@@ -1,36 +1,23 @@
 package it.unipv.ingsw.pickuppoint.service;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.transaction.Transactional;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import it.unipv.ingsw.pickuppoint.data.SlotRepo;
+import it.unipv.ingsw.pickuppoint.model.OrderDetails;
+import it.unipv.ingsw.pickuppoint.model.Product;
+import it.unipv.ingsw.pickuppoint.model.Slot;
+import it.unipv.ingsw.pickuppoint.model.User;
+import it.unipv.ingsw.pickuppoint.service.exception.PickupCodeException;
+import it.unipv.ingsw.pickuppoint.service.exception.TrackingCodeException;
+import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailableException;
+import it.unipv.ingsw.pickuppoint.utility.DateUtils;
+import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import it.unipv.ingsw.pickuppoint.data.OrderDetailsRepo;
-import it.unipv.ingsw.pickuppoint.data.SlotRepo;
-import it.unipv.ingsw.pickuppoint.model.DeliveryDetails;
-import it.unipv.ingsw.pickuppoint.model.Locker;
-import it.unipv.ingsw.pickuppoint.model.OrderDetails;
-import it.unipv.ingsw.pickuppoint.model.Product;
-import it.unipv.ingsw.pickuppoint.model.Recipient;
-import it.unipv.ingsw.pickuppoint.model.Slot;
-import it.unipv.ingsw.pickuppoint.model.User;
-import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
-import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
-import it.unipv.ingsw.pickuppoint.service.exception.JsonFormat;
-import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
-import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
-import it.unipv.ingsw.pickuppoint.utility.JsonReader;
-import it.unipv.ingsw.pickuppoint.utility.ProductSize;
+import javax.transaction.Transactional;
+
+import java.util.List;
 
 @Service
 public class HubService {
@@ -42,13 +29,9 @@ public class HubService {
 	@Autowired
 	private LockerService lockerService;
 	@Autowired
-	private Date date;
+	private DateUtils date;
 	@Autowired
 	private SlotRepo slotRepo;
-	@Autowired
-	private OrderDetailsRepo orderDetailsRepo;
-	@Autowired
-	private JsonReader jsonReader;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LockerService.class);
 
@@ -58,9 +41,9 @@ public class HubService {
 	 * salva l'ordine
 	 * 
 	 * @param id
-	 * @throws SlotNotAvailable gestione errore slot non disponibile per la consegna
+	 * @throws SlotNotAvailableException gestione errore slot non disponibile per la consegna
 	 */
-	public void deliver(Long id) throws SlotNotAvailable {
+	public void deliver(Long id) throws SlotNotAvailableException {
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERED);
 		orderDetails.getDeliveryDetails().setDateDelivered(date.getCurrentDataTime());
@@ -74,15 +57,15 @@ public class HubService {
 	 * salva l'ordine, rimuove i prodotti dallo slot
 	 * 
 	 * @param pickupCode
-	 * @throws ErrorPickupCode gestione errore pickup code inserito non corretto
+	 * @throws PickupCodeException gestione errore pickup code inserito non corretto
 	 */
 	@Transactional
-	public void withdraw(String pickupCode) throws ErrorPickupCode {
+	public void withdraw(String pickupCode) throws PickupCodeException {
 		OrderDetails orderDetails = null;
 		orderDetails = orderDetailsService.getOrderByPickupCode(pickupCode);
 
 		if (orderDetails == null)
-			throw new ErrorPickupCode("Wrong pickup code, please try again");
+			throw new PickupCodeException("Wrong pickup code, please try again");
 
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.WITHDRAWN);
 		orderDetails.getDeliveryDetails().setWithdrawalDate(date.getCurrentDataTime());
@@ -115,91 +98,18 @@ public class HubService {
 	 * richiesta, setta il customer in order, salva l'ordine
 	 * 
 	 * @param tracking
-	 * @throws ErrorTrackingCode
+	 * @throws TrackingCodeException
 	 */
-	public void addOrderToProfile(String tracking) throws ErrorTrackingCode {
+	public void addOrderToProfile(String tracking) throws TrackingCodeException {
 		OrderDetails orderDetails = null;
 		orderDetails = orderDetailsService.findByTrackingCode(tracking);
 
 		if (orderDetails == null)
-			throw new ErrorTrackingCode("Wrong tracking code, please try again");
+			throw new TrackingCodeException("Wrong tracking code, please try again");
 
 		User customer = userService.getAuthenticatedUser();
 		orderDetails.setCustomer(customer);
 		orderDetailsService.save(orderDetails);
-	}
-
-	/**
-	 * Metodo per aggiungere ordini nell'HUB: legge json, json diviso in array
-	 * di json identificati da orders, crea un nuovo ordine settando tutti i suoi
-	 * campi infine salva l'ordine
-	 * 
-	 * @param multipartFile file caricato da admin
-	 * @throws JsonFormat
-	 * @throws JSONException
-	 * @throws IOException
-	 */
-	public void addOrders(MultipartFile multipartFile) throws JsonFormat, JSONException, IOException {
-		JSONObject json = null;
-		try {
-			json = jsonReader.readJson(multipartFile);
-		} catch (JSONException | IOException | InvalidDataAccessResourceUsageException e) {
-			throw new JsonFormat("Wrong Json Format, please try again");
-		}
-
-		JSONArray orders = json.getJSONArray("orders");
-
-		for (int i = 0; i < orders.length(); i++) {
-//			New Order
-			OrderDetails newOrder = new OrderDetails();
-			JSONObject order = orders.getJSONObject(i);
-
-//			ORDER ATTRIBUTES
-			String trackingCode = (String) order.get("trackingCode");
-			Long lockerId = ((Number) order.get("lockerId")).longValue();
-			String sender = (String) order.get("sender");
-
-			Locker newLocker = new Locker(lockerId);
-
-//			RECIPIENT
-			JSONObject recipient = order.getJSONObject("recipient");
-			String firstName = (String) recipient.get("name");
-			String lastName = (String) recipient.get("last");
-			Recipient newRecipient = new Recipient(firstName, lastName);
-
-//			PRODUCTS
-			JSONArray products = order.getJSONArray("products");
-			for (int x = 0; x < products.length(); x++) {
-				JSONObject product = products.getJSONObject(x);
-				Double weight = ((Number) product.get("weight")).doubleValue();
-				ProductSize size = ProductSize.valueOf((String) product.get("size"));
-				Product newProduct = new Product(weight, size);
-				newOrder.setProducts(newProduct);
-			}
-
-//			SET ORDER
-			newOrder.setLocker(newLocker);
-			newOrder.setTrackingCode(trackingCode);
-			newOrder.setSender(sender);
-			newOrder.setRecipient(newRecipient);
-			newOrder.setDeliveryDetails(new DeliveryDetails());
-
-//			SAVE ORDER
-			orderDetailsRepo.save(newOrder);
-			LOGGER.info(
-					"Ordine " + newOrder.getOrderDetailsId() + " in HUB " + newOrder.getDeliveryDetails().getHubDate());
-		}
-	}
-
-	/**
-	 * Meotodo per eliminare i couriers dall'ordine identificato tramite id
-	 * 
-	 * @param id ordine
-	 */
-	public void deleteCourier(Long id) {
-		for (OrderDetails order : orderDetailsRepo.findByCourier_userId(id)) {
-			order.setCourier(null);
-		}
 	}
 
 	@Transactional

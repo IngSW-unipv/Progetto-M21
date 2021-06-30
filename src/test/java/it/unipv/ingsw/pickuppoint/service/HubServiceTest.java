@@ -20,9 +20,10 @@ import it.unipv.ingsw.pickuppoint.data.SlotRepo;
 import it.unipv.ingsw.pickuppoint.model.DeliveryDetails;
 import it.unipv.ingsw.pickuppoint.model.OrderDetails;
 import it.unipv.ingsw.pickuppoint.model.User;
-import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
-import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
-import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
+import it.unipv.ingsw.pickuppoint.service.exception.PickupCodeException;
+import it.unipv.ingsw.pickuppoint.service.exception.TrackingCodeException;
+import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailableException;
+import it.unipv.ingsw.pickuppoint.utility.DateUtils;
 import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +37,7 @@ public class HubServiceTest {
 	@MockBean
 	private LockerService lockerServiceMock;
 	@MockBean
-	private Date dateMock;
+	private DateUtils dateMock;
 	@MockBean
 	private SlotRepo slotRepoMock;
 	@MockBean
@@ -52,11 +53,11 @@ public class HubServiceTest {
 	 * This test checks the deliver function by asserting that the deliveryStatus is
 	 * DELIVERED.
 	 * 
-	 * @throws SlotNotAvailable
+	 * @throws SlotNotAvailableException
 	 */
 	@Test
 	@DisplayName("this tests the delivery status in the deliver method")
-	void testDeliveryStatus() throws SlotNotAvailable {
+	void testDeliveryStatus() throws SlotNotAvailableException {
 
 		DeliveryDetails deliveryDetails = new DeliveryDetails();
 		Mockito.when(orderDetailsServiceMock.getOrderDetailsById(id)).thenReturn(orderDetailsMock);
@@ -70,11 +71,11 @@ public class HubServiceTest {
 	 * This test checks the deliver function by asserting that the the date is
 	 * correct.
 	 * 
-	 * @throws SlotNotAvailable
+	 * @throws SlotNotAvailableException
 	 */
 	@Test
 	@DisplayName("this tests the delivery date in the deliver method")
-	void testDeliveryDate() throws SlotNotAvailable {
+	void testDeliveryDate() throws SlotNotAvailableException {
 
 		DeliveryDetails deliveryDetails = new DeliveryDetails();
 		Mockito.when(orderDetailsServiceMock.getOrderDetailsById(id)).thenReturn(orderDetailsMock);
@@ -97,7 +98,7 @@ public class HubServiceTest {
 
 		try {
 			hubService.withdraw(id.toString());
-		} catch (ErrorPickupCode e) {
+		} catch (PickupCodeException e) {
 			fail("FAILURE MESSAGE: Order does not exist, unexpected exception");
 		}
 		assertEquals(DeliveryStatus.WITHDRAWN, deliveryDetails.getDeliveryStatus());
@@ -112,7 +113,7 @@ public class HubServiceTest {
 		DeliveryDetails deliveryDetails = new DeliveryDetails();
 		Mockito.when(orderDetailsServiceMock.getOrderByPickupCode(id.toString())).thenReturn(null);
 		Mockito.when(orderDetailsMock.getDeliveryDetails()).thenReturn(deliveryDetails);
-		assertThrows(ErrorPickupCode.class, () -> {
+		assertThrows(PickupCodeException.class, () -> {
 			hubService.withdraw(id.toString());
 		});
 	}
@@ -160,7 +161,7 @@ public class HubServiceTest {
 		Mockito.when(userServiceMock.getAuthenticatedUser()).thenReturn(user);
 		try {
 			hubService.addOrderToProfile(id.toString());
-		} catch (ErrorTrackingCode e) {
+		} catch (TrackingCodeException e) {
 			fail("FAILURE MESSAGE: Order does not exist, unexpected exception");
 		}
 		assertEquals(user, orderDetails.getCustomer());
@@ -176,7 +177,7 @@ public class HubServiceTest {
 		User user = new User();
 		Mockito.when(orderDetailsServiceMock.findByTrackingCode(id.toString())).thenReturn(null);
 		Mockito.when(userServiceMock.getAuthenticatedUser()).thenReturn(user);
-		assertThrows(ErrorTrackingCode.class, () -> {
+		assertThrows(TrackingCodeException.class, () -> {
 			hubService.addOrderToProfile(id.toString());
 		});
 	}

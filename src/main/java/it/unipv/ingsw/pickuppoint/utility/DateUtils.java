@@ -1,14 +1,12 @@
-package it.unipv.ingsw.pickuppoint.service;
+package it.unipv.ingsw.pickuppoint.utility;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class Date {
-	
-	public Date() {}
+@Component
+public class DateUtils {
 	
 	public String getCurrentDataTime() {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");

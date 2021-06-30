@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
-import it.unipv.ingsw.pickuppoint.service.exception.ErrorPickupCode;
-import it.unipv.ingsw.pickuppoint.service.exception.ErrorTrackingCode;
+import it.unipv.ingsw.pickuppoint.service.exception.PickupCodeException;
+import it.unipv.ingsw.pickuppoint.service.exception.TrackingCodeException;
 
 @Controller
 public class CustomerController {
@@ -32,7 +32,7 @@ public class CustomerController {
 
 		try {
 			hubService.addOrderToProfile(tracking);
-		} catch (ErrorTrackingCode e) {
+		} catch (TrackingCodeException e) {
 			userService.addListOrders(model);
 			model.addAttribute("error", e.getMessage());
 			return "/profile";
@@ -55,7 +55,7 @@ public class CustomerController {
 
 		try {
 			hubService.withdraw(pickupCode);
-		} catch (ErrorPickupCode e) {
+		} catch (PickupCodeException e) {
 			userService.addListOrders(model);
 			model.addAttribute("error", e.getMessage());
 			return "/viewOrders";

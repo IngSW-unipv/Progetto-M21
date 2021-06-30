@@ -1,8 +1,6 @@
 package it.unipv.ingsw.pickuppoint.utility;
 
-import java.io.Serializable;
-
-public enum ProductSize implements Serializable{
+public enum ProductSize {
 	BIG(50, 50, 50, "BIG"), MEDIUM(20, 20, 20, "MEDIUM"), SMALL(10, 10, 10, "SMALL");
 
 	private double length;

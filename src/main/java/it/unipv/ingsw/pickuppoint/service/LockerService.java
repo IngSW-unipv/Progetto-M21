@@ -14,7 +14,7 @@ import it.unipv.ingsw.pickuppoint.model.Locker;
 import it.unipv.ingsw.pickuppoint.model.OrderDetails;
 import it.unipv.ingsw.pickuppoint.model.Product;
 import it.unipv.ingsw.pickuppoint.model.Slot;
-import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailable;
+import it.unipv.ingsw.pickuppoint.service.exception.SlotNotAvailableException;
 
 @Service
 public class LockerService {
@@ -29,7 +29,7 @@ public class LockerService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LockerService.class);
 
-	public void setSlotDeliver(OrderDetails orderDetails) throws SlotNotAvailable {
+	public void setSlotDeliver(OrderDetails orderDetails) throws SlotNotAvailableException {
 		List<Product> products = orderDetails.getProducts();
 		List<Slot> slots = getLockerSlot(orderDetails.getLocker().getLockerId());
 
@@ -68,7 +68,7 @@ public class LockerService {
 				}
 
 				if (product.getSlot() == null) {
-					throw new SlotNotAvailable(
+					throw new SlotNotAvailableException(
 							"NON è POSSIBILE CONSEGNARE L'ORDINE " + product.getOrderId() + " SLOT NON DISPONIBILI");
 				}
 			}

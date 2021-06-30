@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import it.unipv.ingsw.pickuppoint.model.User;
-import it.unipv.ingsw.pickuppoint.service.HubService;
 import it.unipv.ingsw.pickuppoint.service.UserService;
 import it.unipv.ingsw.pickuppoint.service.exception.CustomerAlreadyExistException;
 
@@ -18,8 +17,6 @@ import it.unipv.ingsw.pickuppoint.service.exception.CustomerAlreadyExistExceptio
 public class UserController {
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private HubService hubService;
 
 	/**
 	 * Invocato quando il client effettua una richiesta GET alla root del sito
@@ -91,6 +88,7 @@ public class UserController {
 			model.addAttribute("user", customer);
 			return "registration";
 		}
+
 		try {
 			userService.register(customer);
 		} catch (CustomerAlreadyExistException e) {
@@ -98,9 +96,11 @@ public class UserController {
 			model.addAttribute("user", customer);
 			return "registration";
 		}
+
 		if (userService.getAuthenticatedUser() == null)
 			return "index";
-		if (userService.getAuthenticatedUser().getRole().getName().equals("ADMINISTRATOR"))
+
+		if ("ADMINISTRATOR".equals(userService.getAuthenticatedUser().getRole().getName()))
 			return "redirect:" + "profile";
 
 		return "index";
