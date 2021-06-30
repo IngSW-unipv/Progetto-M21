@@ -111,7 +111,12 @@ public class HubService {
 		orderDetails.setCustomer(customer);
 		orderDetailsService.save(orderDetails);
 	}
-
+	
+	/**
+	 * Metodo per impostare lo stato di NOT_WITHDRAWN all'ordine
+	 * 
+	 * @param id
+	 */
 	@Transactional
 	public void setNotWithdrawnState(Long id) {
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
@@ -119,6 +124,15 @@ public class HubService {
 		orderDetailsService.save(orderDetails);
 	}
 
+	
+	/**
+	 * Metodo per spedire indietro all'hub un ordine non ritirato.
+	 * Viene settato lo stato di HUB per permettere al sistema un riassegnamento ad un altro corriere
+	 * Vengono inoltre resettati alcuni campi del DB relativi a quell'ordine. (il corrier assegnato, la data di delivery,
+	 * vengono svuotati gli slot)
+	 * 
+	 * @param id
+	 */
 	@Transactional
 	public void sendBackToHub(Long id) {
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);

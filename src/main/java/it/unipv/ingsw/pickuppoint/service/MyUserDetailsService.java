@@ -18,6 +18,11 @@ public class MyUserDetailsService implements UserDetailsService {
 	@Autowired
 	private UserRepo userRepo;
 
+	/**
+	 * Metodo per ottenere dal DB un user ricercandolo tramite la sua email
+	 * 
+	 */
+	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		User user = userRepo.findByEmail(email);
