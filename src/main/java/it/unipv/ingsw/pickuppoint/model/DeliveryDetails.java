@@ -27,7 +27,7 @@ public class DeliveryDetails {
 	@Id
 	@Column(name = "order_id")
 	private Long orderDetailsId;
-	private String dataDelivered;
+	private String dateDelivered;
 	private String hubDate;
 	private String withdrawalDate;
 
@@ -70,12 +70,12 @@ public class DeliveryDetails {
 		this.orderDetailsId = orderDetailsId;
 	}
 
-	public String getDataDelivered() {
-		return dataDelivered;
+	public String getDateDelivered() {
+		return dateDelivered;
 	}
 
-	public void setDataDelivered(String dataDelivered) {
-		this.dataDelivered = dataDelivered;
+	public void setDateDelivered(String dateDelivered) {
+		this.dateDelivered = dateDelivered;
 	}
 
 	public OrderDetails getOrderDetails() {

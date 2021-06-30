@@ -21,7 +21,6 @@ public class Recipient {
 
 	private String firstName;
 	private String lastName;
-	private String email;
 
 	/**
 	 * Relazione 1:1 con l'entita orderDetails, chiave primaria condivisa
@@ -33,10 +32,9 @@ public class Recipient {
 
 	public Recipient() {}
 
-	public Recipient(String firstName, String lastName, String email) {
+	public Recipient(String firstName, String lastName) {
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.email = email;
 	}
 
 	public void setOrderDetails(OrderDetails orderDetails) {
@@ -53,10 +51,6 @@ public class Recipient {
 
 	public String getRecipientLastName() {
 		return lastName;
-	}
-
-	public String getRecipientEmail() {
-		return email;
 	}
 
 	public OrderDetails getOrderDetails() {

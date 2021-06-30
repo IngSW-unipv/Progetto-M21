@@ -63,7 +63,7 @@ public class HubService {
 	public void deliver(Long id) throws SlotNotAvailable {
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.DELIVERED);
-		orderDetails.getDeliveryDetails().setDataDelivered(date.getCurrentDataTime());
+		orderDetails.getDeliveryDetails().setDateDelivered(date.getCurrentDataTime());
 		lockerService.setSlotDeliver(orderDetails);
 		orderDetailsService.save(orderDetails);
 	}
@@ -130,9 +130,9 @@ public class HubService {
 	}
 
 	/**
-	 * Metodo per aggiungere ordini nell'HUB: legge json, assegna il json a un array
-	 * di json identificati da order, crea un nuovo ordini settando tutti i suoi
-	 * campi, salva l'ordine
+	 * Metodo per aggiungere ordini nell'HUB: legge json, json diviso in array
+	 * di json identificati da orders, crea un nuovo ordine settando tutti i suoi
+	 * campi infine salva l'ordine
 	 * 
 	 * @param multipartFile file caricato da admin
 	 * @throws JsonFormat
@@ -154,10 +154,8 @@ public class HubService {
 			OrderDetails newOrder = new OrderDetails();
 			JSONObject order = orders.getJSONObject(i);
 
-//			Order attributes
+//			ORDER ATTRIBUTES
 			String trackingCode = (String) order.get("trackingCode");
-			// Da rimuovere
-			// String pickupCode = (String) order.get("pickupCode");
 			Long lockerId = ((Number) order.get("lockerId")).longValue();
 			String sender = (String) order.get("sender");
 
@@ -167,8 +165,7 @@ public class HubService {
 			JSONObject recipient = order.getJSONObject("recipient");
 			String firstName = (String) recipient.get("name");
 			String lastName = (String) recipient.get("last");
-			String email = (String) recipient.get("email");
-			Recipient newRecipient = new Recipient(firstName, lastName, email);
+			Recipient newRecipient = new Recipient(firstName, lastName);
 
 //			PRODUCTS
 			JSONArray products = order.getJSONArray("products");
@@ -183,7 +180,6 @@ public class HubService {
 //			SET ORDER
 			newOrder.setLocker(newLocker);
 			newOrder.setTrackingCode(trackingCode);
-			// newOrder.setPickupCode(pickupCode);
 			newOrder.setSender(sender);
 			newOrder.setRecipient(newRecipient);
 			newOrder.setDeliveryDetails(new DeliveryDetails());
@@ -191,7 +187,7 @@ public class HubService {
 //			SAVE ORDER
 			orderDetailsRepo.save(newOrder);
 			LOGGER.info(
-					"Ordine " + newOrder.getOrderDetailsId() + " in hub " + newOrder.getDeliveryDetails().getHubDate());
+					"Ordine " + newOrder.getOrderDetailsId() + " in HUB " + newOrder.getDeliveryDetails().getHubDate());
 		}
 	}
 
@@ -218,7 +214,7 @@ public class HubService {
 		OrderDetails orderDetails = orderDetailsService.getOrderDetailsById(id);
 		orderDetails.getDeliveryDetails().setDeliveryStatus(DeliveryStatus.HUB);
 		orderDetails.setCourier(null);
-		orderDetails.getDeliveryDetails().setDataDelivered(null);
+		orderDetails.getDeliveryDetails().setDateDelivered(null);
 		removeProducts(orderDetails.getProducts());
 		orderDetailsService.save(orderDetails);
 	}

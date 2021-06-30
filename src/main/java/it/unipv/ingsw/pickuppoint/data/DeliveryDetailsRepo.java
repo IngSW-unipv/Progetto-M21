@@ -18,8 +18,8 @@ public interface DeliveryDetailsRepo extends JpaRepository<DeliveryDetails, Long
 		@SuppressWarnings("unchecked")
 
 		Map<Long, Integer> findListOfDifferenceDeliverdDateAndCurrentDate = (Map<Long, Integer>) em
-				.createNativeQuery("SELECT order_id, DATEDIFF(CURRENT_TIMESTAMP(), data_delivered) "
-						+ "as difference from delivery_details where (data_delivered IS NOT NULL)", Tuple.class)
+				.createNativeQuery("SELECT order_id, DATEDIFF(CURRENT_TIMESTAMP(), date_delivered) "
+						+ "as difference from delivery_details where (date_delivered IS NOT NULL)", Tuple.class)
 				.getResultStream()
 				.collect(Collectors.toMap(tuple -> ((Number) ((Tuple) tuple).get("order_id")).longValue(),
 						tuple -> ((Number) ((Tuple) tuple).get("difference")).intValue()));

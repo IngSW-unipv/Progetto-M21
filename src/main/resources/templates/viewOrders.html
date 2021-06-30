@@ -3,9 +3,9 @@
 
 
 <head>
-<!--  Refresh pagina ogni 30 secondi  -->
-<!-- <meta charset="UTF-8" http-equiv="refresh" content="30"> -->
-<meta charset="UTF-8">
+<!--  Refresh pagina ogni 60 secondi  -->
+<meta charset="UTF-8" http-equiv="refresh" content="60">
+
 <title>View Orders</title>
 
 <link rel="icon" href="/images/favicons/favicon.ico">
@@ -15,6 +15,13 @@
 <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 
 <script src="/JS/notification.js" type="text/javascript"></script>
+
+<style>
+h4 {
+	color: #ff98b4a6;
+	margin-bottom: 20px;
+}
+</style>
 
 </head>
 
@@ -76,7 +83,7 @@
 						<tr>
 
 							<td>
-								<button type="button" data-toggle="collapse" class="btn btn-outline-light"
+								<button type="button" data-toggle="collapse" class="btn btn-outline-success"
 									th:data-target="|.demo${order.orderDetailsId}|">
 									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye"
 										viewBox="0 0 16 16">
@@ -117,16 +124,17 @@
 										</form>
 
 										<script th:inline="javascript">
-										var orderId = /*[[${order.orderDetailsId}]]*/'';
+											var orderId = /*[[${order.orderDetailsId}]]*/'';
 
-										var lockerCity = /*[[${order.locker.lockerAddress.city}]]*/'';
-										var lockerAddress = /*[[${order.locker.lockerAddress.address}]]*/'';
+											var lockerCity = /*[[${order.locker.lockerAddress.city}]]*/'';
+											var lockerAddress = /*[[${order.locker.lockerAddress.address}]]*/'';
 
-										var lockerInfo = lockerAddress.concat(", " +lockerCity);
+											var lockerInfo = lockerAddress
+													.concat(", " + lockerCity);
 
-										var pickupCode = /*[[${order.pickupCode}]]*/'';
-										customerNotification(orderId, pickupCode,
-												lockerInfo);
+											var pickupCode = /*[[${order.pickupCode}]]*/'';
+											customerNotification(orderId,
+													pickupCode, lockerInfo);
 										</script>
 
 									</td>
@@ -174,19 +182,20 @@
 						<!-- ############ TABELLA 2 : DATE CONSEGNA E RITIRO ############ -->
 						<tr th:id="|demo${order.orderDetailsId}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
 							<td colspan="8">
-
+								<h4>Date</h4>
 								<table class="table-dark" style="margin-left: 11%; line-height: 15px;">
 									<thead style="background: #3d414a;">
 										<tr class="info">
-											<!--  <th>View Products</th> -->
-											<th>Data Delivered</th>
-											<th>Withdrawal Date</th>
+											<th>Hub</th>
+											<th>Delivered</th>
+											<th>Withdrawal</th>
 										</tr>
 									</thead>
 
 									<tbody>
 										<tr>
-											<td th:text="${order.deliveryDetails.dataDelivered} ?: 'Not delivered'"></td>
+											<td th:text="${order.deliveryDetails.hubDate} ?: ''"></td>
+											<td th:text="${order.deliveryDetails.dateDelivered} ?: 'Not delivered'"></td>
 											<td th:text="${order.deliveryDetails.withdrawalDate} ?: 'Not withdrawn'"></td>
 										</tr>
 									</tbody>
@@ -201,11 +210,12 @@
 						<th:block>
 							<tr th:id="|demo2${order}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
 								<td colspan="8">
+									<h4>Products</h4>
 
 									<table class="table-dark" style="margin-left: 11%; line-height: 15px">
 										<thead style="background: #3d414a;">
 											<tr class="info">
-												<th>ProductId</th>
+												<th>ID</th>
 												<th>Size</th>
 												<th>Weight</th>
 												<th>Slot</th>
@@ -229,14 +239,15 @@
 						<!-- ############ TABELLA 4 : LOCKER ADDRESS ############ -->
 						<tr th:id="|demo${order.locker}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
 							<td colspan="8">
+								<h4>Locker</h4>
 
 								<table class="table-dark" style="margin-left: 11%; line-height: 15px;">
 									<thead style="background: #3d414a;">
 										<tr class="info">
-											<th>Locker Name</th>
-											<th>Locker City</th>
-											<th>Locker Address</th>
-											<th>Postal Code</th>
+											<th>Name</th>
+											<th>City</th>
+											<th>Address</th>
+											<th>Code</th>
 										</tr>
 									</thead>
 
@@ -256,13 +267,13 @@
 						<!-- ############ TABELLA 5 : DATI RECIPIENT ############ -->
 						<tr th:id="|demo${order.recipient}|" class="collapse" th:classappend="|demo${order.orderDetailsId}|">
 							<td colspan="8">
+								<h4>Recipient</h4>
 
 								<table class="table-dark" style="margin-left: 11%; line-height: 15px; margin-bottom: 2em;">
 									<thead style="background: #3d414a;">
 										<tr class="info">
-											<th>Recipient's First Name</th>
+											<th>First Name</th>
 											<th>Last Name</th>
-											<th>Email</th>
 										</tr>
 									</thead>
 
@@ -270,7 +281,6 @@
 										<tr>
 											<td th:text="${order.recipient.RecipientFirstName} ?: 'null'"></td>
 											<td th:text="${order.recipient.RecipientLastName} ?: 'null'"></td>
-											<td th:text="${order.recipient.RecipientEmail} ?: 'null'"></td>
 										</tr>
 									</tbody>
 								</table>

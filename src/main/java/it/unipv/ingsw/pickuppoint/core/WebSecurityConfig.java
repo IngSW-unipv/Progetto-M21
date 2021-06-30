@@ -47,10 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-//				.antMatchers("/").hasAnyAuthority("ADMINISTRATOR", "CUSTOMER", "COURIER")
 				.antMatchers("/", "/register/**", "/CSS/**", "/JS/**").permitAll()
 				.anyRequest().authenticated()
-
 				.and().formLogin().permitAll().defaultSuccessUrl("/profile")
 				.failureUrl("/login?error=true").and().logout().permitAll().logoutSuccessUrl("/").and()
 				.csrf().disable().exceptionHandling().accessDeniedPage("/403");

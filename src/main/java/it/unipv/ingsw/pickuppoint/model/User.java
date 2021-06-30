@@ -45,6 +45,7 @@ public class User {
 
 	@NotEmpty(message = "First name cannot be empty")
 	private String firstName;
+	
 	@NotEmpty(message = "Surname cannot be empty")
 	private String lastName;
 

@@ -14,6 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class JsonReader {
 
+	/**
+	 * Legge uno stream di caratteri, li unisce in uno stringa
+	 * 
+	 * @param rd
+	 * @return json in formato stringa
+	 * @throws IOException
+	 */
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		int cp;
@@ -22,7 +29,15 @@ public class JsonReader {
 		}
 		return sb.toString();
 	}
-
+	
+	/**
+	 * Legge un file e restituisce un oggetto Json
+	 * 
+	 * @param file
+	 * @return JSONObject
+	 * @throws IOException
+	 * @throws JSONException
+	 */
 	public static JSONObject readJson(MultipartFile file) throws IOException, JSONException {
 		InputStream inputStream = file.getInputStream();
 		try {
