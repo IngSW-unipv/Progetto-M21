@@ -14,7 +14,7 @@
 			<nav class="nav nav-masthead justify-content-center">
 				<a class="nav-link active" href="/" sec:authorize="!isAuthenticated()">Home</a>
 				<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/profile}">Profile</a>
-				<a class="nav-link" href="#">About</a>
+				<!--<a class="nav-link" href="#">About</a>  -->
 				<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">Logout</a>
 			</nav>
 		</div>
