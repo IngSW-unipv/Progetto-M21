@@ -24,7 +24,7 @@ public class UserController {
 	 * @return home page
 	 */
 	@GetMapping("/")
-	public String homePage() {
+	public String viewIndex() {
 		return "index";
 	}
 
@@ -34,7 +34,7 @@ public class UserController {
 	 * @return pagina html profilo
 	 */
 	@GetMapping("/profile")
-	public String viewHomePage(Model model) {
+	public String viewProfile(Model model) {
 		userService.addListOrders(model);
 		return "profile";
 	}
@@ -63,7 +63,7 @@ public class UserController {
 	 * @return la pagina html di registrazione
 	 */
 	@GetMapping("/register")
-	public String register(Model model) {
+	public String viewRegister(Model model) {
 		User customer = new User();
 		model.addAttribute("user", customer);
 		return "registration";

@@ -26,7 +26,7 @@ public class CourierController {
 	 * @return
 	 */
 	@GetMapping("/deliver/{id}")
-	public String showEditProductFormCourier(@PathVariable(name = "id") Long id, Model model) {
+	public String deliverOrder(@PathVariable(name = "id") Long id, Model model) {
 		try {
 			hubService.deliver(id);
 		} catch (SlotNotAvailableException e) {

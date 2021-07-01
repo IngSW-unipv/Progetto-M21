@@ -61,7 +61,7 @@ public class AdministratorController {
 	 * @return la pagina del form di modifica utente
 	 */
 	@GetMapping(value = "/editUser/{id}")
-	public String showEditUserForm(@PathVariable(name = "id") Long id, Model model) {
+	public String viewEditUserForm(@PathVariable(name = "id") Long id, Model model) {
 		model.addAttribute(userService.getUser(id));
 		return "/editUser";
 	}
@@ -158,7 +158,7 @@ public class AdministratorController {
 	 * @return pagina lockers
 	 */
 	@PostMapping(value = "/lockers")
-	public String lockerId(Model model, @RequestParam(value = "lockerId") Long lockerId) {
+	public String selectedLocker(Model model, @RequestParam(value = "lockerId") Long lockerId) {
 		model.addAttribute("lk", lockerService.getLockerById(lockerId));
 		model.addAttribute("lockers", lockerService.getAllLocker());
 		model.addAttribute("slots", lockerService.getLockerSlot(lockerId));

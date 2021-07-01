@@ -51,7 +51,7 @@ public class CustomerController {
 	 * 
 	 */
 	@GetMapping(value = "/withdraw")
-	public String showEditProductForm(@RequestParam(name = "pickupCode") @NotBlank String pickupCode, Model model) {
+	public String withdrawOrder(@RequestParam(name = "pickupCode") @NotBlank String pickupCode, Model model) {
 
 		try {
 			hubService.withdraw(pickupCode);
