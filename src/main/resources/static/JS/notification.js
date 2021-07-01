@@ -34,7 +34,7 @@ function courierNotification(orderId) {
 		console.log("ID " + orderId);
 
 		if (orders == null || !orders.includes(orderId)) {
-			new Notification("Notifica ritiro avvenuto", {
+			new Notification("Notifica avvenuto ritiro", {
 				body: "ordine " + orderId + " RITIRATO",
 				icon: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Light_green_check.svg/480px-Light_green_check.svg.png",
 			});
