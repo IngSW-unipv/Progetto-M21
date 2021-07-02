@@ -20,6 +20,8 @@ import it.unipv.ingsw.pickuppoint.model.OrderDetails;
 import it.unipv.ingsw.pickuppoint.model.Product;
 import it.unipv.ingsw.pickuppoint.model.Recipient;
 import it.unipv.ingsw.pickuppoint.service.exception.JsonFormatException;
+import it.unipv.ingsw.pickuppoint.utility.DateUtils;
+import it.unipv.ingsw.pickuppoint.utility.DeliveryStatus;
 import it.unipv.ingsw.pickuppoint.utility.JsonReader;
 import it.unipv.ingsw.pickuppoint.utility.ProductSize;
 
@@ -30,6 +32,8 @@ public class AdminService {
 	private LockerService lockerService;
 	@Autowired
 	private OrderDetailsRepo orderDetailsRepo;
+	@Autowired
+	private DateUtils date;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LockerService.class);
 	
@@ -78,13 +82,16 @@ public class AdminService {
 				Product newProduct = new Product(weight, size);
 				newOrder.setProducts(newProduct);
 			}
+			
+			DeliveryDetails newDeliveryDetails = new DeliveryDetails(date.getCurrentDataTime(), DeliveryStatus.HUB);
 
 //			SET ORDER
 			newOrder.setLocker(lockerService.getLockerById(lockerId));
 			newOrder.setTrackingCode(trackingCode);
 			newOrder.setSender(sender);
 			newOrder.setRecipient(newRecipient);
-			newOrder.setDeliveryDetails(new DeliveryDetails());
+			newOrder.setDeliveryDetails(newDeliveryDetails);
+			newOrder.setPickupCode(Integer.toString((int) (Math.random() * 100000 + 1)));
 
 //			SAVE ORDER
 			orderDetailsRepo.save(newOrder);

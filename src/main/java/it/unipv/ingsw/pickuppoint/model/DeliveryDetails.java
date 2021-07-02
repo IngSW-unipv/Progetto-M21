@@ -1,9 +1,5 @@
 package it.unipv.ingsw.pickuppoint.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -47,11 +43,13 @@ public class DeliveryDetails {
 	@Column(length = 32, columnDefinition = "varchar(32) default 'HUB'")
 	@Enumerated(EnumType.STRING)
 	private DeliveryStatus deliveryStatus;
-	
+
 	public DeliveryDetails() {
-		generateHubDate();
-		
-		
+	}
+
+	public DeliveryDetails(String hubDate, DeliveryStatus deliveryStatus) {
+		this.hubDate = hubDate;
+		this.deliveryStatus = deliveryStatus;
 	}
 
 	public String getWithdrawalDate() {
@@ -101,12 +99,4 @@ public class DeliveryDetails {
 	public void setHubDate(String hubDate) {
 		this.hubDate = hubDate;
 	}
-	
-	private void generateHubDate() {
-		Date date = Calendar.getInstance().getTime();  
-		SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");  
-		setHubDate(currentDate.format(date));
-		deliveryStatus = DeliveryStatus.HUB;
-	}
-
 }

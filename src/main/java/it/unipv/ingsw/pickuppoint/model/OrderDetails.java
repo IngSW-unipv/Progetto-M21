@@ -114,22 +114,11 @@ public class OrderDetails {
 	@Where(clause = "role_id = 3")
 	private User customer;
 
+	public OrderDetails() {
+	}
+
 	public Long getOrderDetailsId() {
 		return orderDetailsId;
-	}
-
-	public OrderDetails() {
-		generatePickUpCode();
-	}
-
-	public OrderDetails(String trackingCode, String pickupCode, Locker locker, Recipient recipient, String sender,
-			List<Product> products) {
-		this.trackingCode = trackingCode;
-		generatePickUpCode();
-		this.locker = locker;
-		this.recipient = recipient;
-		this.products = products;
-		this.sender = sender;
 	}
 
 	public String getSender() {
@@ -156,7 +145,11 @@ public class OrderDetails {
 		return pickupCode;
 	}
 
-	private void setPickupCode(String pickupCode) {
+	public void setProducts(List<Product> products) {
+		this.products = products;
+	}
+
+	public void setPickupCode(String pickupCode) {
 		this.pickupCode = pickupCode;
 	}
 
@@ -209,9 +202,5 @@ public class OrderDetails {
 
 	public void setCustomer(User customer) {
 		this.customer = customer;
-	}
-
-	private void generatePickUpCode() {
-		setPickupCode(Integer.toString((int) (Math.random() * 100000 + 1)));
 	}
 }

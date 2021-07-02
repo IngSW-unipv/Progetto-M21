@@ -32,7 +32,7 @@ public class User {
 	private Long userId;
 
 	@Column(columnDefinition = "tinyint(1)")
-	private boolean Enabled;
+	private boolean enabled;
 	
 	private String registrationDate;
 
@@ -74,7 +74,7 @@ public class User {
 	}
 
 	public boolean isEnabled() {
-		return Enabled;
+		return enabled;
 	}
 
 	public String getRegistrationDate() {
@@ -86,7 +86,7 @@ public class User {
 	}
 
 	public void setEnabled(boolean enabled) {
-		Enabled = enabled;
+		this.enabled = enabled;
 	}
 
 	public String getEmail() {
