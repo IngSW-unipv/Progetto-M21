@@ -26,6 +26,6 @@ git clone https://github.com/IngSW-unipv/Progetto-M21.git
 4. Aprire qualsiasi browser e navigare in http://localhost:8080
 
 ## Compilazione tramite terminale:
-1. Dowload [Progetto-M21-0.0.1-SNAPSHOT.jar]()
+1. Dowload [Progetto-M21-0.0.1-SNAPSHOT.jar](https://github.com/IngSW-unipv/Progetto-M21/releases/tag/v1.0)
 2. `java -jar Progetto-M21-0.0.1-SNAPSHOT.jar`
 3. Aprire qualsiasi browser e navigare in http://localhost:8080
