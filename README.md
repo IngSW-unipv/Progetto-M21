@@ -17,7 +17,7 @@ Sistema per la gestione di un punto di ritiro.
 
 ## Compilazione tramite IDE:
 
-1. Clonare repository da qualsiasi IDE o tramite terminale
+1. Clonare il repository da qualsiasi IDE o tramite terminale
 `
 git clone https://github.com/IngSW-unipv/Progetto-M21.git
 `
